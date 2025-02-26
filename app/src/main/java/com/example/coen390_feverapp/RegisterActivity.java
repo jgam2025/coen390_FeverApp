@@ -17,6 +17,9 @@ public class RegisterActivity extends AppCompatActivity {
     EditText etUser,etPwd,etRepwd;
     Button btnRegister, bntGoToLogin;
     DBHelper dbHelper;
+    Button button;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -28,6 +31,18 @@ public class RegisterActivity extends AppCompatActivity {
         btnRegister=findViewById(R.id.button1);
         dbHelper= new DBHelper(this);
         bntGoToLogin=findViewById(R.id.button2);
+
+
+        button = findViewById(R.id.button);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goToScan();
+            }
+        });
+
+
+
         bntGoToLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -71,5 +86,11 @@ public class RegisterActivity extends AppCompatActivity {
 
 
 
+    }
+
+
+    private void goToScan(){
+        Intent intent = new Intent(this, ScanMeasurementActivity.class);
+        startActivity(intent);
     }
 }
