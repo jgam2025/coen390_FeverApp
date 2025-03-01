@@ -5,4 +5,6 @@
     <color name="pink_background">#F6DED8</color>
     <color name="red_background">#B82132</color>
     <color name="red_button">#D2665A</color>
+    <color name="color_for_login_username_pass">#FFB8B8</color>
+    <color name="hint_color">#E74F4F</color>
 </resources>

@@ -31,7 +31,7 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View v) {
                 boolean isLoggedId = dbHelper.checkUser(etUsername.getText().toString(),etPwd.getText().toString());
                 if(isLoggedId){
-                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                    Intent intent = new Intent(LoginActivity.this, TemperatureMeasurementPage.class);
                     startActivity(intent);
                 }
                 else{

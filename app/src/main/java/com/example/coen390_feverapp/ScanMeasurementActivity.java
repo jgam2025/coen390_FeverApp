@@ -151,7 +151,7 @@ public class ScanMeasurementActivity extends AppCompatActivity {
 
 
         for (BluetoothDevice bondedDevice : bluetoothAdapter.getBondedDevices()) {
-            if (bondedDevice.getName().equals("ESP32")) { // Make sure this matches ESP32 name
+            if (bondedDevice.getName().equals("ESP32")) { 
                 device = bondedDevice;
                 break;
             }
