@@ -69,6 +69,9 @@ public class RegisterActivity extends AppCompatActivity {
                        boolean registeredSuccess=dbHelper.insertData(user,pwd);
                        if(registeredSuccess){
                            Toast.makeText(RegisterActivity.this, "User Registered Successfully ",Toast.LENGTH_LONG).show();
+                           Intent intent = new Intent(RegisterActivity.this, TemperatureMeasurementPage.class);
+                           startActivity(intent);
+                           finish();
                        }
                        else {
                            Toast.makeText(RegisterActivity.this, "User Registered Failed ",Toast.LENGTH_LONG).show();

@@ -37,19 +37,14 @@ public class DBHelper extends SQLiteOpenHelper {
     }
     public boolean checkUsername(String username){
         SQLiteDatabase myDB = this.getReadableDatabase();
-        Cursor cursor = myDB.rawQuery("select*from users where username = ?" , new String[]{username});
-        if(cursor.getCount()>0){
-            return true;
-        }
-        else return false;
+        Cursor cursor = myDB.rawQuery("SELECT * FROM users WHERE username = ? COLLATE NOCASE", new String[]{username});
+        return cursor.getCount() > 0;
     }
+
     public boolean checkUser(String username, String pwd){
-     SQLiteDatabase myDB = this.getReadableDatabase();
-     Cursor cursor = myDB.rawQuery("select*from users where username = ? and password=?" , new String[]{username,pwd});
-        if(cursor.getCount()>0){
-            return true;
-        }
-        else return false;
+        SQLiteDatabase myDB = this.getReadableDatabase();
+        Cursor cursor = myDB.rawQuery("SELECT * FROM users WHERE username = ? COLLATE NOCASE AND password = ?", new String[]{username, pwd});
+        return cursor.getCount() > 0;
     }
 }
 

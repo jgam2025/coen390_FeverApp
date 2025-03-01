@@ -46,10 +46,19 @@
         android:layout_marginTop="30dp"
         android:text="LOGIN"
         android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/etPassword"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etPassword"
-        app:layout_constraintVertical_bias="0.261" />
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <Button
+        android:id="@+id/btnSignup"
+        android:layout_width="188dp"
+        android:layout_height="59dp"
+        android:layout_marginTop="16dp"
+        android:text="SIGN UP"
+        android:textSize="20sp"
+        app:layout_constraintTop_toBottomOf="@id/btnlogin"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

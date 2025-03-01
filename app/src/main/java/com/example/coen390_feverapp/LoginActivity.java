@@ -15,6 +15,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 public class LoginActivity extends AppCompatActivity {
     Button btnlogin;
+    Button btnSignup;
     DBHelper dbHelper;
     EditText etUsername, etPwd;
     @Override
@@ -25,6 +26,7 @@ public class LoginActivity extends AppCompatActivity {
         etUsername=findViewById(R.id.etUsername);
         etPwd=findViewById(R.id.etPassword);
         btnlogin=findViewById(R.id.btnlogin);
+        btnSignup = findViewById(R.id.btnSignup);
 
         btnlogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -37,6 +39,14 @@ public class LoginActivity extends AppCompatActivity {
                 else{
                     Toast.makeText(LoginActivity.this, "login failed ",Toast.LENGTH_LONG).show();
                 }
+            }
+        });
+
+        btnSignup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
+                startActivity(intent);
             }
         });
 
