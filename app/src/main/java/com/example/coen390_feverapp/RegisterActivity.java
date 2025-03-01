@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -15,9 +16,9 @@ import androidx.core.view.WindowInsetsCompat;
 
 public class RegisterActivity extends AppCompatActivity {
     EditText etUser,etPwd,etRepwd;
-    Button btnRegister, bntGoToLogin;
+    Button btnRegister;
+    ImageView imageViewArrow;
     DBHelper dbHelper;
-    Button button;
 
 
     @Override
@@ -30,20 +31,10 @@ public class RegisterActivity extends AppCompatActivity {
         etRepwd=findViewById(R.id.editTextText3);
         btnRegister=findViewById(R.id.button1);
         dbHelper= new DBHelper(this);
-        bntGoToLogin=findViewById(R.id.button2);
+        imageViewArrow=findViewById(R.id.imageViewArrow);
 
 
-        button = findViewById(R.id.button);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                goToScan();
-            }
-        });
-
-
-
-        bntGoToLogin.setOnClickListener(new View.OnClickListener() {
+        imageViewArrow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
@@ -86,14 +77,6 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
 
-
-
-
     }
 
-
-    private void goToScan(){
-        Intent intent = new Intent(this, ScanMeasurementActivity.class);
-        startActivity(intent);
-    }
 }

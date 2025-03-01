@@ -7,4 +7,5 @@
     <color name="red_button">#D2665A</color>
     <color name="color_for_login_username_pass">#FFB8B8</color>
     <color name="hint_color">#E74F4F</color>
+    <color name="login_register_button_color">#ED7F7F</color>
 </resources>

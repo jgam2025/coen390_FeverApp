@@ -18,6 +18,9 @@ public class LoginActivity extends AppCompatActivity {
     Button btnSignup;
     DBHelper dbHelper;
     EditText etUsername, etPwd;
+
+    Button button;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,6 +30,15 @@ public class LoginActivity extends AppCompatActivity {
         etPwd=findViewById(R.id.etPassword);
         btnlogin=findViewById(R.id.btnlogin);
         btnSignup = findViewById(R.id.btnSignup);
+
+        //TEMPORARY
+        button = findViewById(R.id.button);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goToScan();
+            }
+        });
 
         btnlogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -51,5 +63,11 @@ public class LoginActivity extends AppCompatActivity {
         });
 
 
+    }
+
+    //TEMPORARY
+    private void goToScan(){
+        Intent intent = new Intent(this, ScanMeasurementActivity.class);
+        startActivity(intent);
     }
 }
