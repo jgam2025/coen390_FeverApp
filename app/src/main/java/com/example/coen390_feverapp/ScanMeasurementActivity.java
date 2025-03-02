@@ -7,7 +7,9 @@ import android.bluetooth.BluetoothSocket;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -42,6 +44,7 @@ public class ScanMeasurementActivity extends AppCompatActivity {
     protected Button startButton, cancelButton, saveButton;
     protected ConstraintLayout dialogLayout;
     protected FloatingActionButton closeDialogButton;
+    protected ImageView imageViewArrowScanPage;
 
     protected volatile boolean measurementCanceled = false;
 
@@ -78,6 +81,7 @@ public class ScanMeasurementActivity extends AppCompatActivity {
         saveButton = findViewById(R.id.buttonProgressAndSave);
         dialogLayout = findViewById(R.id.scanInstructionDialog);
         closeDialogButton = findViewById(R.id.closeScanDialogButton);
+        imageViewArrowScanPage = findViewById(R.id.imageViewArrowScanPage);
 
         measurementProgressBar.setProgress(0);
         cancelAndSaveButtonLayout.setVisibility(android.view.View.GONE);
@@ -87,6 +91,14 @@ public class ScanMeasurementActivity extends AppCompatActivity {
         cancelButton.setOnClickListener(v -> cancelMeasurement());
         saveButton.setOnClickListener(v -> saveMeasurement());
         closeDialogButton.setOnClickListener(v -> dialogLayout.setVisibility(android.view.View.GONE));
+
+        imageViewArrowScanPage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(ScanMeasurementActivity.this, TemperatureMeasurementPage.class);
+                startActivity(intent);
+            }
+        });
     }
 
     // Attempt to connect to the ESP32 on a background thread
@@ -218,4 +230,6 @@ public class ScanMeasurementActivity extends AppCompatActivity {
         socket = null;
         inputStream = null;
     }
+
+
 }

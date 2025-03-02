@@ -88,7 +88,7 @@
         app:layout_constraintTop_toBottomOf="@+id/editTextText3" />
 
     <ImageView
-        android:id="@+id/imageViewArrow"
+        android:id="@+id/imageViewArrowScanPage"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_marginStart="23dp"

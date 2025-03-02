@@ -9,11 +9,26 @@
     tools:context=".ScanMeasurementActivity">
 
 
+    <ImageView
+        android:id="@+id/imageViewArrowScanPage"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="23dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="355dp"
+        android:layout_marginBottom="675dp"
+        android:backgroundTint="#ED7F7F"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/baseline_arrow_back_ios_new_24" />
+
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="wrap_content"
         android:layout_height="56dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="100dp"
         android:background="@drawable/temperature_layout_bg"
         android:gravity="center"
         android:orientation="horizontal"

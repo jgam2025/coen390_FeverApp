@@ -8,11 +8,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 public class RegisterActivity extends AppCompatActivity {
     EditText etUser,etPwd,etRepwd;
@@ -31,7 +27,7 @@ public class RegisterActivity extends AppCompatActivity {
         etRepwd=findViewById(R.id.editTextText3);
         btnRegister=findViewById(R.id.button1);
         dbHelper= new DBHelper(this);
-        imageViewArrow=findViewById(R.id.imageViewArrow);
+        imageViewArrow=findViewById(R.id.imageViewArrowScanPage);
 
 
         imageViewArrow.setOnClickListener(new View.OnClickListener() {
