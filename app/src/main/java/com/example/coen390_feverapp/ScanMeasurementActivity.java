@@ -1,13 +1,12 @@
 package com.example.coen390_feverapp;
-import android.Manifest;
 
+import android.Manifest;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -31,15 +30,12 @@ import java.util.UUID;
 
 public class ScanMeasurementActivity extends AppCompatActivity {
 
-
-    // Bluetooth Variables
     private static final String DEVICE_NAME = "ESP32";
     private static final UUID SERIAL_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
     private BluetoothAdapter bluetoothAdapter;
     private BluetoothSocket socket;
     private InputStream inputStream;
 
-    // UI Variables
     protected TextView temperatureTextView;
     protected ProgressBar measurementProgressBar;
     protected LinearLayout cancelAndSaveButtonLayout;
@@ -47,11 +43,7 @@ public class ScanMeasurementActivity extends AppCompatActivity {
     protected ConstraintLayout dialogLayout;
     protected FloatingActionButton closeDialogButton;
 
-    // Other Variables
-    protected boolean measurementCanceled = false;
-    protected String temperature;
-
-
+    protected volatile boolean measurementCanceled = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,151 +57,165 @@ public class ScanMeasurementActivity extends AppCompatActivity {
         });
 
         setupUI();
-        establishConnection();
 
-        dialogLayout.setVisibility(View.VISIBLE);
+        bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        if (bluetoothAdapter == null) {
+            Toast.makeText(this, "Bluetooth not supported", Toast.LENGTH_SHORT).show();
+            finish();
+        }
+
+        // Attempt connection on a background thread
+        new Thread(() -> connectToESP32()).start();
+        dialogLayout.setVisibility(android.view.View.VISIBLE);
     }
 
-    private void setupUI(){
+    private void setupUI() {
         temperatureTextView = findViewById(R.id.textViewTemperature);
         startButton = findViewById(R.id.buttonStart);
         measurementProgressBar = findViewById(R.id.measurementProgressBar);
         cancelAndSaveButtonLayout = findViewById(R.id.linearLayoutCancelAndSave);
-        startButton = findViewById(R.id.buttonStart);
         cancelButton = findViewById(R.id.buttonCancel);
         saveButton = findViewById(R.id.buttonProgressAndSave);
         dialogLayout = findViewById(R.id.scanInstructionDialog);
         closeDialogButton = findViewById(R.id.closeScanDialogButton);
 
-
         measurementProgressBar.setProgress(0);
-        cancelAndSaveButtonLayout.setVisibility(View.GONE);
-        startButton.setVisibility(View.VISIBLE);
-
-
-        bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-        if(bluetoothAdapter == null){
-            Toast.makeText(this, "Bluetooth not supported", Toast.LENGTH_SHORT).show();
-            finish();
-        }
+        cancelAndSaveButtonLayout.setVisibility(android.view.View.GONE);
+        startButton.setVisibility(android.view.View.VISIBLE);
 
         startButton.setOnClickListener(v -> startMeasurement());
         cancelButton.setOnClickListener(v -> cancelMeasurement());
         saveButton.setOnClickListener(v -> saveMeasurement());
-        closeDialogButton.setOnClickListener(v -> dialogLayout.setVisibility(View.GONE));
+        closeDialogButton.setOnClickListener(v -> dialogLayout.setVisibility(android.view.View.GONE));
     }
 
-    private void establishConnection(){
-        Toast.makeText(ScanMeasurementActivity.this, "Connecting...", Toast.LENGTH_SHORT).show();
-        connectToESP32();
-    }
-
-
-    private void startMeasurement(){
-        startButton.setVisibility(View.GONE);
-        cancelAndSaveButtonLayout.setVisibility(View.VISIBLE);
-        saveButton.setClickable(false);
-        measurementProgressBar.setProgress(0);
-
-
-        //start measuring for 8 seconds
-        long a, b;
-        int duration = 8000; // time in milliseconds Ex:8000ms=8s
-        a = System.currentTimeMillis();
-        while(true) {
-            if (measurementCanceled) break;
-
-            // for 8 seconds
-            b = System.currentTimeMillis();
-            if (b - a >= duration) break;
-
-            // Bluetooth measure
-            temperature = readTemperature();
-            if (temperature == null) {
-                Toast.makeText(this, "Error reading data", Toast.LENGTH_SHORT).show();
-                temperature = "Null";
-            }
-
-            // display measure
-            temperatureTextView.setText(temperature + " °C");
-
-            // display progression
-            measurementProgressBar.setProgress((int)((b - a)/duration)*100,true);
-            saveButton.setText(((int)((b - a)/duration)*100)+"%");
-        }
-
-        //* activate save button and display "save" instead of percentage
-        saveButton.setText("save");
-        saveButton.setClickable(true);
-    }
-
-    private void cancelMeasurement(){
-        cancelAndSaveButtonLayout.setVisibility(View.GONE);
-        startButton.setVisibility(View.VISIBLE);
-        measurementCanceled = true;
-        temperatureTextView.setText("0 °C");
-    }
-    private void saveMeasurement(){
-        //TODO: create a way to save the data on a database
-    }
-
-    /*
-    *
-    * All Bluetooth methods are below this comment
-    *
-    */
-
-    private void connectToESP32() {
+    // Attempt to connect to the ESP32 on a background thread
+    private boolean connectToESP32() {
         BluetoothDevice device = null;
-        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.BLUETOOTH_CONNECT}, 1);
-            return;
+            return false;
         }
-
-
         for (BluetoothDevice bondedDevice : bluetoothAdapter.getBondedDevices()) {
-            if (bondedDevice.getName().equals("ESP32")) { 
+            if (bondedDevice.getName().equals(DEVICE_NAME)) {
                 device = bondedDevice;
                 break;
             }
         }
-
         if (device == null) {
-            Toast.makeText(this, "ESP32 not paired", Toast.LENGTH_SHORT).show();
-            return;
+            runOnUiThread(() -> Toast.makeText(ScanMeasurementActivity.this, "ESP32 not paired", Toast.LENGTH_SHORT).show());
+            return false;
         }
-
         try {
-            socket = device.createRfcommSocketToServiceRecord(UUID.fromString("00001101-0000-1000-8000-00805F9B34FB"));
+            socket = device.createRfcommSocketToServiceRecord(SERIAL_UUID);
             socket.connect();
-            Thread.sleep(1500);
             inputStream = socket.getInputStream();
-            Toast.makeText(this, "Connected Succesfully :)", Toast.LENGTH_SHORT).show();
-        } catch (IOException | InterruptedException e) {
-            Toast.makeText(this, "Failed to connect", Toast.LENGTH_SHORT).show();
+            runOnUiThread(() -> Toast.makeText(ScanMeasurementActivity.this, "Connected Successfully", Toast.LENGTH_SHORT).show());
+            return true;
+        } catch (IOException e) {
+            runOnUiThread(() -> Toast.makeText(ScanMeasurementActivity.this, "Failed to connect", Toast.LENGTH_SHORT).show());
+            return false;
         }
     }
 
+    // Starts the measurement on a background thread
+    private void startMeasurement() {
+        measurementCanceled = false;
+        runOnUiThread(() -> {
+            startButton.setVisibility(android.view.View.GONE);
+            cancelAndSaveButtonLayout.setVisibility(android.view.View.VISIBLE);
+            saveButton.setClickable(false);
+            measurementProgressBar.setProgress(0);
+            temperatureTextView.setText(" Measuring... ");
+        });
+
+        new Thread(() -> {
+            if (socket == null || !socket.isConnected()) {
+                if (!connectToESP32()) {
+                    runOnUiThread(() -> {
+                        Toast.makeText(ScanMeasurementActivity.this, "Unable to connect", Toast.LENGTH_SHORT).show();
+                        startButton.setVisibility(android.view.View.VISIBLE);
+                        cancelAndSaveButtonLayout.setVisibility(android.view.View.GONE);
+                    });
+                    return;
+                }
+            }
+
+            long startTime = System.currentTimeMillis();
+            int duration = 3000; // 8 seconds measurement period
+            while (System.currentTimeMillis() - startTime < duration && !measurementCanceled) {
+                String temp = readTemperature();
+                if (temp == null) {
+                    temp = "Error";
+                }
+                long elapsed = System.currentTimeMillis() - startTime;
+                int progress = (int) ((elapsed / (float) duration) * 100);
+                String finalTemp = temp;
+                runOnUiThread(() -> {
+                    temperatureTextView.setText(" " + finalTemp + " °C ");
+                    measurementProgressBar.setProgress(progress);
+                    saveButton.setText(progress + "%");
+                });
+                try {
+                    Thread.sleep(500);
+                } catch (InterruptedException e) {
+                    break;
+                }
+            }
+            runOnUiThread(() -> {
+                saveButton.setText("SAVE");
+                saveButton.setClickable(true);
+            });
+        }).start();
+    }
+
+    private void cancelMeasurement() {
+        measurementCanceled = true;
+        closeBluetoothConnection();
+        runOnUiThread(() -> {
+            cancelAndSaveButtonLayout.setVisibility(android.view.View.GONE);
+            startButton.setVisibility(android.view.View.VISIBLE);
+            temperatureTextView.setText(" 0 °C ");
+        });
+    }
+
+    private void saveMeasurement() {
+        // TODO: Implement saving functionality
+        closeBluetoothConnection();
+        Intent intent = new Intent(ScanMeasurementActivity.this, TemperatureMeasurementPage.class);
+        startActivity(intent);
+        finish();
+    }
+
     private String readTemperature() {
-        try {
-            // Send the request for temperature
-            OutputStream outputStream = socket.getOutputStream();
-            outputStream.write("GET_TEMP\n".getBytes()); // Send command to ESP32
-            outputStream.flush();
-
-            Thread.sleep(500);
-
-            // Read incoming temperature
-            byte[] buffer = new byte[256];
-            int bytesRead = inputStream.read(buffer);
-            String receivedData = new String(buffer, 0, bytesRead).trim();
-
-            Thread.sleep(1500);
-
-            return receivedData;
-
-        }catch (IOException | InterruptedException e) {
+        if (socket == null || !socket.isConnected()) {
             return null;
         }
+        try {
+            OutputStream outputStream = socket.getOutputStream();
+            outputStream.write("GET_TEMP\n".getBytes());
+            outputStream.flush();
+
+            byte[] buffer = new byte[256];
+            int bytesRead = inputStream.read(buffer);
+            return new String(buffer, 0, bytesRead).trim();
+        } catch (IOException e) {
+            return null;
+        }
+    }
+
+    private void closeBluetoothConnection() {
+        try {
+            if (inputStream != null) {
+                inputStream.close();
+            }
+            if (socket != null) {
+                socket.close();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        socket = null;
+        inputStream = null;
     }
 }

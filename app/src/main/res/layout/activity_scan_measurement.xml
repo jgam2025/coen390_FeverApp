@@ -11,7 +11,7 @@
 
     <LinearLayout
         android:id="@+id/linearLayout"
-        android:layout_width="176dp"
+        android:layout_width="wrap_content"
         android:layout_height="56dp"
         android:layout_marginTop="32dp"
         android:background="@drawable/temperature_layout_bg"
@@ -27,7 +27,7 @@
             android:layout_height="match_parent"
             android:gravity="center"
             android:includeFontPadding="false"
-            android:text="0 °C"
+            android:text=" 0 °C "
             android:textColor="@color/red_background"
             android:textSize="48sp"
             android:textStyle="bold" />
@@ -42,7 +42,7 @@
         android:indeterminate="false"
         android:max="100"
         android:progress="50"
-        android:progressTint="#C87878"
+        android:progressTint="#ED7F7F"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -61,14 +61,15 @@
 
         <Button
             android:id="@+id/buttonStart"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:backgroundTint="@color/red_button"
+            android:layout_width="110dp"
+            android:layout_height="110dp"
+            android:backgroundTint="#ED7F7F"
             android:gravity="center"
             android:includeFontPadding="false"
             android:insetTop="0dp"
             android:insetBottom="0dp"
-            android:text="Start"
+            android:text="START"
+            android:textSize="16sp"
             android:visibility="visible" />
 
         <LinearLayout
@@ -84,26 +85,28 @@
 
             <Button
                 android:id="@+id/buttonCancel"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
+                android:layout_width="110dp"
+                android:layout_height="110dp"
                 android:layout_weight="1"
-                android:backgroundTint="@color/red_button"
+                android:backgroundTint="#ED7F7F"
                 android:includeFontPadding="false"
                 android:insetTop="0dp"
                 android:insetBottom="0dp"
-                android:text="Cancel" />
+                android:text="CANCEL"
+                android:textSize="16sp" />
 
             <Button
                 android:id="@+id/buttonProgressAndSave"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
+                android:layout_width="110dp"
+                android:layout_height="110dp"
                 android:layout_marginStart="24dp"
                 android:layout_weight="1"
-                android:backgroundTint="@color/red_button"
+                android:backgroundTint="#ED7F7F"
                 android:includeFontPadding="false"
                 android:insetTop="0dp"
                 android:insetBottom="0dp"
-                android:text="%" />
+                android:text="%"
+                android:textSize="16sp" />
         </LinearLayout>
     </LinearLayout>
 
@@ -125,7 +128,7 @@
             android:layout_height="match_parent"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
-            android:background="@color/red_button"
+            android:background="@color/BUTTON_COLOR"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
@@ -149,7 +152,7 @@
             android:layout_height="wrap_content"
             android:clickable="true"
             android:contentDescription="Close Dialog"
-            app:backgroundTint="@color/red_button"
+            app:backgroundTint="@color/BUTTON_COLOR"
             app:borderWidth="24dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"

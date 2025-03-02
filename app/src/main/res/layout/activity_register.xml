@@ -9,6 +9,20 @@
     tools:context=".RegisterActivity">
 
 
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="250dp"
+        android:layout_height="250dp"
+        android:layout_marginStart="80dp"
+        android:layout_marginTop="88dp"
+        android:layout_marginEnd="80dp"
+        app:layout_constraintBottom_toTopOf="@+id/etUsername"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@mipmap/feverapplogo_foreground" />
+
     <EditText
         android:id="@+id/editTextText"
         android:layout_width="250dp"
