@@ -16,10 +16,13 @@ import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -37,10 +40,12 @@ public class ScanMeasurementActivity extends AppCompatActivity {
     private InputStream inputStream;
 
     // UI Variables
-    protected TextView textViewTemperature;
+    protected TextView temperatureTextView;
     protected ProgressBar measurementProgressBar;
     protected LinearLayout cancelAndSaveButtonLayout;
-    protected Button buttonStart, buttonCancel, buttonSave;
+    protected Button startButton, cancelButton, saveButton;
+    protected ConstraintLayout dialogLayout;
+    protected FloatingActionButton closeDialogButton;
 
     // Other Variables
     protected boolean measurementCanceled = false;
@@ -58,20 +63,28 @@ public class ScanMeasurementActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
         setupUI();
+        establishConnection();
+
+        dialogLayout.setVisibility(View.VISIBLE);
     }
 
     private void setupUI(){
-        textViewTemperature = findViewById(R.id.textViewTemperature);
-        buttonStart = findViewById(R.id.buttonStart);
+        temperatureTextView = findViewById(R.id.textViewTemperature);
+        startButton = findViewById(R.id.buttonStart);
         measurementProgressBar = findViewById(R.id.measurementProgressBar);
         cancelAndSaveButtonLayout = findViewById(R.id.linearLayoutCancelAndSave);
-        buttonStart = findViewById(R.id.buttonStart);
-        buttonCancel = findViewById(R.id.buttonCancel);
-        buttonSave = findViewById(R.id.buttonProgressAndSave);
+        startButton = findViewById(R.id.buttonStart);
+        cancelButton = findViewById(R.id.buttonCancel);
+        saveButton = findViewById(R.id.buttonProgressAndSave);
+        dialogLayout = findViewById(R.id.scanInstructionDialog);
+        closeDialogButton = findViewById(R.id.closeScanDialogButton);
 
+
+        measurementProgressBar.setProgress(0);
         cancelAndSaveButtonLayout.setVisibility(View.GONE);
-        buttonStart.setVisibility(View.VISIBLE);
+        startButton.setVisibility(View.VISIBLE);
 
 
         bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
@@ -80,20 +93,24 @@ public class ScanMeasurementActivity extends AppCompatActivity {
             finish();
         }
 
-        buttonStart.setOnClickListener(v -> startMeasurement());
-        buttonCancel.setOnClickListener(v -> cancelMeasurement());
-        buttonSave.setOnClickListener(v -> saveMeasurement());
-
+        startButton.setOnClickListener(v -> startMeasurement());
+        cancelButton.setOnClickListener(v -> cancelMeasurement());
+        saveButton.setOnClickListener(v -> saveMeasurement());
+        closeDialogButton.setOnClickListener(v -> dialogLayout.setVisibility(View.GONE));
     }
-    private void startMeasurement(){
-        buttonStart.setVisibility(View.GONE);
-        cancelAndSaveButtonLayout.setVisibility(View.VISIBLE);
-        buttonSave.setClickable(false);
-        measurementProgressBar.setProgress(0);
 
-        Log.d("DEBUG", "Button clicked!");
+    private void establishConnection(){
         Toast.makeText(ScanMeasurementActivity.this, "Connecting...", Toast.LENGTH_SHORT).show();
         connectToESP32();
+    }
+
+
+    private void startMeasurement(){
+        startButton.setVisibility(View.GONE);
+        cancelAndSaveButtonLayout.setVisibility(View.VISIBLE);
+        saveButton.setClickable(false);
+        measurementProgressBar.setProgress(0);
+
 
         //start measuring for 8 seconds
         long a, b;
@@ -114,23 +131,23 @@ public class ScanMeasurementActivity extends AppCompatActivity {
             }
 
             // display measure
-            textViewTemperature.setText(temperature + " °C");
+            temperatureTextView.setText(temperature + " °C");
 
             // display progression
             measurementProgressBar.setProgress((int)((b - a)/duration)*100,true);
-            buttonSave.setText(((int)((b - a)/duration)*100)+"%");
+            saveButton.setText(((int)((b - a)/duration)*100)+"%");
         }
 
         //* activate save button and display "save" instead of percentage
-        buttonSave.setText("save");
-        buttonSave.setClickable(true);
+        saveButton.setText("save");
+        saveButton.setClickable(true);
     }
 
     private void cancelMeasurement(){
         cancelAndSaveButtonLayout.setVisibility(View.GONE);
-        buttonStart.setVisibility(View.VISIBLE);
+        startButton.setVisibility(View.VISIBLE);
         measurementCanceled = true;
-        textViewTemperature.setText("0 °C");
+        temperatureTextView.setText("0 °C");
     }
     private void saveMeasurement(){
         //TODO: create a way to save the data on a database
@@ -165,8 +182,10 @@ public class ScanMeasurementActivity extends AppCompatActivity {
         try {
             socket = device.createRfcommSocketToServiceRecord(UUID.fromString("00001101-0000-1000-8000-00805F9B34FB"));
             socket.connect();
+            Thread.sleep(1500);
             inputStream = socket.getInputStream();
-        } catch (IOException e) {
+            Toast.makeText(this, "Connected Succesfully :)", Toast.LENGTH_SHORT).show();
+        } catch (IOException | InterruptedException e) {
             Toast.makeText(this, "Failed to connect", Toast.LENGTH_SHORT).show();
         }
     }
@@ -178,14 +197,18 @@ public class ScanMeasurementActivity extends AppCompatActivity {
             outputStream.write("GET_TEMP\n".getBytes()); // Send command to ESP32
             outputStream.flush();
 
+            Thread.sleep(500);
+
             // Read incoming temperature
             byte[] buffer = new byte[256];
             int bytesRead = inputStream.read(buffer);
             String receivedData = new String(buffer, 0, bytesRead).trim();
 
+            Thread.sleep(1500);
+
             return receivedData;
 
-        }catch (IOException e) {
+        }catch (IOException | InterruptedException e) {
             return null;
         }
     }
