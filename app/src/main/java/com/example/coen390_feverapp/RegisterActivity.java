@@ -49,27 +49,27 @@ public class RegisterActivity extends AppCompatActivity {
                 pwd = etPwd.getText().toString();
                 rePwd = etRepwd.getText().toString();
                 if (user.equals("")||pwd.equals("")||rePwd.equals("")){
-                    Toast.makeText(RegisterActivity.this, "please fill all the fields",Toast.LENGTH_LONG).show();
+                    Toast.makeText(RegisterActivity.this, "Please Fill In All The Fields",Toast.LENGTH_LONG).show();
                 }
                 else{
                     if(pwd.equals(rePwd)){
                         if(dbHelper.checkUsername(user)){
-                            Toast.makeText(RegisterActivity.this, "User Already Exist",Toast.LENGTH_LONG).show();
+                            Toast.makeText(RegisterActivity.this, "User Already Exists",Toast.LENGTH_LONG).show();
                             return;
                         }
                        boolean registeredSuccess=dbHelper.insertData(user,pwd);
                        if(registeredSuccess){
-                           Toast.makeText(RegisterActivity.this, "User Registered Successfully ",Toast.LENGTH_LONG).show();
+                           Toast.makeText(RegisterActivity.this, "User Registered Successfully",Toast.LENGTH_LONG).show();
                            Intent intent = new Intent(RegisterActivity.this, TemperatureMeasurementPage.class);
                            startActivity(intent);
                            finish();
                        }
                        else {
-                           Toast.makeText(RegisterActivity.this, "User Registered Failed ",Toast.LENGTH_LONG).show();
+                           Toast.makeText(RegisterActivity.this, "User Registration Failed",Toast.LENGTH_LONG).show();
                        }
                     }
                     else{
-                        Toast.makeText(RegisterActivity.this, "try again passwords doesn't match ",Toast.LENGTH_LONG).show();
+                        Toast.makeText(RegisterActivity.this, "Passwords Do Not Match",Toast.LENGTH_LONG).show();
                     }
 
                 }
