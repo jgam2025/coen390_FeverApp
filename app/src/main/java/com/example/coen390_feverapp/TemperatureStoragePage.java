@@ -1,28 +1,23 @@
 package com.example.coen390_feverapp;
-import android.view.Menu;
 import android.content.Intent;
+import android.view.Menu;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
 
-
-import androidx.appcompat.widget.Toolbar;
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-public class TemperatureMeasurementPage extends AppCompatActivity {
-
-    Button ScanButton;
+public class TemperatureStoragePage extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_temperature_measurement_page);
+        setContentView(R.layout.activity_temperature_storage_page);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
@@ -33,7 +28,6 @@ public class TemperatureMeasurementPage extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-        setupUI();
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -42,40 +36,20 @@ public class TemperatureMeasurementPage extends AppCompatActivity {
 
         return true;
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        if (id == R.id.miList) {
-            goToTemperatureStoragePage();
-            return true;
-        } else if (id == R.id.miMore) {
+        if (id == R.id.miMore) {
             goToPlusPage();
+            return true;
+        } else if (id == R.id.miAdd) {
+            goToTemperatureMeasurementPage();
             return true;
         } else {
             return super.onOptionsItemSelected(item);
         }
-    }
-
-
-    void setupUI(){
-
-        ScanButton = findViewById(R.id.ScanButton);
-        ScanButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                goToScanMeasurementPage();
-            }
-        });
-    }
-
-    private void goToScanMeasurementPage(){
-        Intent intent = new Intent(this, ScanMeasurementActivity.class);
-        startActivity(intent);
-    }
-    private void goToTemperatureStoragePage(){
-        Intent intent = new Intent(this, TemperatureStoragePage.class);
-        startActivity(intent);
     }
 
     private void goToPlusPage(){
@@ -83,6 +57,9 @@ public class TemperatureMeasurementPage extends AppCompatActivity {
         startActivity(intent);
     }
 
-
+    private void goToTemperatureMeasurementPage(){
+        Intent intent = new Intent(this, TemperatureMeasurementPage.class);
+        startActivity(intent);
+    }
 
 }
