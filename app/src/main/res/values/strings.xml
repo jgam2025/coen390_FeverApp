@@ -12,4 +12,11 @@
         diagnosis or treatment. For accurate health assessments, please
         consult a healthcare professional.\n
     </string>
+    <string name="info_text">
+        \nNote: These features will be fully implemented in future sprints.\n
+        Click the dropdown menu to select a user to take the temperature of.\n
+        Click the + icon on the bottom toolbar to add a new user.\n
+        Click the menu icon on the bottom toolbar to see the saved temperatures of the user.\n
+        For more information, please contact Fever App Support: ________ \n
+    </string>
 </resources>

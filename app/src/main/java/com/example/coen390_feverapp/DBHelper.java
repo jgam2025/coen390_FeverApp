@@ -1,18 +1,25 @@
 package com.example.coen390_feverapp;
 
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class DBHelper extends SQLiteOpenHelper {
     public static final String DBName ="register.db";
+    private Context context;
 
     public DBHelper(@Nullable Context context) {
         super(context, DBName, null, 1);
+        this.context = context;
     }
 
     @Override
@@ -46,5 +53,32 @@ public class DBHelper extends SQLiteOpenHelper {
         Cursor cursor = myDB.rawQuery("SELECT * FROM users WHERE username = ? COLLATE NOCASE AND password = ?", new String[]{username, pwd});
         return cursor.getCount() > 0;
     }
+
+    public Cursor getAllUsersCursor(){
+        SQLiteDatabase myDB = this.getReadableDatabase();
+        return myDB.query("users", new String[] {"_id","username"},null,null,null,null,"username");
+    }
+
+    public List<String> getAllUsers(){
+        SQLiteDatabase myDB = this.getReadableDatabase();
+        List<String> userList = new ArrayList<>();
+        Cursor cursor = null;
+        try {
+            cursor = myDB.query("users", null, null, null, null, null, null);
+            if (cursor != null){
+                if(cursor.moveToFirst()){
+                    do {
+                        @SuppressLint("Range") String username = cursor.getString(cursor.getColumnIndex("username"));
+                        userList.add(username);
+                    } while (cursor.moveToNext());
+                }
+                cursor.close();
+            }
+        } catch (Exception e) {
+            Toast.makeText(context, "Get error: " + e.getMessage(), Toast.LENGTH_LONG).show();
+        }
+        return userList;
+    }
+
 }
 

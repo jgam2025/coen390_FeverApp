@@ -14,89 +14,23 @@
             android:id="@+id/titleTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="92dp"
+            android:layout_marginTop="84dp"
             android:text="Sensor Information"
-            android:textSize="34sp"
-            app:layout_constraintEnd_toEndOf="@+id/closeFAB"
-            app:layout_constraintHorizontal_bias="0.571"
+            android:textSize="24sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/howToTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="35dp"
-            android:text="How To Use:"
-            android:textSize="20sp"
-            app:layout_constraintTop_toBottomOf="@+id/titleTextView"
-            tools:layout_editor_absoluteX="47dp" />
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/closeFAB"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
-            android:clickable="true"
-            android:src="@android:drawable/ic_menu_close_clear_cancel"
+            android:id="@+id/infoTextView"
+            android:layout_width="282dp"
+            android:layout_height="309dp"
+            android:layout_marginTop="4dp"
+            android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintHorizontal_bias="0.472"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/titleTextView"
+            tools:text="Placeholder" />
 
-        <TextView
-            android:id="@+id/instructionsTextView"
-            android:layout_width="307dp"
-            android:layout_height="89dp"
-            android:text="This box will contain instructions for the user, which will be obtained from experiments with the sensor later in the project."
-            android:textSize="16sp"
-            app:layout_constraintTop_toBottomOf="@+id/howToTextView"
-            tools:layout_editor_absoluteX="47dp" />
-
-        <TextView
-            android:id="@+id/environmentTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="28dp"
-            android:text="Environment:"
-            android:textSize="20sp"
-            app:layout_constraintTop_toBottomOf="@+id/instructionsTextView"
-            tools:layout_editor_absoluteX="61dp" />
-
-        <TextView
-            android:id="@+id/environmentInstrTextView"
-            android:layout_width="307dp"
-            android:layout_height="68dp"
-            android:text="This box will contain the optimal environment conditions for the user to get the most accurate readings."
-            android:textSize="16sp"
-            app:layout_constraintTop_toBottomOf="@+id/environmentTextView"
-            tools:layout_editor_absoluteX="61dp" />
-
-        <TextView
-            android:id="@+id/additionalInfoTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="26dp"
-            android:text="Additional Information:"
-            android:textSize="20sp"
-            app:layout_constraintTop_toBottomOf="@+id/environmentInstrTextView"
-            tools:layout_editor_absoluteX="61dp" />
-
-        <TextView
-            android:id="@+id/modelTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Sensor model : bhfdkjans"
-            android:textSize="16sp"
-            app:layout_constraintTop_toBottomOf="@+id/additionalInfoTextView"
-            tools:layout_editor_absoluteX="61dp" />
-
-        <TextView
-            android:id="@+id/contactTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Contact XXXXX for additional support."
-            android:textSize="16sp"
-            app:layout_constraintTop_toBottomOf="@+id/modelTextView"
-            tools:layout_editor_absoluteX="61dp" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>

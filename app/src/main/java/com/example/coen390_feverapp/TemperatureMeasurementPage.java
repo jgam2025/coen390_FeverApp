@@ -1,10 +1,15 @@
 package com.example.coen390_feverapp;
+import android.database.Cursor;
 import android.view.Menu;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.SimpleCursorAdapter;
+import android.widget.Spinner;
+import android.widget.Toast;
 
 
 import androidx.appcompat.widget.Toolbar;
@@ -14,9 +19,16 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import java.util.List;
+
 public class TemperatureMeasurementPage extends AppCompatActivity {
 
     Button ScanButton;
+    Spinner userSpinner;
+    FloatingActionButton infoFAB;
+    DBHelper dbHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +46,8 @@ public class TemperatureMeasurementPage extends AppCompatActivity {
             return insets;
         });
         setupUI();
+        dbHelper = new DBHelper(this);
+        showUsersOnSpinner();
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -67,6 +81,17 @@ public class TemperatureMeasurementPage extends AppCompatActivity {
                 goToScanMeasurementPage();
             }
         });
+
+        infoFAB = findViewById(R.id.infoFAB);
+        infoFAB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                InsertDialogFragment infoDialog = new InsertDialogFragment();
+                infoDialog.show(getSupportFragmentManager(),"InfoPage");
+            }
+        });
+
+        userSpinner = findViewById(R.id.userSpinner);
     }
 
     private void goToScanMeasurementPage(){
@@ -83,6 +108,28 @@ public class TemperatureMeasurementPage extends AppCompatActivity {
         startActivity(intent);
     }
 
+    private void showUsersOnSpinner(){
+        List<String> userList = dbHelper.getAllUsers();
+        if(userList.isEmpty()){
 
+        }
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,android.R.layout.simple_spinner_item,userList);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        userSpinner.setAdapter(adapter);
+        /*
+        Cursor usersCursor = dbHelper.getAllUsersCursor();
+
+        if(usersCursor != null && usersCursor.getCount()>0) {
+            String[] columns = {"username"};
+            int[] views = {android.R.id.text1};
+            SimpleCursorAdapter adapter = new SimpleCursorAdapter(this, android.R.layout.simple_spinner_item, usersCursor, columns, views, 0);
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            userSpinner.setAdapter(adapter);
+        }
+        else {
+            Toast.makeText(getApplicationContext(), "No Users Found", Toast.LENGTH_LONG).show();
+        }
+        */
+    }
 
 }

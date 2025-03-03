@@ -13,10 +13,10 @@ import android.widget.TextView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-public class InsertDialogFragment extends DialogFragment {
+public class
+InsertDialogFragment extends DialogFragment {
 
-    protected TextView titleTextView, howToTextView, instructionsTextView, environmentTextView,
-        environmentInstrTextView, additionalInfoTextView, modelTextView, contactTextView;
+    protected TextView titleTextView, infoTextView;
     protected FloatingActionButton closeFAB;
 
     public InsertDialogFragment() {
@@ -30,13 +30,9 @@ public class InsertDialogFragment extends DialogFragment {
         View view = inflater.inflate(R.layout.fragment_insert_dialog, container, false);
 
         titleTextView = view.findViewById(R.id.titleTextView);
-        howToTextView = view.findViewById(R.id.howToTextView);
-        instructionsTextView = view.findViewById(R.id.instructionsTextView);
-        environmentTextView = view.findViewById(R.id.environmentTextView);
-        environmentInstrTextView = view.findViewById(R.id.environmentInstrTextView);
-        additionalInfoTextView = view.findViewById(R.id.additionalInfoTextView);
-        modelTextView = view.findViewById(R.id.modelTextView);
-        contactTextView = view.findViewById(R.id.contactTextView);
+        infoTextView = view.findViewById(R.id.infoTextView);
+        infoTextView.setText(getString(R.string.info_text));
+
         closeFAB = view.findViewById(R.id.closeFAB);
 
         closeFAB.setOnClickListener(new View.OnClickListener() {
