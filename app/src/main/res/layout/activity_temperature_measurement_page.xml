@@ -18,6 +18,7 @@
         app:layout_constraintEnd_toStartOf="@+id/WeatherButton"
         app:layout_constraintHorizontal_bias="0.735"
         app:layout_constraintStart_toStartOf="parent"
+        android:backgroundTint="@color/BUTTON_COLOR"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
@@ -26,6 +27,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="92dp"
         android:layout_marginEnd="36dp"
+        android:backgroundTint="@color/BUTTON_COLOR"
         android:text="Weather"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -49,6 +51,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
         android:layout_marginBottom="11dp"
+        android:backgroundTint="@color/BUTTON_COLOR"
         android:text="Username"
         app:layout_constraintBottom_toTopOf="@+id/imageView2"
         app:layout_constraintEnd_toEndOf="parent"
@@ -67,4 +70,22 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:srcCompat="@mipmap/temperaturelogo_foreground" />
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:title=""
+        android:layout_width="409dp"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:backgroundTint="#D2665A"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+
+
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
