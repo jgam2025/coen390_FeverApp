@@ -1,7 +1,8 @@
 package com.example.coen390_feverapp;
+
 import android.content.Intent;
-import android.view.Menu;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.MenuItem;
 
 import androidx.activity.EdgeToEdge;
@@ -11,12 +12,13 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-public class TemperatureStoragePage extends AppCompatActivity {
+public class WeatherPage extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
+        setContentView(R.layout.activity_weather_page);
         setContentView(R.layout.activity_temperature_storage_page);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -28,6 +30,8 @@ public class TemperatureStoragePage extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -44,12 +48,12 @@ public class TemperatureStoragePage extends AppCompatActivity {
         if (id == R.id.miMore) {
             goToPlusPage();
             return true;
-        } else if (id == R.id.miThermometer) {
-            goToTemperatureMeasurementPage();
+        } else if (id == R.id.miperson) {
+            goToTemperatureStorage();
             return true;
 
-        } else if (id==R.id.miWeather) {
-            goToWeather();
+        } else if (id==R.id.miThermometer) {
+            goToTemperatureMeasurementPage();
             return true;
 
 
@@ -67,8 +71,8 @@ public class TemperatureStoragePage extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private void goToWeather(){
-        Intent intent = new Intent(this, WeatherPage.class);
+    private void goToTemperatureStorage(){
+        Intent intent = new Intent(this, TemperatureStoragePage.class);
         startActivity(intent);
     }
 

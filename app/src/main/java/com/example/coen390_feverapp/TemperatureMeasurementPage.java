@@ -60,13 +60,21 @@ public class TemperatureMeasurementPage extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        if (id == R.id.miList) {
+        if (id == R.id.miperson) {
             goToTemperatureStoragePage();
             return true;
         } else if (id == R.id.miMore) {
             goToPlusPage();
             return true;
-        } else {
+
+        } else if(id ==R.id.miLogOut) {
+            goToLoginPage();
+            return true;
+        }else if(id ==R.id.miWeather) {
+            goToWeatherPage();
+            return true;
+
+        }else {
             return super.onOptionsItemSelected(item);
         }
     }
@@ -105,6 +113,16 @@ public class TemperatureMeasurementPage extends AppCompatActivity {
 
     private void goToPlusPage(){
         Intent intent = new Intent(this, PlusPage.class);
+        startActivity(intent);
+    }
+
+    private void goToLoginPage(){
+        Intent intent = new Intent(this, LoginActivity.class);
+        startActivity(intent);
+    }
+
+    private void goToWeatherPage(){
+        Intent intent = new Intent(this, WeatherPage.class);
         startActivity(intent);
     }
 
