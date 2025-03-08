@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.widget.Toast;
@@ -26,6 +27,10 @@ public class DBHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase sqLiteDatabase){
         sqLiteDatabase.execSQL("create table users(username TEXT primary key, password TEXT )");
 
+        sqLiteDatabase.execSQL("CREATE TABLE profiles (profile_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "user_id INTEGER NOT NULL, " +
+                "profile_name TEXT NOT NULL, " +
+                "FOREIGN KEY(user_id) REFERENCES users(username))");
     }
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1){
@@ -42,6 +47,18 @@ public class DBHelper extends SQLiteOpenHelper {
         else return true;
 
     }
+
+    public boolean insertProfile(Profile profile){
+        SQLiteDatabase myDB = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("profile_id",profile.getId());
+        contentValues.put("user_id",profile.getUserId());
+        contentValues.put("profile_name",profile.getName());
+        long result = myDB.insert("profiles",null,contentValues);
+        if (result == -1) return false;
+        else return true;
+    }
+
     public boolean checkUsername(String username){
         SQLiteDatabase myDB = this.getReadableDatabase();
         Cursor cursor = myDB.rawQuery("SELECT * FROM users WHERE username = ? COLLATE NOCASE", new String[]{username});

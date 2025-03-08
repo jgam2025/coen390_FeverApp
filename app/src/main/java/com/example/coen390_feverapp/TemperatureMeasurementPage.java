@@ -1,5 +1,4 @@
 package com.example.coen390_feverapp;
-import android.database.Cursor;
 import android.view.Menu;
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,9 +6,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 
 import androidx.appcompat.widget.Toolbar;
@@ -94,7 +91,7 @@ public class TemperatureMeasurementPage extends AppCompatActivity {
         infoFAB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                InsertDialogFragment infoDialog = new InsertDialogFragment();
+                InsertInfoFragment infoDialog = new InsertInfoFragment();
                 infoDialog.show(getSupportFragmentManager(),"InfoPage");
             }
         });
@@ -134,20 +131,7 @@ public class TemperatureMeasurementPage extends AppCompatActivity {
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this,android.R.layout.simple_spinner_item,userList);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         userSpinner.setAdapter(adapter);
-        /*
-        Cursor usersCursor = dbHelper.getAllUsersCursor();
 
-        if(usersCursor != null && usersCursor.getCount()>0) {
-            String[] columns = {"username"};
-            int[] views = {android.R.id.text1};
-            SimpleCursorAdapter adapter = new SimpleCursorAdapter(this, android.R.layout.simple_spinner_item, usersCursor, columns, views, 0);
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            userSpinner.setAdapter(adapter);
-        }
-        else {
-            Toast.makeText(getApplicationContext(), "No Users Found", Toast.LENGTH_LONG).show();
-        }
-        */
     }
 
 }
