@@ -65,7 +65,7 @@
         android:background="#FFB8B8"
         android:backgroundTint="#FFB8B8"
         android:ems="10"
-        android:hint="  Re-enter Password"
+        android:hint="Confirm Password"
         android:inputType="text"
         android:textColorHint="#E74F4F"
         android:textSize="20sp"
