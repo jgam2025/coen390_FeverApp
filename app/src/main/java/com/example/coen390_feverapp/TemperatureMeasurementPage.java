@@ -1,4 +1,5 @@
 package com.example.coen390_feverapp;
+import android.content.SharedPreferences;
 import android.view.Menu;
 import android.content.Intent;
 import android.os.Bundle;
@@ -124,11 +125,13 @@ public class TemperatureMeasurementPage extends AppCompatActivity {
     }
 
     private void showUsersOnSpinner(){
-        List<String> userList = dbHelper.getAllUsers();
-        if(userList.isEmpty()){
+        SharedPreferences sharedPrefs = getSharedPreferences("user_prefs", MODE_PRIVATE);
+        String currentUser = sharedPrefs.getString("current_user",null);
+        List<String> profileList = dbHelper.getProfiles(currentUser);
+        if(profileList.isEmpty()){
 
         }
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,android.R.layout.simple_spinner_item,userList);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,android.R.layout.simple_spinner_item,profileList);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         userSpinner.setAdapter(adapter);
 

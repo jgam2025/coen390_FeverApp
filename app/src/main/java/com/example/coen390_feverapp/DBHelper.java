@@ -106,5 +106,28 @@ public class DBHelper extends SQLiteOpenHelper {
         return userList;
     }
 
+    public List<String> getProfiles(String user){
+        SQLiteDatabase myDB = this.getReadableDatabase();
+        List<String> profileList = new ArrayList<>();
+        Cursor cursor = null;
+        int userID = getUserID(user);
+        try {
+            cursor = myDB.rawQuery("SELECT profile_name FROM profiles WHERE user_id = ?", new String[]{String.valueOf(userID)});
+            if(cursor != null){
+                if(cursor.moveToFirst()){
+                    do {
+                        @SuppressLint("Range") String profileName = cursor.getString(cursor.getColumnIndex("profile_name"));
+                        profileList.add(profileName);
+                    } while (cursor.moveToNext());
+                }
+                cursor.close();
+            }
+        } catch (Exception e){
+            Toast.makeText(context, "Get error: " + e.getMessage(), Toast.LENGTH_LONG).show();
+        }
+
+        return profileList;
+    }
+
 }
 
