@@ -57,6 +57,17 @@ public class DBHelper extends SQLiteOpenHelper {
         else return true;
     }
 
+    public int getUserID(String username) {
+        SQLiteDatabase myDB = this.getReadableDatabase();
+        Cursor cursor = myDB.rawQuery("SELECT username FROM users WHERE username = ?", new String[]{username});
+
+        if(cursor != null && cursor.moveToFirst()){
+            @SuppressLint("Range") String currentUser = cursor.getString(cursor.getColumnIndex("username"));
+            cursor.close();
+            return currentUser.hashCode();
+        } else return -1;
+    }
+
     public boolean checkUsername(String username){
         SQLiteDatabase myDB = this.getReadableDatabase();
         Cursor cursor = myDB.rawQuery("SELECT * FROM users WHERE username = ? COLLATE NOCASE", new String[]{username});

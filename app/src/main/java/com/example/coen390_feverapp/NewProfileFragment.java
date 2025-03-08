@@ -1,8 +1,10 @@
 package com.example.coen390_feverapp;
 
 import android.app.DialogFragment;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,10 +47,17 @@ public class NewProfileFragment extends DialogFragment {
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                SharedPreferences sharedPrefs = getActivity().getSharedPreferences("user_prefs", 0);
+                String currentUser = sharedPrefs.getString("current_user",null);
+                Log.d("current_user_check",currentUser);
+                DBHelper dbHelper = new DBHelper(getActivity().getBaseContext());
+                int userID = dbHelper.getUserID(currentUser);
                 String name = nameEditText.getText().toString();
 
                 if(!name.isBlank()){
-
+                    Profile profile = new Profile(name,userID);
+                    dbHelper.insertProfile(profile);
+                    dismiss();
                 }
             }
         });
