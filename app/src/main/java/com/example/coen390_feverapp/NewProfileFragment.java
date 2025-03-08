@@ -1,6 +1,7 @@
 package com.example.coen390_feverapp;
 
 import android.app.DialogFragment;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
@@ -21,9 +22,18 @@ public class NewProfileFragment extends DialogFragment {
     protected EditText nameEditText;
     protected Button saveButton;
     protected FloatingActionButton closeButton;
+    private TemperatureMeasurementPage activity;
 
     public NewProfileFragment() {
         // Required empty public constructor
+    }
+
+    @Override
+    public void onAttach(Context context){
+        super.onAttach(context);
+        if(context instanceof TemperatureMeasurementPage){
+            activity = (TemperatureMeasurementPage) context;
+        }
     }
 
     @Override
@@ -57,6 +67,10 @@ public class NewProfileFragment extends DialogFragment {
                 if(!name.isBlank()){
                     Profile profile = new Profile(name,userID);
                     dbHelper.insertProfile(profile);
+
+                    if(activity != null){
+                        activity.showUsersOnSpinner();
+                    }
                     dismiss();
                 }
             }

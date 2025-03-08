@@ -7,6 +7,7 @@ import androidx.fragment.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -15,6 +16,7 @@ public class
 InsertInfoFragment extends DialogFragment {
 
     protected TextView titleTextView, infoTextView;
+    protected ImageView infoImageView;
     protected FloatingActionButton closeFAB;
 
     public InsertInfoFragment() {
@@ -27,9 +29,10 @@ InsertInfoFragment extends DialogFragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_insert_info, container, false);
 
-        titleTextView = view.findViewById(R.id.titleTextView);
-        infoTextView = view.findViewById(R.id.infoTextView);
-        infoTextView.setText(getString(R.string.info_text));
+       // titleTextView = view.findViewById(R.id.titleTextView);
+       // infoTextView = view.findViewById(R.id.infoTextView);
+        //infoTextView.setText(getString(R.string.info_text));
+        infoImageView = view.findViewById(R.id.infoImageView);
 
         closeFAB = view.findViewById(R.id.closeFAB);
 

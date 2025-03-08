@@ -62,7 +62,7 @@ public class TemperatureMeasurementPage extends AppCompatActivity {
             goToTemperatureStoragePage();
             return true;
         } else if (id == R.id.miadd) {
-            goToPlusPage();
+            addProfile();
             return true;
 
         } else if(id ==R.id.miLogOut) {
@@ -109,7 +109,7 @@ public class TemperatureMeasurementPage extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private void goToPlusPage(){
+    private void addProfile(){
         NewProfileFragment newProfile = new NewProfileFragment();
         newProfile.show(getFragmentManager(), "InsertProfile");
     }
@@ -124,7 +124,7 @@ public class TemperatureMeasurementPage extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private void showUsersOnSpinner(){
+    public void showUsersOnSpinner(){
         SharedPreferences sharedPrefs = getSharedPreferences("user_prefs", MODE_PRIVATE);
         String currentUser = sharedPrefs.getString("current_user",null);
         List<String> profileList = dbHelper.getProfiles(currentUser);

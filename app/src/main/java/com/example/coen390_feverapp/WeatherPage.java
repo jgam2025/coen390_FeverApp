@@ -67,8 +67,7 @@ public class WeatherPage extends AppCompatActivity {
     }
 
     private void goToPlusPage(){
-        Intent intent = new Intent(this, PlusPage.class);
-        startActivity(intent);
+
     }
 
     private void goToTemperatureStorage(){
