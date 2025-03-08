@@ -9,34 +9,10 @@
     tools:context=".TemperatureMeasurementPage">
 
     <Button
-        android:id="@+id/BodyTempButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="92dp"
-        android:layout_marginEnd="40dp"
-        android:text="Body Temperature"
-        app:layout_constraintEnd_toStartOf="@+id/WeatherButton"
-        app:layout_constraintHorizontal_bias="0.735"
-        app:layout_constraintStart_toStartOf="parent"
-        android:backgroundTint="@color/BUTTON_COLOR"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/WeatherButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="92dp"
-        android:layout_marginEnd="36dp"
-        android:backgroundTint="@color/BUTTON_COLOR"
-        android:text="Weather"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
         android:id="@+id/ScanButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="84dp"
+        android:layout_marginBottom="132dp"
         android:backgroundTint="@color/BUTTON_COLOR"
         android:text="SCAN"
         android:textSize="20sp"
@@ -47,11 +23,10 @@
 
     <ImageView
         android:id="@+id/imageView2"
-        android:layout_width="400dp"
-        android:layout_height="400dp"
+        android:layout_width="450dp"
+        android:layout_height="450dp"
         android:layout_marginStart="151dp"
         android:layout_marginEnd="152dp"
-        android:layout_marginBottom="12dp"
         app:layout_constraintBottom_toTopOf="@+id/ScanButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -72,26 +47,26 @@
 
     <Spinner
         android:id="@+id/userSpinner"
-        android:layout_width="196dp"
-        android:layout_height="26dp"
-        android:background="@color/white"
+        android:layout_width="wrap_content"
+        android:layout_height="45dp"
+        android:background="@color/BUTTON_COLOR"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.539"
+        app:layout_constraintHorizontal_bias="0.953"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.212" />
+        app:layout_constraintVertical_bias="0.023" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/infoFAB"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:background="@color/white"
+        android:background="@color/red_background"
         android:clickable="true"
-        app:backgroundTint="@color/white"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:backgroundTint="@color/red_background"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:rippleColor="@color/red_background"
         app:srcCompat="@android:drawable/ic_dialog_info" />
