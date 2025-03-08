@@ -61,6 +61,10 @@ public class RegisterActivity extends AppCompatActivity {
                            SharedPreferences.Editor editor = sharedPrefs.edit();
                            editor.putString("current_user",user);
                            editor.apply();
+                           int userID = dbHelper.getUserID(user);
+                           Profile profile = new Profile(user,userID);
+                           dbHelper.insertProfile(profile);
+
                            Intent intent = new Intent(RegisterActivity.this, TemperatureMeasurementPage.class);
                            startActivity(intent);
                            finish();
