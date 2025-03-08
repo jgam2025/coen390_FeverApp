@@ -27,8 +27,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase sqLiteDatabase){
         sqLiteDatabase.execSQL("create table users(username TEXT primary key, password TEXT )");
 
-        sqLiteDatabase.execSQL("CREATE TABLE profiles (profile_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                "user_id INTEGER NOT NULL, " +
+        sqLiteDatabase.execSQL("CREATE TABLE profiles (user_id INTEGER NOT NULL, " +
                 "profile_name TEXT NOT NULL, " +
                 "FOREIGN KEY(user_id) REFERENCES users(username))");
     }
@@ -51,7 +50,6 @@ public class DBHelper extends SQLiteOpenHelper {
     public boolean insertProfile(Profile profile){
         SQLiteDatabase myDB = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put("profile_id",profile.getId());
         contentValues.put("user_id",profile.getUserId());
         contentValues.put("profile_name",profile.getName());
         long result = myDB.insert("profiles",null,contentValues);

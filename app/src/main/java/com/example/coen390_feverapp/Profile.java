@@ -2,22 +2,12 @@ package com.example.coen390_feverapp;
 
 public class Profile {
 
-    private int id;
     private int userId;
     private String name;
 
-    public Profile(int id, int userId, String name) {
-        this.id = id;
+    public Profile(String name, int userId) {
         this.userId = userId;
         this.name = name;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public int getUserId() {
