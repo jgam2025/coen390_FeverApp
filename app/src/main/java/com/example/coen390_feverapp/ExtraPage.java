@@ -1,7 +1,8 @@
 package com.example.coen390_feverapp;
+
 import android.content.Intent;
-import android.view.Menu;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.MenuItem;
 
 import androidx.activity.EdgeToEdge;
@@ -11,13 +12,13 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-public class TemperatureStoragePage extends AppCompatActivity {
+public class ExtraPage extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_temperature_storage_page);
+        setContentView(R.layout.activity_extra_page);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
@@ -29,6 +30,7 @@ public class TemperatureStoragePage extends AppCompatActivity {
             return insets;
         });
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu from the menu.xml file in the menu directory
@@ -36,7 +38,6 @@ public class TemperatureStoragePage extends AppCompatActivity {
 
         return true;
     }
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
@@ -44,16 +45,16 @@ public class TemperatureStoragePage extends AppCompatActivity {
         if (id == R.id.miMore) {
             goToExtraPage();
             return true;
+        } else if (id == R.id.miperson) {
+            goToTemperatureStorage();
+            return true;
+
         } else if (id == R.id.miadd) {
             addProfile();
             return true;
 
-        }else if (id == R.id.miThermometer) {
+        }else if (id==R.id.miThermometer) {
             goToTemperatureMeasurementPage();
-            return true;
-
-        } else if (id==R.id.miWeather) {
-            goToWeather();
             return true;
 
 
@@ -71,8 +72,8 @@ public class TemperatureStoragePage extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private void goToWeather(){
-        Intent intent = new Intent(this, WeatherPage.class);
+    private void goToTemperatureStorage(){
+        Intent intent = new Intent(this, TemperatureStoragePage.class);
         startActivity(intent);
     }
 
@@ -89,5 +90,4 @@ public class TemperatureStoragePage extends AppCompatActivity {
         NewProfileFragment newProfile = new NewProfileFragment();
         newProfile.show(getFragmentManager(), "InsertProfile");
     }
-
 }

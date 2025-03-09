@@ -19,5 +19,5 @@
         Click the menu icon on the bottom toolbar to see the saved temperatures of the user.\n
         For more information, please contact Fever App Support: ________ \n
     </string>
-    <string name="create_profile">Create New Profile</string>
+    <string name="create_profile">\u00A0Create New Profile\u00A0</string>
 </resources>

@@ -13,13 +13,14 @@
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/closeFAB"
-            android:layout_width="46dp"
-            android:layout_height="57dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="15dp"
             android:clickable="true"
             android:src="@android:drawable/ic_menu_close_clear_cancel"
             app:backgroundTint="#ED7F7F"
+            app:fabCustomSize="40dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 

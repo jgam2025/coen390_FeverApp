@@ -18,6 +18,9 @@
         android:theme="@style/Base.Theme.Coen390_FeverApp"
         tools:targetApi="31">
         <activity
+            android:name=".ExtraPage"
+            android:exported="false" />
+        <activity
             android:name=".WeatherPage"
             android:exported="false" />
         <activity

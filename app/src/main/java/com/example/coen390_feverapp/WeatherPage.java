@@ -19,7 +19,6 @@ public class WeatherPage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_weather_page);
-        setContentView(R.layout.activity_temperature_storage_page);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
@@ -46,13 +45,17 @@ public class WeatherPage extends AppCompatActivity {
         int id = item.getItemId();
 
         if (id == R.id.miMore) {
-            goToPlusPage();
+            goToExtraPage();
             return true;
         } else if (id == R.id.miperson) {
             goToTemperatureStorage();
             return true;
 
-        } else if (id==R.id.miThermometer) {
+        } else if (id == R.id.miadd) {
+            addProfile();
+            return true;
+
+        }else if (id==R.id.miThermometer) {
             goToTemperatureMeasurementPage();
             return true;
 
@@ -66,8 +69,9 @@ public class WeatherPage extends AppCompatActivity {
         }
     }
 
-    private void goToPlusPage(){
-
+    private void goToExtraPage(){
+        Intent intent = new Intent(this, ExtraPage.class);
+        startActivity(intent);
     }
 
     private void goToTemperatureStorage(){
@@ -83,6 +87,10 @@ public class WeatherPage extends AppCompatActivity {
     private void goToTemperatureMeasurementPage(){
         Intent intent = new Intent(this, TemperatureMeasurementPage.class);
         startActivity(intent);
+    }
+    private void addProfile(){
+        NewProfileFragment newProfile = new NewProfileFragment();
+        newProfile.show(getFragmentManager(), "InsertProfile");
     }
 
 }

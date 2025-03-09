@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".TemperatureStoragePage">
+    tools:context=".ExtraPage">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
@@ -20,12 +20,13 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/textView4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="41dp"
-        android:layout_marginTop="44dp"
-        android:text="Temperature Storage Page"
+        android:layout_marginTop="48dp"
+        android:text="Extra Page"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

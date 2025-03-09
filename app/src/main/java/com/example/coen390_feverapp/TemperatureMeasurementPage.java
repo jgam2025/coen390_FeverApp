@@ -61,6 +61,9 @@ public class TemperatureMeasurementPage extends AppCompatActivity {
         if (id == R.id.miperson) {
             goToTemperatureStoragePage();
             return true;
+        } else if (id == R.id.miMore) {
+            goToExtraPage();
+            return true;
         } else if (id == R.id.miadd) {
             addProfile();
             return true;
@@ -121,6 +124,10 @@ public class TemperatureMeasurementPage extends AppCompatActivity {
 
     private void goToWeatherPage(){
         Intent intent = new Intent(this, WeatherPage.class);
+        startActivity(intent);
+    }
+    private void goToExtraPage(){
+        Intent intent = new Intent(this, ExtraPage.class);
         startActivity(intent);
     }
 
