@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -72,6 +73,8 @@ public class NewProfileFragment extends DialogFragment {
                         activity.showUsersOnSpinner();
                     }
                     dismiss();
+                } else {
+                    Toast.makeText(getContext(), "Please Enter a Name", Toast.LENGTH_SHORT).show();
                 }
             }
         });
