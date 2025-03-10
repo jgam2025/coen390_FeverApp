@@ -24,7 +24,7 @@
             android:name=".WeatherPage"
             android:exported="false" />
         <activity
-            android:name=".PlusPage"
+            android:name=".ExtraPage"
             android:exported="false" />
         <activity
             android:name=".TemperatureStoragePage"
