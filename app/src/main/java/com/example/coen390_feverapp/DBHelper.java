@@ -27,14 +27,23 @@ public class DBHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase sqLiteDatabase){
         sqLiteDatabase.execSQL("create table users(username TEXT primary key, password TEXT )");
 
+        //profile table
         sqLiteDatabase.execSQL("CREATE TABLE profiles (user_id INTEGER NOT NULL, " +
                 "profile_name TEXT NOT NULL, " +
                 "FOREIGN KEY(user_id) REFERENCES users(username))");
+
+        //temperature table
+        sqLiteDatabase.execSQL("CREATE TABLE temperature (" +
+                "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "profile_name TEXT NOT NULL, " +
+                "measurement_time TEXT NOT NULL, " +
+                "temperature_value TEXT NOT NULL)");
     }
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1){
         sqLiteDatabase.execSQL("drop table if exists users");
-
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS profiles");
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS temperature");
     }
     public boolean insertData(String username, String password){
         SQLiteDatabase myDB = this.getWritableDatabase();
@@ -55,6 +64,16 @@ public class DBHelper extends SQLiteOpenHelper {
         long result = myDB.insert("profiles",null,contentValues);
         if (result == -1) return false;
         else return true;
+    }
+
+    public boolean insertTemperature(String profileName, String measurementTime, String temperatureValue) {
+        SQLiteDatabase myDB = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("profile_name", profileName);
+        contentValues.put("measurement_time", measurementTime);
+        contentValues.put("temperature_value", temperatureValue);
+        long result = myDB.insert("temperature", null, contentValues);
+        return result != -1;
     }
 
     public int getUserID(String username) {
@@ -127,6 +146,16 @@ public class DBHelper extends SQLiteOpenHelper {
         }
 
         return profileList;
+    }
+
+    public Cursor getLastTemperature() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        return db.rawQuery("SELECT * FROM temperature ORDER BY id DESC LIMIT 1", null);
+    }
+
+    public Cursor getMeasurementsByDate(String monthDay) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        return db.rawQuery("SELECT * FROM temperature WHERE substr(measurement_time,6,5)=? ORDER BY measurement_time DESC", new String[]{monthDay});
     }
 
 }
