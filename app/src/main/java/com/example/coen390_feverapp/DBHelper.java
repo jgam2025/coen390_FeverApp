@@ -3,6 +3,7 @@ package com.example.coen390_feverapp;
 import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
@@ -153,7 +154,7 @@ public class DBHelper extends SQLiteOpenHelper {
         return profileList;
     }
 
-    public Cursor getLastTemperature() {
+    /*public Cursor getLastTemperature() {
         SQLiteDatabase db = this.getReadableDatabase();
         return db.rawQuery("SELECT * FROM temperature ORDER BY id DESC LIMIT 1", null);
     }
@@ -162,7 +163,19 @@ public class DBHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
         // 'monthDay' should be in "MM-dd" format; measurement_time is "yyyy-MM-dd HH:mm:ss"
         return db.rawQuery("SELECT * FROM temperature WHERE substr(measurement_time,6,5)=? ORDER BY measurement_time DESC", new String[]{monthDay});
+    }*/
+
+    public Cursor getLastTemperatureByProfile(String profile) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        return db.rawQuery("SELECT * FROM temperature WHERE profile_name = ? ORDER BY id DESC LIMIT 1", new String[]{profile});
     }
+
+    public Cursor getMeasurementsByDateAndProfile(String monthDay, String profile) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        // measurement_time is "yyyy-MM-dd HH:mm:ss"; we extract the "MM-dd" portion.
+        return db.rawQuery("SELECT * FROM temperature WHERE substr(measurement_time,6,5)=? AND profile_name = ? ORDER BY measurement_time DESC", new String[]{monthDay, profile});
+    }
+
 
     public boolean insertMedication(String name, String dose) {
         SQLiteDatabase myDB = this.getWritableDatabase();

@@ -1,6 +1,7 @@
 package com.example.coen390_feverapp;
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.view.Menu;
 import android.os.Bundle;
@@ -73,7 +74,9 @@ public class TemperatureStoragePage extends AppCompatActivity {
     }
 
     private void loadLastTemperature() {
-        Cursor cursor = dbHelper.getLastTemperature();
+        SharedPreferences sharedPrefs = getSharedPreferences("user_prefs", MODE_PRIVATE);
+        String currentProfile = sharedPrefs.getString("current_profile", "default");
+        Cursor cursor = dbHelper.getLastTemperatureByProfile(currentProfile);
         if (cursor != null && cursor.moveToFirst()) {
             @SuppressLint("Range") String lastTemp = cursor.getString(cursor.getColumnIndex("temperature_value"));
             @SuppressLint("Range") String lastTime = cursor.getString(cursor.getColumnIndex("measurement_time"));
@@ -122,6 +125,10 @@ public class TemperatureStoragePage extends AppCompatActivity {
         });
     }
     private void updateTemperatureHistory() {
+        // Get current profile from SharedPreferences
+        SharedPreferences sharedPrefs = getSharedPreferences("user_prefs", MODE_PRIVATE);
+        String currentProfile = sharedPrefs.getString("current_profile", "default");
+
         // Convert selected month name to a two-digit month number
         String selectedMonthName = spinnerMonth.getSelectedItem().toString();
         String[] monthNames = new String[] {
@@ -139,8 +146,8 @@ public class TemperatureStoragePage extends AppCompatActivity {
         String selectedDay = spinnerDay.getSelectedItem().toString();
         String monthDay = monthNumberStr + "-" + selectedDay; // e.g., "03-18"
 
-        // Query the measurements by date (using getMeasurementsByDate from DBHelper)
-        Cursor cursor = dbHelper.getMeasurementsByDate(monthDay);
+        // Query the measurements by date and current profile
+        Cursor cursor = dbHelper.getMeasurementsByDateAndProfile(monthDay, currentProfile);
         ArrayList<String> measurements = new ArrayList<>();
         if (cursor != null && cursor.moveToFirst()) {
             do {
