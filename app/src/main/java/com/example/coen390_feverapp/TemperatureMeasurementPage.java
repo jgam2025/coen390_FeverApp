@@ -72,9 +72,6 @@ public class TemperatureMeasurementPage extends AppCompatActivity {
         } else if(id ==R.id.miLogOut) {
             goToLoginPage();
             return true;
-        }else if(id ==R.id.miWeather) {
-            return true;
-
         }else {
             return super.onOptionsItemSelected(item);
         }

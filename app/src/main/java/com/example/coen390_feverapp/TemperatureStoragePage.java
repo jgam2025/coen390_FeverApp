@@ -183,10 +183,6 @@ public class TemperatureStoragePage extends AppCompatActivity {
             goToTemperatureMeasurementPage();
             return true;
 
-        } else if (id==R.id.miWeather) {
-            return true;
-
-
         } else if (id==R.id.miLogOut) {
             goToLogin();
             return true;
