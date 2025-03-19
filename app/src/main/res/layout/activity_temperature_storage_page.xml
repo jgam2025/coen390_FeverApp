@@ -19,13 +19,70 @@
         android:backgroundTint="#D2665A"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <TextView
-        android:id="@+id/textView2"
+
+    <Button
+        android:id="@+id/btn_add_medication"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="41dp"
-        android:layout_marginTop="44dp"
-        android:text="Temperature Storage Page"
+        android:layout_gravity="bottom|center_horizontal"
+        android:backgroundTint="#D2665A"
+        android:text="Add Medication"
+        app:layout_constraintBottom_toTopOf="@+id/listViewTemperatureHistory"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.003"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/linearLayoutDateSelection" />
+
+    <TextView
+        android:id="@+id/textViewLastTemperature"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Last Temperature: -- °C"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- Date selection: Month and Day dropdowns -->
+
+    <!-- ListView for the temperature history -->
+
+    <LinearLayout
+        android:id="@+id/linearLayoutDateSelection"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="76dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textViewLastTemperature">
+
+        <Spinner
+            android:id="@+id/spinnerMonth"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:prompt="@string/select_month" />
+
+        <Spinner
+            android:id="@+id/spinnerDay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:prompt="@string/select_day" />
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/listViewTemperatureHistory"
+        android:layout_width="419dp"
+        android:layout_height="461dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintBottom_toTopOf="@id/toolbar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/linearLayoutDateSelection"
+        app:layout_constraintVertical_bias="1.0" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -20,4 +20,7 @@
         For more information, please contact Fever App Support: ________ \n
     </string>
     <string name="create_profile">\u00A0Create New Profile\u00A0</string>
+    <string name="select_month">Select Month</string>
+    <string name="select_day">Select Day</string>
+
 </resources>

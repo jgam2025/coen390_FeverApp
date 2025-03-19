@@ -3,6 +3,7 @@ package com.example.coen390_feverapp;
 import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
@@ -30,10 +31,34 @@ public class DBHelper extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL("CREATE TABLE profiles (user_id INTEGER NOT NULL, " +
                 "profile_name TEXT NOT NULL, " +
                 "FOREIGN KEY(user_id) REFERENCES users(username))");
+
+        sqLiteDatabase.execSQL("CREATE TABLE temperature (" +
+                "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "profile_name TEXT NOT NULL, " +
+                "measurement_time TEXT NOT NULL, " +
+                "temperature_value TEXT NOT NULL)");
+
+        sqLiteDatabase.execSQL("CREATE TABLE medication (" +
+                "_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "name TEXT NOT NULL, " +
+                "dose TEXT, " +
+                "timestamp DATETIME DEFAULT CURRENT_TIMESTAMP)");
+    }
+
+    public boolean insertTemperature(String profileName, String measurementTime, String temperatureValue) {
+        SQLiteDatabase myDB = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("profile_name", profileName);
+        contentValues.put("measurement_time", measurementTime);
+        contentValues.put("temperature_value", temperatureValue);
+        long result = myDB.insert("temperature", null, contentValues);
+        return result != -1;
     }
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1){
         sqLiteDatabase.execSQL("drop table if exists users");
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS temperature");
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS medication");
 
     }
     public boolean insertData(String username, String password){
@@ -128,6 +153,52 @@ public class DBHelper extends SQLiteOpenHelper {
 
         return profileList;
     }
+
+    /*public Cursor getLastTemperature() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        return db.rawQuery("SELECT * FROM temperature ORDER BY id DESC LIMIT 1", null);
+    }
+
+    public Cursor getMeasurementsByDate(String monthDay) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        // 'monthDay' should be in "MM-dd" format; measurement_time is "yyyy-MM-dd HH:mm:ss"
+        return db.rawQuery("SELECT * FROM temperature WHERE substr(measurement_time,6,5)=? ORDER BY measurement_time DESC", new String[]{monthDay});
+    }*/
+
+    public Cursor getLastTemperatureByProfile(String profile) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        return db.rawQuery("SELECT * FROM temperature WHERE profile_name = ? ORDER BY id DESC LIMIT 1", new String[]{profile});
+    }
+
+    public Cursor getMeasurementsByDateAndProfile(String monthDay, String profile) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        // measurement_time is "yyyy-MM-dd HH:mm:ss"; we extract the "MM-dd" portion.
+        return db.rawQuery("SELECT * FROM temperature WHERE substr(measurement_time,6,5)=? AND profile_name = ? ORDER BY measurement_time DESC", new String[]{monthDay, profile});
+    }
+
+
+    public boolean insertMedication(String name, String dose) {
+        SQLiteDatabase myDB = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put("name", name);
+        cv.put("dose", dose);
+        long result = myDB.insert("medication", null, cv);
+        return result != -1;
+    }
+
+    // Returns a Cursor containing all medication records ordered by the most recent first.
+    public Cursor getMedicationHistory() {
+        SQLiteDatabase myDB = this.getReadableDatabase();
+        return myDB.rawQuery("SELECT * FROM medication ORDER BY _id DESC", null);
+    }
+
+    // Deletes a medication record by its _id.
+    public boolean deleteMedication(long id) {
+        SQLiteDatabase myDB = this.getWritableDatabase();
+        int result = myDB.delete("medication", "_id=?", new String[]{String.valueOf(id)});
+        return result > 0;
+    }
+
 
 }
 

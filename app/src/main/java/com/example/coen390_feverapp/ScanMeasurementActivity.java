@@ -5,6 +5,7 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.View;
@@ -28,6 +29,9 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 import java.util.UUID;
 
 public class ScanMeasurementActivity extends AppCompatActivity {
@@ -192,7 +196,28 @@ public class ScanMeasurementActivity extends AppCompatActivity {
     }
 
     private void saveMeasurement() {
-        // TODO: Implement saving functionality
+
+        String temperatureText = temperatureTextView.getText().toString().trim();
+
+        temperatureText = temperatureText.replace("°C", "").trim();
+
+        String measurementTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date());
+
+        // Retrieve current profile name from SharedPreferences.
+        // (Ensure that you save the profile name there when the user selects it in TemperatureMeasurementPage.)
+        SharedPreferences sharedPrefs = getSharedPreferences("user_prefs", MODE_PRIVATE);
+        String currentProfile = sharedPrefs.getString("current_profile", "default");
+
+        // Save the measurement to the temperature table using the profile name
+        DBHelper dbHelper = new DBHelper(this);
+        boolean inserted = dbHelper.insertTemperature(currentProfile, measurementTime, temperatureText);
+
+        if (inserted) {
+            Toast.makeText(ScanMeasurementActivity.this, "Temperature has been saved", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(ScanMeasurementActivity.this, "Error saving temperature", Toast.LENGTH_SHORT).show();
+        }
+
         closeBluetoothConnection();
         Intent intent = new Intent(ScanMeasurementActivity.this, TemperatureMeasurementPage.class);
         startActivity(intent);

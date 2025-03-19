@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
@@ -71,8 +72,7 @@ public class TemperatureMeasurementPage extends AppCompatActivity {
         } else if(id ==R.id.miLogOut) {
             goToLoginPage();
             return true;
-        }else if(id ==R.id.miSymptoms) {
-            goToSymptomsPage();
+        }else if(id ==R.id.miWeather) {
             return true;
 
         }else {
@@ -122,10 +122,7 @@ public class TemperatureMeasurementPage extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private void goToSymptomsPage(){
-        Intent intent = new Intent(this, SymptomLogActivity.class);
-        startActivity(intent);
-    }
+
     private void goToExtraPage(){
         Intent intent = new Intent(this, ExtraPage.class);
         startActivity(intent);
@@ -141,6 +138,19 @@ public class TemperatureMeasurementPage extends AppCompatActivity {
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this,android.R.layout.simple_spinner_item,profileList);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         userSpinner.setAdapter(adapter);
+
+        // Save the selected profile into SharedPreferences.
+        userSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String selectedProfile = (String) parent.getItemAtPosition(position);
+                SharedPreferences.Editor editor = sharedPrefs.edit();
+                editor.putString("current_profile", selectedProfile);
+                editor.apply();
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) { }
+        });
 
     }
 

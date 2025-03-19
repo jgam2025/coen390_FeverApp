@@ -18,7 +18,7 @@
         android:theme="@style/Base.Theme.Coen390_FeverApp"
         tools:targetApi="31">
         <activity
-            android:name=".SymptomLogActivity"
+            android:name=".MedicationActivity"
             android:exported="false" />
         <activity
             android:name=".ExtraPage"
@@ -27,7 +27,7 @@
             android:name=".WeatherPage"
             android:exported="false" />
         <activity
-            android:name=".PlusPage"
+            android:name=".ExtraPage"
             android:exported="false" />
         <activity
             android:name=".TemperatureStoragePage"
