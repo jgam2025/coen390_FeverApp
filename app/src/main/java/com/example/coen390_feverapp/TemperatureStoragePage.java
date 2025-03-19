@@ -28,7 +28,6 @@ public class TemperatureStoragePage extends AppCompatActivity {
     private TextView textViewLastTemperature;
     private Spinner spinnerMonth, spinnerDay;
     private ListView listViewTemperatureHistory;
-    private Button btnAddMedication;
     private DBHelper dbHelper;
 
     @Override
@@ -51,15 +50,6 @@ public class TemperatureStoragePage extends AppCompatActivity {
         spinnerMonth = findViewById(R.id.spinnerMonth);
         spinnerDay = findViewById(R.id.spinnerDay);
         listViewTemperatureHistory = findViewById(R.id.listViewTemperatureHistory);
-        btnAddMedication = findViewById(R.id.btn_add_medication);
-
-        btnAddMedication.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(TemperatureStoragePage.this, MedicationActivity.class);
-                startActivity(intent);
-            }
-        });
 
         dbHelper = new DBHelper(this);
 
@@ -153,7 +143,7 @@ public class TemperatureStoragePage extends AppCompatActivity {
             do {
                 @SuppressLint("Range") String time = cursor.getString(cursor.getColumnIndex("measurement_time"));
                 @SuppressLint("Range") String temp = cursor.getString(cursor.getColumnIndex("temperature_value"));
-                measurements.add(time + ": " + temp + " °C");
+                measurements.add("Date & Time: " + time + "\nTemperature: " + temp + " °C");
             } while (cursor.moveToNext());
             cursor.close();
         }
@@ -179,7 +169,7 @@ public class TemperatureStoragePage extends AppCompatActivity {
             addProfile();
             return true;
 
-        }else if (id == R.id.miMedication) {
+        }else if (id == R.id.miTemperature) {
             goToTemperatureMeasurementPage();
             return true;
 

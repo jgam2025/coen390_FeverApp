@@ -42,10 +42,7 @@ public class ExtraPage extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        if (id == R.id.miMore) {
-            goToExtraPage();
-            return true;
-        } else if (id == R.id.miperson) {
+        if (id == R.id.miperson) {
             goToTemperatureStorage();
             return true;
 
