@@ -179,16 +179,17 @@ public class TemperatureStoragePage extends AppCompatActivity {
             addProfile();
             return true;
 
-        }else if (id == R.id.miThermometer) {
+        }else if (id == R.id.miMedication) {
             goToTemperatureMeasurementPage();
             return true;
 
-        } else if (id==R.id.miWeather) {
+        } else if (id==R.id.miMedication) {
+            goToMedicationPage();
             return true;
 
 
         } else if (id==R.id.miLogOut) {
-            goToLogin();
+            goToLoginPage();
             return true;
 
         } else {
@@ -201,7 +202,7 @@ public class TemperatureStoragePage extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private void goToLogin(){
+    private void goToLoginPage(){
         Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
     }
@@ -213,6 +214,11 @@ public class TemperatureStoragePage extends AppCompatActivity {
     private void addProfile(){
         NewProfileFragment newProfile = new NewProfileFragment();
         newProfile.show(getFragmentManager(), "InsertProfile");
+    }
+
+    private void goToMedicationPage(){
+        Intent intent = new Intent(this, MedicationActivity.class);
+        startActivity(intent);
     }
 
 }

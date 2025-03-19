@@ -3,6 +3,8 @@ package com.example.coen390_feverapp;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -10,6 +12,8 @@ import android.widget.SimpleCursorAdapter;
 import android.widget.Toast;
 import android.util.Log;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+
 import android.app.AlertDialog;
 
 public class MedicationActivity extends AppCompatActivity {
@@ -22,6 +26,11 @@ public class MedicationActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_medication);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayShowTitleEnabled(false); // Hide the title
+        }
 
         dbHelper = new DBHelper(this);
 
@@ -47,6 +56,41 @@ public class MedicationActivity extends AppCompatActivity {
 
         loadMedicationHistory();
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu from the menu.xml file in the menu directory
+        getMenuInflater().inflate(R.menu.toolbar, menu);
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.miperson) {
+            goToTemperatureStoragePage();
+            return true;
+        } else if (id == R.id.miMore) {
+            goToExtraPage();
+            return true;
+        } else if (id == R.id.miadd) {
+            addProfile();
+            return true;
+
+        } else if(id ==R.id.miLogOut) {
+            goToLoginPage();
+            return true;
+        }else if(id ==R.id.miTemperature) {
+            goToTemperatureMeasurementPage();
+            return true;
+
+        }else {
+            return super.onOptionsItemSelected(item);
+        }
+    }
+
 
     private void loadMedicationHistory() {
         Cursor cursor = dbHelper.getMedicationHistory();
@@ -78,6 +122,31 @@ public class MedicationActivity extends AppCompatActivity {
                     .show();
         });
     }
+
+    private void goToExtraPage(){
+        Intent intent = new Intent(this, ExtraPage.class);
+        startActivity(intent);
+    }
+
+    private void goToLoginPage(){
+        Intent intent = new Intent(this, LoginActivity.class);
+        startActivity(intent);
+    }
+
+    private void goToTemperatureMeasurementPage(){
+        Intent intent = new Intent(this, TemperatureMeasurementPage.class);
+        startActivity(intent);
+    }
+    private void addProfile(){
+        NewProfileFragment newProfile = new NewProfileFragment();
+        newProfile.show(getFragmentManager(), "InsertProfile");
+    }
+
+    private void goToTemperatureStoragePage(){
+        Intent intent = new Intent(this, TemperatureStoragePage.class);
+        startActivity(intent);
+    }
+
 
 
 

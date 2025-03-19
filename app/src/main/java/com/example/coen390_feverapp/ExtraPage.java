@@ -53,7 +53,7 @@ public class ExtraPage extends AppCompatActivity {
             addProfile();
             return true;
 
-        }else if (id==R.id.miThermometer) {
+        }else if (id==R.id.miTemperature) {
             goToTemperatureMeasurementPage();
             return true;
 
@@ -62,8 +62,12 @@ public class ExtraPage extends AppCompatActivity {
             goToLogin();
             return true;
 
-        } else {
-            return super.onOptionsItemSelected(item);
+        } else if(id==R.id.miMedication) {
+            goToMedicationPage();
+            return true;
+        } else{
+                return super.onOptionsItemSelected(item);
+
         }
     }
 
@@ -89,5 +93,10 @@ public class ExtraPage extends AppCompatActivity {
     private void addProfile(){
         NewProfileFragment newProfile = new NewProfileFragment();
         newProfile.show(getFragmentManager(), "InsertProfile");
+    }
+
+    private void goToMedicationPage(){
+        Intent intent = new Intent(this, MedicationActivity.class);
+        startActivity(intent);
     }
 }
