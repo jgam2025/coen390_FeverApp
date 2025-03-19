@@ -9,15 +9,15 @@
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
-        android:layout_width="409dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?attr/colorPrimary"
         android:backgroundTint="#D2665A"
         android:minHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
     <TextView
         android:id="@+id/symptomTitleTextView"
@@ -25,153 +25,132 @@
         android:layout_height="wrap_content"
         android:text="Symptoms Log"
         android:textSize="34sp"
-        app:layout_constraintBottom_toTopOf="@+id/toolbar"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.069" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintVertical_bias="0.0"/>
 
     <TextView
         android:id="@+id/dateTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="16dp"
         android:textSize="20sp"
-        app:layout_constraintBottom_toTopOf="@+id/toolbar"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.298"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/symptomTitleTextView"
-        app:layout_constraintVertical_bias="0.0"
-        tools:text="Placeholder" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
     <TextView
         android:id="@+id/selectTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="16dp"
         android:text="Select any of the following symptoms:"
         android:textSize="16sp"
-        app:layout_constraintBottom_toTopOf="@+id/toolbar"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.65"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/dateTextView"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
+    <!-- Column 1 -->
     <CheckBox
-        android:id="@+id/headacheCheckBox"
+        android:id="@+id/soreThroatCheckBox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="22dp"
-        android:layout_marginEnd="48dp"
-        android:text="Headache"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/soreThroatCheckBox" />
+        android:text="Sore Throat"
+        app:layout_constraintTop_toBottomOf="@+id/selectTextView"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="16dp"/>
 
     <CheckBox
         android:id="@+id/chillsCheckBox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="96dp"
-        android:layout_marginTop="25dp"
-        android:layout_marginBottom="22dp"
         android:text="Chills"
-        app:layout_constraintBottom_toTopOf="@+id/achesCheckBox"
+        app:layout_constraintTop_toBottomOf="@+id/soreThroatCheckBox"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/selectTextView" />
+        android:layout_marginTop="16dp"/>
 
     <CheckBox
-        android:id="@+id/soreThroatCheckBox"
+        android:id="@+id/headacheCheckBox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:text="Sore Throat"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.647"
-        app:layout_constraintStart_toEndOf="@+id/chillsCheckBox"
-        app:layout_constraintTop_toBottomOf="@+id/selectTextView" />
-
-    <CheckBox
-        android:id="@+id/runnyNoseCheckBox"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="24dp"
-        android:text="Runny Nose"
-        app:layout_constraintBottom_toTopOf="@+id/coughCheckBox"
-        app:layout_constraintEnd_toStartOf="@+id/nauseaCheckBox"
-        app:layout_constraintHorizontal_bias="0.554"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <CheckBox
-        android:id="@+id/coughCheckBox"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="96dp"
-        android:layout_marginBottom="206dp"
-        android:text="Cough"
-        app:layout_constraintBottom_toTopOf="@+id/toolbar"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <CheckBox
-        android:id="@+id/nauseaCheckBox"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="25dp"
-        android:layout_marginEnd="48dp"
-        android:text="Nausea"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/headacheCheckBox" />
+        android:text="Headache"
+        app:layout_constraintTop_toBottomOf="@+id/chillsCheckBox"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="16dp"/>
 
     <CheckBox
         android:id="@+id/achesCheckBox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
         android:text="Muscle Aches"
-        app:layout_constraintBottom_toTopOf="@+id/runnyNoseCheckBox"
-        app:layout_constraintEnd_toStartOf="@+id/headacheCheckBox"
-        app:layout_constraintHorizontal_bias="0.671"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/headacheCheckBox"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="16dp"/>
+
+    <!-- Column 2 -->
+    <CheckBox
+        android:id="@+id/runnyNoseCheckBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Runny Nose"
+        app:layout_constraintTop_toBottomOf="@+id/selectTextView"
+        app:layout_constraintStart_toEndOf="@+id/soreThroatCheckBox"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp"/>
+
+    <CheckBox
+        android:id="@+id/coughCheckBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Cough"
+        app:layout_constraintTop_toBottomOf="@+id/runnyNoseCheckBox"
+        app:layout_constraintStart_toEndOf="@+id/chillsCheckBox"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp"/>
+
+    <CheckBox
+        android:id="@+id/nauseaCheckBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Nausea"
+        app:layout_constraintTop_toBottomOf="@+id/coughCheckBox"
+        app:layout_constraintStart_toEndOf="@+id/headacheCheckBox"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp"/>
 
     <CheckBox
         android:id="@+id/fatigueCheckBox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="116dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginBottom="206dp"
         android:text="Fatigue"
-        app:layout_constraintBottom_toTopOf="@+id/toolbar"
+        app:layout_constraintTop_toBottomOf="@+id/nauseaCheckBox"
+        app:layout_constraintStart_toEndOf="@+id/achesCheckBox"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/coughCheckBox"
-        app:layout_constraintTop_toBottomOf="@+id/nauseaCheckBox" />
+        android:layout_marginTop="16dp"/>
+
+    <EditText
+        android:id="@+id/symptomsEditText"
+        android:layout_width="match_parent"
+        android:layout_height="78dp"
+        android:ems="10"
+        android:hint="Enter more symptoms not in the list..."
+        android:inputType="text"
+        app:layout_constraintTop_toBottomOf="@+id/fatigueCheckBox"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp"/>
 
     <Button
         android:id="@+id/submitButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Submit"
-        app:layout_constraintBottom_toTopOf="@+id/toolbar"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.544"
+        app:layout_constraintTop_toBottomOf="@+id/symptomsEditText"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.949" />
-
-    <EditText
-        android:id="@+id/symptomsEditText"
-        android:layout_width="267dp"
-        android:layout_height="78dp"
-        android:ems="10"
-        android:hint="Enter more symptoms not in the list..."
-        android:inputType="text"
-        app:layout_constraintBottom_toTopOf="@+id/submitButton"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.666"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/coughCheckBox" />
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

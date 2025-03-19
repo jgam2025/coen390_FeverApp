@@ -191,7 +191,6 @@ public class TemperatureStoragePage extends AppCompatActivity {
         } else if (id == R.id.miadd) {
             addProfile();
             return true;
-
         }else if(id == R.id.miMedication){
             goToMedicationPage();
             return true;
@@ -200,10 +199,13 @@ public class TemperatureStoragePage extends AppCompatActivity {
             goToTemperatureMeasurementPage();
             return true;
         }
+        else if (id==R.id.miSymptoms){
+            goToSymptomLogActivity();
+            return true;
+        }
         else if (id==R.id.miLogOut) {
             goToLoginPage();
             return true;
-
         } else {
             return super.onOptionsItemSelected(item);
         }
@@ -230,6 +232,11 @@ public class TemperatureStoragePage extends AppCompatActivity {
 
     private void goToMedicationPage(){
         Intent intent = new Intent(this, MedicationActivity.class);
+        startActivity(intent);
+    }
+
+    private void goToSymptomLogActivity(){
+        Intent intent = new Intent(this,SymptomLogActivity.class);
         startActivity(intent);
     }
 

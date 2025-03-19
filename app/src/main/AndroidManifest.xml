@@ -24,7 +24,7 @@
             android:name=".ExtraPage"
             android:exported="false" />
         <activity
-            android:name=".WeatherPage"
+            android:name=".SymptomLogActivity"
             android:exported="false" />
         <activity
             android:name=".ExtraPage"

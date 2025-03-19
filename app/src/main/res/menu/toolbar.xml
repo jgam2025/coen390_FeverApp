@@ -19,6 +19,10 @@
       app:showAsAction="always" />
 
   <item
+      android:id="@+id/miSymptoms"
+      android:title="symptoms"
+      app:showAsAction="always" />
+  <item
       android:id="@+id/miperson"
       android:icon ="@drawable/ic_person"
       app:showAsAction="always" />

@@ -83,12 +83,14 @@ public class SymptomLogActivity extends AppCompatActivity {
             return true;
 
         }
-        /*
-        else if (id==R.id.miThermometer) {
+        else if (id==R.id.miSymptoms){
+            goToSymptomLogActivity();
+            return true;
+        }
+        else if (id==R.id.miTemperature) {
             goToTemperatureMeasurementPage();
             return true;
         }
-         */
         else if (id==R.id.miLogOut) {
             goToLogin();
             return true;
@@ -102,6 +104,10 @@ public class SymptomLogActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    private void goToSymptomLogActivity(){
+        Intent intent = new Intent(this,SymptomLogActivity.class);
+        startActivity(intent);
+    }
     private void goToTemperatureStorage(){
         Intent intent = new Intent(this, TemperatureStoragePage.class);
         startActivity(intent);
