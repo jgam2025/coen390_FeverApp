@@ -22,11 +22,13 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
 
 public class TemperatureStoragePage extends AppCompatActivity {
 
     private TextView textViewLastTemperature;
-    private Spinner spinnerMonth, spinnerDay;
+    private Spinner spinnerMonth, spinnerDay,spinnerYear;
     private ListView listViewTemperatureHistory;
     private DBHelper dbHelper;
 
@@ -47,6 +49,7 @@ public class TemperatureStoragePage extends AppCompatActivity {
         });
 
         textViewLastTemperature = findViewById(R.id.textViewLastTemperature);
+        spinnerYear = findViewById(R.id.spinnerYear);
         spinnerMonth = findViewById(R.id.spinnerMonth);
         spinnerDay = findViewById(R.id.spinnerDay);
         listViewTemperatureHistory = findViewById(R.id.listViewTemperatureHistory);
@@ -78,6 +81,24 @@ public class TemperatureStoragePage extends AppCompatActivity {
     }
 
     private void setupSpinners() {
+
+        // Populate year spinner (for example, from current year back to 5 years ago)
+        int currentYear = Calendar.getInstance().get(Calendar.YEAR);
+        List<String> years = new ArrayList<>();
+        for (int y = currentYear; y >= currentYear - 5; y--) {
+            years.add(String.valueOf(y));
+        }
+        ArrayAdapter<String> yearAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, years);
+        yearAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerYear.setAdapter(yearAdapter);
+        spinnerYear.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                updateTemperatureHistory();
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) { }
+        });
         // Use month names for the month spinner
         final String[] monthNames = new String[] {
                 "January", "February", "March", "April", "May", "June",
@@ -119,6 +140,8 @@ public class TemperatureStoragePage extends AppCompatActivity {
         SharedPreferences sharedPrefs = getSharedPreferences("user_prefs", MODE_PRIVATE);
         String currentProfile = sharedPrefs.getString("current_profile", "default");
 
+        String selectedYear = spinnerYear.getSelectedItem().toString();
+
         // Convert selected month name to a two-digit month number
         String selectedMonthName = spinnerMonth.getSelectedItem().toString();
         String[] monthNames = new String[] {
@@ -137,7 +160,7 @@ public class TemperatureStoragePage extends AppCompatActivity {
         String monthDay = monthNumberStr + "-" + selectedDay; // e.g., "03-18"
 
         // Query the measurements by date and current profile
-        Cursor cursor = dbHelper.getMeasurementsByDateAndProfile(monthDay, currentProfile);
+        Cursor cursor = dbHelper.getMeasurementsByFullDateAndProfile(selectedYear,monthDay, currentProfile);
         ArrayList<String> measurements = new ArrayList<>();
         if (cursor != null && cursor.moveToFirst()) {
             do {

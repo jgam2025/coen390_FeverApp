@@ -57,8 +57,6 @@ public class DBHelper extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1){
         sqLiteDatabase.execSQL("drop table if exists users");
-        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS temperature");
-        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS medication");
 
     }
     public boolean insertData(String username, String password){
@@ -154,27 +152,24 @@ public class DBHelper extends SQLiteOpenHelper {
         return profileList;
     }
 
-    /*public Cursor getLastTemperature() {
-        SQLiteDatabase db = this.getReadableDatabase();
-        return db.rawQuery("SELECT * FROM temperature ORDER BY id DESC LIMIT 1", null);
-    }
-
-    public Cursor getMeasurementsByDate(String monthDay) {
-        SQLiteDatabase db = this.getReadableDatabase();
-        // 'monthDay' should be in "MM-dd" format; measurement_time is "yyyy-MM-dd HH:mm:ss"
-        return db.rawQuery("SELECT * FROM temperature WHERE substr(measurement_time,6,5)=? ORDER BY measurement_time DESC", new String[]{monthDay});
-    }*/
-
     public Cursor getLastTemperatureByProfile(String profile) {
         SQLiteDatabase db = this.getReadableDatabase();
         return db.rawQuery("SELECT * FROM temperature WHERE profile_name = ? ORDER BY id DESC LIMIT 1", new String[]{profile});
     }
 
-    public Cursor getMeasurementsByDateAndProfile(String monthDay, String profile) {
+    public Cursor getMeasurementsByFullDateAndProfile(String year, String monthDay, String profile) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        return db.rawQuery(
+                "SELECT * FROM temperature WHERE substr(measurement_time,1,4)=? AND substr(measurement_time,6,5)=? AND profile_name = ? ORDER BY measurement_time DESC",
+                new String[]{year, monthDay, profile}
+        );
+    }
+
+   /* public Cursor getMeasurementsByDateAndProfile(String monthDay, String profile) {
         SQLiteDatabase db = this.getReadableDatabase();
         // measurement_time is "yyyy-MM-dd HH:mm:ss"; we extract the "MM-dd" portion.
         return db.rawQuery("SELECT * FROM temperature WHERE substr(measurement_time,6,5)=? AND profile_name = ? ORDER BY measurement_time DESC", new String[]{monthDay, profile});
-    }
+    }*/
 
 
     public boolean insertMedication(String name, String dose) {
