@@ -68,7 +68,9 @@ public class TemperatureMeasurementPage extends AppCompatActivity {
         } else if (id == R.id.miadd) {
             addProfile();
             return true;
-
+        } else if(id == R.id.miMedication){
+            goToMedicationPage();
+            return true;
         } else if(id ==R.id.miLogOut) {
             goToLoginPage();
             return true;

@@ -83,12 +83,10 @@ public class MedicationActivity extends AppCompatActivity {
             goToLoginPage();
             return true;
         }
-        /*
         else if(id ==R.id.miTemperature) {
             goToTemperatureMeasurementPage();
             return true;
         }
-         */
         else {
             return super.onOptionsItemSelected(item);
         }

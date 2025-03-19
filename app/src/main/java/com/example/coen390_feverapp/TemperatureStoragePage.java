@@ -192,13 +192,14 @@ public class TemperatureStoragePage extends AppCompatActivity {
             addProfile();
             return true;
 
+        }else if(id == R.id.miMedication){
+            goToMedicationPage();
+            return true;
         }
-        /*
         else if (id == R.id.miTemperature) {
             goToTemperatureMeasurementPage();
             return true;
         }
-         */
         else if (id==R.id.miLogOut) {
             goToLoginPage();
             return true;
