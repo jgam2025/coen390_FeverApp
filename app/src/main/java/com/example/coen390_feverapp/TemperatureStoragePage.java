@@ -76,7 +76,7 @@ public class TemperatureStoragePage extends AppCompatActivity {
             textViewLastTemperature.setText("Last Temperature: " + lastTemp + " °C\n" + lastTime);
             cursor.close();
         } else {
-            textViewLastTemperature.setText("No temperature measurement available");
+            textViewLastTemperature.setText("Last Temperature: None");
         }
     }
 
@@ -85,12 +85,13 @@ public class TemperatureStoragePage extends AppCompatActivity {
         // Populate year spinner (for example, from current year back to 5 years ago)
         int currentYear = Calendar.getInstance().get(Calendar.YEAR);
         List<String> years = new ArrayList<>();
-        for (int y = currentYear; y >= currentYear - 5; y--) {
+        for (int y = currentYear; y >= currentYear - 10; y--) {
             years.add(String.valueOf(y));
         }
         ArrayAdapter<String> yearAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, years);
         yearAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerYear.setAdapter(yearAdapter);
+        spinnerYear.setSelection(0);
         spinnerYear.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -108,6 +109,9 @@ public class TemperatureStoragePage extends AppCompatActivity {
         monthAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerMonth.setAdapter(monthAdapter);
 
+        int currentMonth = Calendar.getInstance().get(Calendar.MONTH);
+        spinnerMonth.setSelection(currentMonth);
+
         // Populate the day spinner with values "01" to "31"
         String[] days = new String[31];
         for (int i = 0; i < 31; i++) {
@@ -116,6 +120,9 @@ public class TemperatureStoragePage extends AppCompatActivity {
         ArrayAdapter<String> dayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, days);
         dayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerDay.setAdapter(dayAdapter);
+
+        int currentDay = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
+        spinnerDay.setSelection(currentDay - 1);
 
         // Set listeners to update the list when a new month or day is selected
         spinnerMonth.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {

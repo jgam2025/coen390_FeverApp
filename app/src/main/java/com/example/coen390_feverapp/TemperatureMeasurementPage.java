@@ -157,7 +157,16 @@ public class TemperatureMeasurementPage extends AppCompatActivity {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         userSpinner.setAdapter(adapter);
 
-        // Save the selected profile into SharedPreferences.
+        // Check if a profile was previously selected and set it.
+        String savedProfile = sharedPrefs.getString("current_profile", null);
+        if (savedProfile != null) {
+            int index = profileList.indexOf(savedProfile);
+            if (index >= 0) {
+                userSpinner.setSelection(index);
+            }
+        }
+
+        // Save the selected profile into SharedPreferences when the user changes it.
         userSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
