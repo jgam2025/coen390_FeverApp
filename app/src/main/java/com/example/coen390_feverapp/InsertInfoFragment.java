@@ -15,7 +15,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 public class
 InsertInfoFragment extends DialogFragment {
 
-    protected TextView titleTextView, infoTextView;
     protected ImageView infoImageView;
     protected FloatingActionButton closeFAB;
 
