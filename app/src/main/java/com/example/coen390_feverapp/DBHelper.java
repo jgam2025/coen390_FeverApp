@@ -40,6 +40,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
         sqLiteDatabase.execSQL("CREATE TABLE medication (" +
                 "_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "profile_name TEXT NOT NULL, " +
                 "name TEXT NOT NULL, " +
                 "dose TEXT, " +
                 "timestamp DATETIME DEFAULT CURRENT_TIMESTAMP)");
@@ -165,27 +166,27 @@ public class DBHelper extends SQLiteOpenHelper {
         );
     }
 
-   /* public Cursor getMeasurementsByDateAndProfile(String monthDay, String profile) {
-        SQLiteDatabase db = this.getReadableDatabase();
-        // measurement_time is "yyyy-MM-dd HH:mm:ss"; we extract the "MM-dd" portion.
-        return db.rawQuery("SELECT * FROM temperature WHERE substr(measurement_time,6,5)=? AND profile_name = ? ORDER BY measurement_time DESC", new String[]{monthDay, profile});
-    }*/
 
-
-    public boolean insertMedication(String name, String dose) {
+    public boolean insertMedication(String profile, String name, String dose) {
         SQLiteDatabase myDB = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
+        cv.put("profile_name", profile);
         cv.put("name", name);
         cv.put("dose", dose);
         long result = myDB.insert("medication", null, cv);
         return result != -1;
     }
 
+    public Cursor getMedicationHistoryByProfile(String profile) {
+        SQLiteDatabase myDB = this.getReadableDatabase();
+        return myDB.rawQuery("SELECT * FROM medication WHERE profile_name = ? ORDER BY _id DESC", new String[]{profile});
+    }
+
     // Returns a Cursor containing all medication records ordered by the most recent first.
-    public Cursor getMedicationHistory() {
+   /* public Cursor getMedicationHistory() {
         SQLiteDatabase myDB = this.getReadableDatabase();
         return myDB.rawQuery("SELECT * FROM medication ORDER BY _id DESC", null);
-    }
+    }*/
 
     // Deletes a medication record by its _id.
     public boolean deleteMedication(long id) {

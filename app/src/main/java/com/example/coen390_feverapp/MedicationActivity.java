@@ -1,6 +1,7 @@
 package com.example.coen390_feverapp;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.Menu;
@@ -44,8 +45,17 @@ public class MedicationActivity extends AppCompatActivity {
             String dose = etMedicationDose.getText().toString().trim();
 
             if (!name.isEmpty()) {
-                dbHelper.insertMedication(name, dose);
-                Toast.makeText(this, "Medication saved!", Toast.LENGTH_SHORT).show();
+                // Retrieve current profile from SharedPreferences
+                SharedPreferences sharedPrefs = getSharedPreferences("user_prefs", MODE_PRIVATE);
+                String currentProfile = sharedPrefs.getString("current_profile", "default");
+
+                // Insert medication with the profile name
+                boolean inserted = dbHelper.insertMedication(currentProfile, name, dose);
+                if(inserted){
+                    Toast.makeText(this, "Medication saved!", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(this, "Error saving medication", Toast.LENGTH_SHORT).show();
+                }
                 etMedicationName.setText("");
                 etMedicationDose.setText("");
                 loadMedicationHistory();
@@ -94,7 +104,10 @@ public class MedicationActivity extends AppCompatActivity {
 
 
     private void loadMedicationHistory() {
-        Cursor cursor = dbHelper.getMedicationHistory();
+        SharedPreferences sharedPrefs = getSharedPreferences("user_prefs", MODE_PRIVATE);
+        String currentProfile = sharedPrefs.getString("current_profile", "default");
+
+        Cursor cursor = dbHelper.getMedicationHistoryByProfile(currentProfile);
         String[] fromColumns = {"name", "dose", "timestamp"};
         int[] toViews = {R.id.med_name, R.id.med_dose, R.id.med_timestamp};
 
@@ -106,9 +119,8 @@ public class MedicationActivity extends AppCompatActivity {
         listViewMedication.setOnItemClickListener((parent, view, position, id) -> {
             new AlertDialog.Builder(this)
                     .setTitle("Confirmation")
-                    .setMessage("Do you want to delete this medication ?")
-                    .setPositiveButton("yes", (dialog, which) -> {
-
+                    .setMessage("Do you want to delete this medication?")
+                    .setPositiveButton("Yes", (dialog, which) -> {
                         if (dbHelper.deleteMedication(id)) {
                             Toast.makeText(MedicationActivity.this, "Medication deleted!", Toast.LENGTH_SHORT).show();
                             loadMedicationHistory();
@@ -116,13 +128,11 @@ public class MedicationActivity extends AppCompatActivity {
                             Toast.makeText(MedicationActivity.this, "Failed to delete", Toast.LENGTH_SHORT).show();
                         }
                     })
-                    .setNegativeButton("No", (dialog, which) -> {
-
-                        dialog.dismiss();
-                    })
+                    .setNegativeButton("No", (dialog, which) -> dialog.dismiss())
                     .show();
         });
     }
+
 
     private void goToExtraPage(){
         Intent intent = new Intent(this, ExtraPage.class);
