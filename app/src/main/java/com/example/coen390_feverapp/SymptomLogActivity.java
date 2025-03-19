@@ -82,15 +82,16 @@ public class SymptomLogActivity extends AppCompatActivity {
             addProfile();
             return true;
 
-        }else if (id==R.id.miThermometer) {
+        }
+        /*
+        else if (id==R.id.miThermometer) {
             goToTemperatureMeasurementPage();
             return true;
-
-
-        } else if (id==R.id.miLogOut) {
+        }
+         */
+        else if (id==R.id.miLogOut) {
             goToLogin();
             return true;
-
         } else {
             return super.onOptionsItemSelected(item);
         }

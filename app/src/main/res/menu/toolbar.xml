@@ -9,14 +9,13 @@
 
 
   <item
-      android:id="@+id/miThermometer"
-      android:icon ="@drawable/ic_thermometer"
-      android:title = "Add"
+      android:id="@+id/miMedication"
+      android:icon="@drawable/baseline_medication_24"
       app:showAsAction="always" />
 
   <item
-      android:id="@+id/miSymptoms"
-      android:icon="@android:drawable/ic_menu_edit"
+      android:id="@+id/miTemperature"
+      android:icon="@drawable/ic_thermometer"
       app:showAsAction="always" />
 
   <item

@@ -42,10 +42,7 @@ public class ExtraPage extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        if (id == R.id.miMore) {
-            goToExtraPage();
-            return true;
-        } else if (id == R.id.miperson) {
+        if (id == R.id.miperson) {
             goToTemperatureStorage();
             return true;
 
@@ -53,17 +50,23 @@ public class ExtraPage extends AppCompatActivity {
             addProfile();
             return true;
 
-        }else if (id==R.id.miThermometer) {
+        }
+        /*else if (id==R.id.miTemperature) {
             goToTemperatureMeasurementPage();
             return true;
+        }
+         */
+        else if (id==R.id.miLogOut) {
 
-
-        } else if (id==R.id.miLogOut) {
             goToLogin();
             return true;
 
-        } else {
-            return super.onOptionsItemSelected(item);
+        } else if(id==R.id.miMedication) {
+            goToMedicationPage();
+            return true;
+        } else{
+                return super.onOptionsItemSelected(item);
+
         }
     }
 
@@ -89,5 +92,10 @@ public class ExtraPage extends AppCompatActivity {
     private void addProfile(){
         NewProfileFragment newProfile = new NewProfileFragment();
         newProfile.show(getFragmentManager(), "InsertProfile");
+    }
+
+    private void goToMedicationPage(){
+        Intent intent = new Intent(this, MedicationActivity.class);
+        startActivity(intent);
     }
 }
