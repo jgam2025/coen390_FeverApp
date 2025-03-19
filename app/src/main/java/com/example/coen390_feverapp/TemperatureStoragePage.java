@@ -3,6 +3,7 @@ import android.content.Intent;
 import android.view.Menu;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.Button;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -28,6 +29,17 @@ public class TemperatureStoragePage extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        DBHelper dbHelper = new DBHelper(this);
+        dbHelper.checkTables();
+
+
+        Button btnAddMedication = findViewById(R.id.btn_add_medication);
+        btnAddMedication.setOnClickListener(v -> {
+            Intent intent = new Intent(TemperatureStoragePage.this, MedicationActivity.class);
+            startActivity(intent);
+        });
+
+
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -89,5 +101,6 @@ public class TemperatureStoragePage extends AppCompatActivity {
         NewProfileFragment newProfile = new NewProfileFragment();
         newProfile.show(getFragmentManager(), "InsertProfile");
     }
+
 
 }

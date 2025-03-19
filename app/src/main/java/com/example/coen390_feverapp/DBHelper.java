@@ -8,6 +8,8 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.widget.Toast;
+import android.util.Log;
+
 
 import androidx.annotation.Nullable;
 
@@ -18,22 +20,45 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final String DBName ="register.db";
     private Context context;
 
+    public static final int DB_VERSION = 4;
+
     public DBHelper(@Nullable Context context) {
-        super(context, DBName, null, 1);
+        super(context, DBName, null, DB_VERSION);
+
         this.context = context;
     }
 
     @Override
-    public void onCreate(SQLiteDatabase sqLiteDatabase){
-        sqLiteDatabase.execSQL("create table users(username TEXT primary key, password TEXT )");
+    public void onCreate(SQLiteDatabase sqLiteDatabase) {
+        try {
+            sqLiteDatabase.execSQL("CREATE TABLE users(username TEXT PRIMARY KEY, password TEXT )");
+            Log.d("DBHelper", "Table users created");
 
-        sqLiteDatabase.execSQL("CREATE TABLE profiles (user_id INTEGER NOT NULL, " +
-                "profile_name TEXT NOT NULL, " +
-                "FOREIGN KEY(user_id) REFERENCES users(username))");
+            sqLiteDatabase.execSQL("CREATE TABLE profiles (" +
+                    "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    "user_id TEXT NOT NULL, " +
+                    "profile_name TEXT NOT NULL, " +
+                    "FOREIGN KEY(user_id) REFERENCES users(username))");
+            Log.d("DBHelper", "Table profiles created");
+
+            sqLiteDatabase.execSQL("CREATE TABLE Medication (" +
+                    "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    "name TEXT NOT NULL, " +
+                    "dose TEXT, " +
+                    "timestamp DATETIME DEFAULT CURRENT_TIMESTAMP)");
+            Log.d("DBHelper", "Table Medication created");
+
+        } catch (Exception e) {
+            Log.e("DBHelper", "Error creating tables: " + e.getMessage());
+        }
     }
+
     @Override
-    public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1){
+    public void onUpgrade(SQLiteDatabase sqLiteDatabase,int oldVersion, int newVersion){
         sqLiteDatabase.execSQL("drop table if exists users");
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS profiles"); //medicamentation
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS Medication");//medicamentation
+        onCreate(sqLiteDatabase);
 
     }
     public boolean insertData(String username, String password){
@@ -46,6 +71,16 @@ public class DBHelper extends SQLiteOpenHelper {
         else return true;
 
     }
+    public boolean deleteMedication(long id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        int rowsDeleted = db.delete("Medication", "id=?", new String[]{String.valueOf(id)});
+        db.close();
+        return rowsDeleted > 0;
+    }
+
+
+
+
 
     public boolean insertProfile(Profile profile){
         SQLiteDatabase myDB = this.getWritableDatabase();
@@ -82,8 +117,9 @@ public class DBHelper extends SQLiteOpenHelper {
 
     public Cursor getAllUsersCursor(){
         SQLiteDatabase myDB = this.getReadableDatabase();
-        return myDB.query("users", new String[] {"_id","username"},null,null,null,null,"username");
+        return myDB.query("users", new String[] {"id AS _id","username"},null,null,null,null,"username");
     }
+
 
     public List<String> getAllUsers(){
         SQLiteDatabase myDB = this.getReadableDatabase();
@@ -105,6 +141,19 @@ public class DBHelper extends SQLiteOpenHelper {
         }
         return userList;
     }
+    public void checkTables() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT name FROM sqlite_master WHERE type='table'", null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                Log.d("DBHelper", "Table found: " + cursor.getString(0));
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+    }
+
 
     public List<String> getProfiles(String user){
         SQLiteDatabase myDB = this.getReadableDatabase();
@@ -128,6 +177,30 @@ public class DBHelper extends SQLiteOpenHelper {
 
         return profileList;
     }
+    //medicamentation
+    public boolean insertMedication(String name, String dose) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("name", name);
+        values.put("dose", dose);
+
+        long newRowId = db.insert("Medication", null, values);
+        db.close();
+
+        return newRowId != -1;
+    }
+
+
+    //medicamentation
+    public Cursor getMedicationHistory() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT id AS _id, name, dose, timestamp FROM Medication ORDER BY timestamp DESC", null);
+
+        return cursor;
+    }
+
+
+
 
 }
 
