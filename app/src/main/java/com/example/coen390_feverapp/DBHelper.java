@@ -43,6 +43,15 @@ public class DBHelper extends SQLiteOpenHelper {
                 "name TEXT NOT NULL, " +
                 "dose TEXT, " +
                 "timestamp DATETIME DEFAULT CURRENT_TIMESTAMP)");
+
+        sqLiteDatabase.execSQL("CREATE TABLE symptoms (" +
+                "_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "name TEXT NOT NULL, " +
+                "symptoms TEXT, " +
+                "timestamp DATETIME DEFAULT CURRENT_TIMESTAMP)");
+
+        sqLiteDatabase.execSQL("CREATE TABLE user_added_symptoms (" +
+                "symptom TEXT NOT NULL)"); //table solely to store any new symptoms added by user
     }
 
     public boolean insertTemperature(String profileName, String measurementTime, String temperatureValue) {
@@ -194,6 +203,12 @@ public class DBHelper extends SQLiteOpenHelper {
         return result > 0;
     }
 
-
+    public boolean insertNewSymptom(String symptom){
+        SQLiteDatabase myDB = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("symptom",symptom);
+        long result = myDB.insert("user_added_symptoms",null,contentValues);
+        return result != -1;
+    }
 }
 

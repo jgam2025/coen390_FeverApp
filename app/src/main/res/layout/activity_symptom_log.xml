@@ -1,11 +1,96 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SymptomLogActivity">
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <TextView
+        android:id="@+id/selectTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:gravity="center_horizontal"
+        android:text="Select any of the following symptoms:"
+        android:textSize="16sp" />
+
+    <CheckBox
+        android:id="@+id/soreThroatCheckBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="Sore Throat" />
+
+    <CheckBox
+        android:id="@+id/chillsCheckBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="Chills" />
+
+    <CheckBox
+        android:id="@+id/headacheCheckBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="Headache" />
+
+    <CheckBox
+        android:id="@+id/achesCheckBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="Muscle Aches" />
+
+    <CheckBox
+        android:id="@+id/runnyNoseCheckBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="Runny Nose" />
+
+    <CheckBox
+        android:id="@+id/coughCheckBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="Cough" />
+
+    <CheckBox
+        android:id="@+id/nauseaCheckBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="Nausea" />
+
+    <CheckBox
+        android:id="@+id/fatigueCheckBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="Fatigue" />
+
+    <Button
+        android:id="@+id/newSymptomButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Add New Symptom"
+        android:layout_marginTop="4dp"
+        android:gravity="center_horizontal" />
+
+    <Button
+        android:id="@+id/submitButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:gravity="center_horizontal"
+        android:text="Submit" />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
@@ -14,143 +99,6 @@
         android:background="?attr/colorPrimary"
         android:backgroundTint="#D2665A"
         android:minHeight="?attr/actionBarSize"
-        android:theme="?attr/actionBarTheme"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        android:theme="?attr/actionBarTheme" />
 
-    <TextView
-        android:id="@+id/symptomTitleTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Symptoms Log"
-        android:textSize="34sp"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintVertical_bias="0.0"/>
-
-    <TextView
-        android:id="@+id/dateTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:textSize="20sp"
-        app:layout_constraintTop_toBottomOf="@+id/symptomTitleTextView"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
-
-    <TextView
-        android:id="@+id/selectTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="Select any of the following symptoms:"
-        android:textSize="16sp"
-        app:layout_constraintTop_toBottomOf="@+id/dateTextView"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
-
-    <!-- Column 1 -->
-    <CheckBox
-        android:id="@+id/soreThroatCheckBox"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Sore Throat"
-        app:layout_constraintTop_toBottomOf="@+id/selectTextView"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginTop="16dp"/>
-
-    <CheckBox
-        android:id="@+id/chillsCheckBox"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Chills"
-        app:layout_constraintTop_toBottomOf="@+id/soreThroatCheckBox"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginTop="16dp"/>
-
-    <CheckBox
-        android:id="@+id/headacheCheckBox"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Headache"
-        app:layout_constraintTop_toBottomOf="@+id/chillsCheckBox"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginTop="16dp"/>
-
-    <CheckBox
-        android:id="@+id/achesCheckBox"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Muscle Aches"
-        app:layout_constraintTop_toBottomOf="@+id/headacheCheckBox"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginTop="16dp"/>
-
-    <!-- Column 2 -->
-    <CheckBox
-        android:id="@+id/runnyNoseCheckBox"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Runny Nose"
-        app:layout_constraintTop_toBottomOf="@+id/selectTextView"
-        app:layout_constraintStart_toEndOf="@+id/soreThroatCheckBox"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="16dp"/>
-
-    <CheckBox
-        android:id="@+id/coughCheckBox"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Cough"
-        app:layout_constraintTop_toBottomOf="@+id/runnyNoseCheckBox"
-        app:layout_constraintStart_toEndOf="@+id/chillsCheckBox"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="16dp"/>
-
-    <CheckBox
-        android:id="@+id/nauseaCheckBox"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Nausea"
-        app:layout_constraintTop_toBottomOf="@+id/coughCheckBox"
-        app:layout_constraintStart_toEndOf="@+id/headacheCheckBox"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="16dp"/>
-
-    <CheckBox
-        android:id="@+id/fatigueCheckBox"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Fatigue"
-        app:layout_constraintTop_toBottomOf="@+id/nauseaCheckBox"
-        app:layout_constraintStart_toEndOf="@+id/achesCheckBox"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="16dp"/>
-
-    <EditText
-        android:id="@+id/symptomsEditText"
-        android:layout_width="match_parent"
-        android:layout_height="78dp"
-        android:ems="10"
-        android:hint="Enter more symptoms not in the list..."
-        android:inputType="text"
-        app:layout_constraintTop_toBottomOf="@+id/fatigueCheckBox"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="16dp"/>
-
-    <Button
-        android:id="@+id/submitButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Submit"
-        app:layout_constraintTop_toBottomOf="@+id/symptomsEditText"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp"/>
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

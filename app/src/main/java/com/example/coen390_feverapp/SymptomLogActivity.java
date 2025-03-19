@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.TextView;
@@ -17,10 +18,10 @@ import androidx.core.view.WindowInsetsCompat;
 
 public class SymptomLogActivity extends AppCompatActivity {
 
-    protected TextView symptomTitleTextView, dateTextView, selectTextView;
+    protected TextView selectTextView;
     protected CheckBox chillsCheckBox, soreThroatCheckBox, headacheCheckBox, achesCheckBox,
                         nauseaCheckBox, runnyNoseCheckBox, coughCheckBox, fatigueCheckBox;
-    protected Button submitButton;
+    protected Button submitButton, newSymptomButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,8 +44,7 @@ public class SymptomLogActivity extends AppCompatActivity {
     }
 
     private void setupUI(){
-        symptomTitleTextView = findViewById(R.id.symptomTitleTextView);
-        dateTextView = findViewById(R.id.dateTextView);
+
         selectTextView = findViewById(R.id.selectTextView);
 
         chillsCheckBox = findViewById(R.id.chillsCheckBox);
@@ -57,6 +57,23 @@ public class SymptomLogActivity extends AppCompatActivity {
         fatigueCheckBox = findViewById(R.id.fatigueCheckBox);
 
         submitButton = findViewById(R.id.submitButton);
+        newSymptomButton = findViewById(R.id.newSymptomButton);
+
+        newSymptomButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //open new symptom fragment!
+                NewSymptomFragment newSymptom = new NewSymptomFragment();
+                newSymptom.show(getSupportFragmentManager(), "NewSymptom");
+            }
+        });
+
+        submitButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //submit to database
+            }
+        });
     }
 
     @Override

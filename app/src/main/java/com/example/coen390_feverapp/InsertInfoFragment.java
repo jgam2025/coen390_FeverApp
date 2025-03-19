@@ -28,9 +28,6 @@ InsertInfoFragment extends DialogFragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_insert_info, container, false);
 
-       // titleTextView = view.findViewById(R.id.titleTextView);
-       // infoTextView = view.findViewById(R.id.infoTextView);
-        //infoTextView.setText(getString(R.string.info_text));
         infoImageView = view.findViewById(R.id.infoImageView);
 
         closeFAB = view.findViewById(R.id.closeFAB);
