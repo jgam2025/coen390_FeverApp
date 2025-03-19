@@ -61,7 +61,7 @@ public class MedicationActivity extends AppCompatActivity {
         listViewMedication.setOnItemClickListener((parent, view, position, id) -> {
             new AlertDialog.Builder(this)
                     .setTitle("Confirmation")
-                    .setMessage("do you want to delete this medication ?")
+                    .setMessage("Do you want to delete this medication ?")
                     .setPositiveButton("yes", (dialog, which) -> {
 
                         if (dbHelper.deleteMedication(id)) {
