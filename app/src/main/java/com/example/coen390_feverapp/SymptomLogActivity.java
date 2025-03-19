@@ -1,8 +1,12 @@
 package com.example.coen390_feverapp;
+
 import android.content.Intent;
-import android.view.Menu;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,13 +15,18 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-public class TemperatureStoragePage extends AppCompatActivity {
+public class SymptomLogActivity extends AppCompatActivity {
+
+    protected TextView symptomTitleTextView, dateTextView, selectTextView;
+    protected CheckBox chillsCheckBox, soreThroatCheckBox, headacheCheckBox, achesCheckBox,
+                        nauseaCheckBox, runnyNoseCheckBox, coughCheckBox, fatigueCheckBox;
+    protected Button submitButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_temperature_storage_page);
+        setContentView(R.layout.activity_symptom_log);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
@@ -28,7 +37,28 @@ public class TemperatureStoragePage extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        setupUI();
+
     }
+
+    private void setupUI(){
+        symptomTitleTextView = findViewById(R.id.symptomTitleTextView);
+        dateTextView = findViewById(R.id.dateTextView);
+        selectTextView = findViewById(R.id.selectTextView);
+
+        chillsCheckBox = findViewById(R.id.chillsCheckBox);
+        soreThroatCheckBox = findViewById(R.id.soreThroatCheckBox);
+        headacheCheckBox = findViewById(R.id.headacheCheckBox);
+        achesCheckBox = findViewById(R.id.achesCheckBox);
+        nauseaCheckBox = findViewById(R.id.nauseaCheckBox);
+        runnyNoseCheckBox = findViewById(R.id.runnyNoseCheckBox);
+        coughCheckBox = findViewById(R.id.coughCheckBox);
+        fatigueCheckBox = findViewById(R.id.fatigueCheckBox);
+
+        submitButton = findViewById(R.id.submitButton);
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu from the menu.xml file in the menu directory
@@ -44,16 +74,16 @@ public class TemperatureStoragePage extends AppCompatActivity {
         if (id == R.id.miMore) {
             goToExtraPage();
             return true;
+        } else if (id == R.id.miperson) {
+            goToTemperatureStorage();
+            return true;
+
         } else if (id == R.id.miadd) {
             addProfile();
             return true;
 
-        }else if (id == R.id.miThermometer) {
+        }else if (id==R.id.miThermometer) {
             goToTemperatureMeasurementPage();
-            return true;
-
-        } else if (id==R.id.miSymptoms) {
-            goToSymptomsPage();
             return true;
 
 
@@ -71,8 +101,8 @@ public class TemperatureStoragePage extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private void goToSymptomsPage(){
-        Intent intent = new Intent(this, SymptomLogActivity.class);
+    private void goToTemperatureStorage(){
+        Intent intent = new Intent(this, TemperatureStoragePage.class);
         startActivity(intent);
     }
 

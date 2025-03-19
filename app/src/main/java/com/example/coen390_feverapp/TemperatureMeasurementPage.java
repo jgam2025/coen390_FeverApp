@@ -71,8 +71,8 @@ public class TemperatureMeasurementPage extends AppCompatActivity {
         } else if(id ==R.id.miLogOut) {
             goToLoginPage();
             return true;
-        }else if(id ==R.id.miWeather) {
-            goToWeatherPage();
+        }else if(id ==R.id.miSymptoms) {
+            goToSymptomsPage();
             return true;
 
         }else {
@@ -122,8 +122,8 @@ public class TemperatureMeasurementPage extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private void goToWeatherPage(){
-        Intent intent = new Intent(this, WeatherPage.class);
+    private void goToSymptomsPage(){
+        Intent intent = new Intent(this, SymptomLogActivity.class);
         startActivity(intent);
     }
     private void goToExtraPage(){

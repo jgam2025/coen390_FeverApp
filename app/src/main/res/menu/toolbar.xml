@@ -15,8 +15,8 @@
       app:showAsAction="always" />
 
   <item
-      android:id="@+id/miWeather"
-      android:icon ="@drawable/ic_weather"
+      android:id="@+id/miSymptoms"
+      android:icon="@android:drawable/ic_menu_edit"
       app:showAsAction="always" />
 
   <item
