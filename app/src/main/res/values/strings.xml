@@ -11,6 +11,11 @@
         It is not a medical device and should not be used for medical
         diagnosis or treatment. For accurate health assessments, please
         consult a healthcare professional.\n
+        You can change the temperature between °C and °F with the button in the upper right corner.\n
+    </string>
+    <string name="feverAlertText">
+        \n\nYou have a fever.\n
+        Contact a doctor as soon as possible to get the right treatment.\n\n
     </string>
     <string name="info_text">
         \nNote: These features will be fully implemented in future sprints.\n
