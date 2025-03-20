@@ -11,6 +11,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -58,6 +60,13 @@ public class NewSymptomFragment extends DialogFragment {
                 //create checkbox
                 CheckBox newSymptomCheckbox = new CheckBox(getContext());
                 newSymptomCheckbox.setText(symptom);
+                LinearLayout container = getActivity().findViewById(R.id.linearCheckBoxLayout);
+                container.addView(newSymptomCheckbox);
+                ScrollView scrollView = getActivity().findViewById(R.id.checkboxScroll);
+                scrollView.requestLayout();
+                scrollView.fullScroll(View.FOCUS_DOWN);
+
+                //save checkbox into db so it will be shown next time user opens activity
 
                 dismiss();
             }

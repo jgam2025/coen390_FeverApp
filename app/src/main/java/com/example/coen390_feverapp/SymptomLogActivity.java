@@ -33,7 +33,7 @@ public class SymptomLogActivity extends AppCompatActivity {
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayShowTitleEnabled(false); // Hide the title
         }
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.checkBoxLayout), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
@@ -49,7 +49,7 @@ public class SymptomLogActivity extends AppCompatActivity {
 
         chillsCheckBox = findViewById(R.id.chillsCheckBox);
         soreThroatCheckBox = findViewById(R.id.soreThroatCheckBox);
-        headacheCheckBox = findViewById(R.id.headacheCheckBox);
+        headacheCheckBox = findViewById(R.id.achesCheckBox);
         achesCheckBox = findViewById(R.id.achesCheckBox);
         nauseaCheckBox = findViewById(R.id.nauseaCheckBox);
         runnyNoseCheckBox = findViewById(R.id.runnyNoseCheckBox);
