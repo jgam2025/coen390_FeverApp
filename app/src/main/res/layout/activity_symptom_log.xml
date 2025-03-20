@@ -24,7 +24,7 @@
     <ScrollView
         android:id="@+id/checkboxScroll"
         android:layout_width="match_parent"
-        android:layout_height="400dp">
+        android:layout_height="350dp">
 
         <LinearLayout
             android:id="@+id/linearCheckBoxLayout"
@@ -43,6 +43,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Chills" />
+
+            <CheckBox
+                android:id="@+id/headacheCheckBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Headache" />
 
             <CheckBox
                 android:id="@+id/achesCheckBox"
@@ -77,15 +83,11 @@
         </LinearLayout>
     </ScrollView>
 
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="20dp" />
-
     <TextView
         android:id="@+id/profileTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Logging symptom for:"
+        android:text="Logging for:"
         android:textSize="16sp" />
 
     <Spinner
@@ -112,6 +114,10 @@
         android:gravity="center_horizontal"
         android:text="Submit"
         android:translationX="140dp" />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="20dp" />
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"

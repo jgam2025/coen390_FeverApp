@@ -1,13 +1,18 @@
 package com.example.coen390_feverapp;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,12 +21,19 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+
 public class SymptomLogActivity extends AppCompatActivity {
 
     protected TextView selectTextView;
     protected CheckBox chillsCheckBox, soreThroatCheckBox, headacheCheckBox, achesCheckBox,
                         nauseaCheckBox, runnyNoseCheckBox, coughCheckBox, fatigueCheckBox;
     protected Button submitButton, newSymptomButton;
+    protected Spinner profileOptionSpinner;
+    DBHelper dbHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,12 +61,15 @@ public class SymptomLogActivity extends AppCompatActivity {
 
         chillsCheckBox = findViewById(R.id.chillsCheckBox);
         soreThroatCheckBox = findViewById(R.id.soreThroatCheckBox);
-        headacheCheckBox = findViewById(R.id.achesCheckBox);
+        headacheCheckBox = findViewById(R.id.headacheCheckBox);
         achesCheckBox = findViewById(R.id.achesCheckBox);
         nauseaCheckBox = findViewById(R.id.nauseaCheckBox);
         runnyNoseCheckBox = findViewById(R.id.runnyNoseCheckBox);
         coughCheckBox = findViewById(R.id.coughCheckBox);
         fatigueCheckBox = findViewById(R.id.fatigueCheckBox);
+
+        profileOptionSpinner = findViewById(R.id.profileOptionSpinner);
+        showUsersOnSpinner();
 
         submitButton = findViewById(R.id.submitButton);
         newSymptomButton = findViewById(R.id.newSymptomButton);
@@ -72,8 +87,53 @@ public class SymptomLogActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //submit to database
+                String symptoms= "";
+
+                if(chillsCheckBox.isChecked()) symptoms = symptoms + "Chills,";
+                if(soreThroatCheckBox.isChecked()) symptoms = symptoms + "Sore Throat,";
+                if(headacheCheckBox.isChecked()) symptoms = symptoms + "Headache,";
+                if(achesCheckBox.isChecked()) symptoms = symptoms + "Muscle Aches,";
+                if(nauseaCheckBox.isChecked()) symptoms = symptoms + "Nausea,";
+                if(runnyNoseCheckBox.isChecked()) symptoms = symptoms + "Runny Nose,";
+                if(coughCheckBox.isChecked()) symptoms = symptoms + "Cough,";
+                if(fatigueCheckBox.isChecked()) symptoms = symptoms + "Fatigue,";
+                //Toast.makeText(getApplicationContext(),symptoms,Toast.LENGTH_LONG).show();
+                //add the user added symptoms too
+                SharedPreferences sharedPrefs = getSharedPreferences("user_prefs",MODE_PRIVATE);
+                String currentProfile = sharedPrefs.getString("current_profile",null);
+                //Toast.makeText(getApplicationContext(),currentProfile,Toast.LENGTH_LONG).show();
+                String logTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date());
+
+                dbHelper = new DBHelper(getApplicationContext());
+                dbHelper.insertSymptoms(currentProfile,symptoms,logTime);
             }
         });
+    }
+
+    public void showUsersOnSpinner(){
+        SharedPreferences sharedPrefs = getSharedPreferences("user_prefs", MODE_PRIVATE);
+        String currentUser = sharedPrefs.getString("current_user",null);
+        dbHelper = new DBHelper(getApplicationContext());
+        List<String> profileList = dbHelper.getProfiles(currentUser);
+        if(profileList.isEmpty()){
+
+        }
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,android.R.layout.simple_spinner_item,profileList);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        profileOptionSpinner.setAdapter(adapter);
+
+        profileOptionSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String selectedProfile = (String) parent.getItemAtPosition(position);
+                SharedPreferences.Editor editor = sharedPrefs.edit();
+                editor.putString("current_profile", selectedProfile);
+                editor.apply();
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) { }
+        });
+
     }
 
     @Override

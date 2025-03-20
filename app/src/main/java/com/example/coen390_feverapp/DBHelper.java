@@ -47,7 +47,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
         sqLiteDatabase.execSQL("CREATE TABLE symptoms (" +
                 "_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                "name TEXT NOT NULL, " +
+                "profile_name TEXT NOT NULL, " +
                 "symptoms TEXT, " +
                 "timestamp DATETIME DEFAULT CURRENT_TIMESTAMP)");
 
@@ -204,6 +204,16 @@ public class DBHelper extends SQLiteOpenHelper {
         return result > 0;
     }
 
+    public boolean insertSymptoms(String profile, String symptoms, String timestamp){
+        SQLiteDatabase myDB = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("profile_name",profile);
+        contentValues.put("symptoms",symptoms);
+        contentValues.put("timestamp",timestamp);
+        long result = myDB.insert("symptoms",null,contentValues);
+        return result != -1;
+    }
+
     public boolean insertNewSymptom(String symptom){
         SQLiteDatabase myDB = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -211,5 +221,6 @@ public class DBHelper extends SQLiteOpenHelper {
         long result = myDB.insert("user_added_symptoms",null,contentValues);
         return result != -1;
     }
+
 }
 
