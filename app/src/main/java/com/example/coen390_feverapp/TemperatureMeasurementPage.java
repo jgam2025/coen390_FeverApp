@@ -83,6 +83,10 @@ public class TemperatureMeasurementPage extends AppCompatActivity {
             goToTemperatureStoragePage();
             return true;
 
+        }else if (id==R.id.miGraph){
+            Graph();
+            return true;
+
         }else {
             return super.onOptionsItemSelected(item);
         }
@@ -123,6 +127,11 @@ public class TemperatureMeasurementPage extends AppCompatActivity {
     private void addProfile(){
         NewProfileFragment newProfile = new NewProfileFragment();
         newProfile.show(getFragmentManager(), "InsertProfile");
+    }
+
+    private void Graph(){
+        GraphFragment graphDialog = new GraphFragment();
+        graphDialog.show(getSupportFragmentManager(), "GraphDialog");
     }
 
     private void goToLoginPage(){
