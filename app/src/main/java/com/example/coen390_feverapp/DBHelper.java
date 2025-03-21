@@ -191,12 +191,6 @@ public class DBHelper extends SQLiteOpenHelper {
         return myDB.rawQuery("SELECT * FROM medication WHERE profile_name = ? ORDER BY _id DESC", new String[]{profile});
     }
 
-    // Returns a Cursor containing all medication records ordered by the most recent first.
-   /* public Cursor getMedicationHistory() {
-        SQLiteDatabase myDB = this.getReadableDatabase();
-        return myDB.rawQuery("SELECT * FROM medication ORDER BY _id DESC", null);
-    }*/
-
     // Deletes a medication record by its _id.
     public boolean deleteMedication(long id) {
         SQLiteDatabase myDB = this.getWritableDatabase();

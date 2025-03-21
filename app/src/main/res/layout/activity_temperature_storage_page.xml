@@ -72,8 +72,8 @@
 
     <ListView
         android:id="@+id/listViewTemperatureHistory"
-        android:layout_width="422dp"
-        android:layout_height="491dp"
+        android:layout_width="408dp"
+        android:layout_height="465dp"
         android:layout_marginTop="16dp"
         app:layout_constraintBottom_toTopOf="@id/toolbar"
         app:layout_constraintEnd_toEndOf="parent"
