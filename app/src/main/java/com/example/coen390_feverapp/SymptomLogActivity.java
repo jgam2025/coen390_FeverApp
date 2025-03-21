@@ -198,6 +198,11 @@ public class SymptomLogActivity extends AppCompatActivity {
             return true;
 
         }
+        else if (id == R.id.miMedication) {
+            goToMedication();
+            return true;
+        }
+
         else if (id==R.id.miSymptoms){
             goToSymptomLogActivity();
             return true;
@@ -234,6 +239,10 @@ public class SymptomLogActivity extends AppCompatActivity {
     }
     private void goToTemperatureStorage(){
         Intent intent = new Intent(this, TemperatureStoragePage.class);
+        startActivity(intent);
+    }
+    private void goToMedication(){
+        Intent intent = new Intent(this, MedicationActivity.class);
         startActivity(intent);
     }
 
