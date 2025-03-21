@@ -1,5 +1,6 @@
 package com.example.coen390_feverapp;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.fragment.app.DialogFragment;
@@ -16,6 +17,9 @@ import android.widget.ScrollView;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class NewSymptomFragment extends DialogFragment {
@@ -55,8 +59,6 @@ public class NewSymptomFragment extends DialogFragment {
                 if(symptom.isEmpty()){
                     Toast.makeText(getContext(), "Please enter a symptom", Toast.LENGTH_LONG).show();
                 }
-                // put into db
-                dbHelper.insertNewSymptom(symptom);
                 //create checkbox
                 CheckBox newSymptomCheckbox = new CheckBox(getContext());
                 newSymptomCheckbox.setText(symptom);
@@ -66,7 +68,14 @@ public class NewSymptomFragment extends DialogFragment {
                 scrollView.requestLayout();
                 scrollView.fullScroll(View.FOCUS_DOWN);
 
-                //save checkbox into db so it will be shown next time user opens activity
+                List<CheckBox> newCheckBoxList = new ArrayList<>();
+                newCheckBoxList.add(newSymptomCheckbox);
+
+                //save checkbox into db associated w user
+                SharedPreferences sharedPrefs = getActivity().getSharedPreferences("user_prefs", 0);
+                String currentUser = sharedPrefs.getString("current_user",null);
+                int user = dbHelper.getUserID(currentUser);
+                dbHelper.insertNewSymptom(symptom,user);
 
                 dismiss();
             }

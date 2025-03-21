@@ -22,6 +22,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -59,14 +60,23 @@ public class SymptomLogActivity extends AppCompatActivity {
 
         selectTextView = findViewById(R.id.selectTextView);
 
+        List<CheckBox> staticCheckBoxes = new ArrayList<>();
         chillsCheckBox = findViewById(R.id.chillsCheckBox);
+        staticCheckBoxes.add(chillsCheckBox);
         soreThroatCheckBox = findViewById(R.id.soreThroatCheckBox);
+        staticCheckBoxes.add(soreThroatCheckBox);
         headacheCheckBox = findViewById(R.id.headacheCheckBox);
+        staticCheckBoxes.add(headacheCheckBox);
         achesCheckBox = findViewById(R.id.achesCheckBox);
+        staticCheckBoxes.add(achesCheckBox);
         nauseaCheckBox = findViewById(R.id.nauseaCheckBox);
+        staticCheckBoxes.add(nauseaCheckBox);
         runnyNoseCheckBox = findViewById(R.id.runnyNoseCheckBox);
+        staticCheckBoxes.add(runnyNoseCheckBox);
         coughCheckBox = findViewById(R.id.coughCheckBox);
+        staticCheckBoxes.add(coughCheckBox);
         fatigueCheckBox = findViewById(R.id.fatigueCheckBox);
+        staticCheckBoxes.add(fatigueCheckBox);
 
         profileOptionSpinner = findViewById(R.id.profileOptionSpinner);
         showUsersOnSpinner();
@@ -90,14 +100,11 @@ public class SymptomLogActivity extends AppCompatActivity {
                 //submit to database
                 String symptoms= "";
 
-                if(chillsCheckBox.isChecked()) symptoms = symptoms + "Chills,";
-                if(soreThroatCheckBox.isChecked()) symptoms = symptoms + "Sore Throat,";
-                if(headacheCheckBox.isChecked()) symptoms = symptoms + "Headache,";
-                if(achesCheckBox.isChecked()) symptoms = symptoms + "Muscle Aches,";
-                if(nauseaCheckBox.isChecked()) symptoms = symptoms + "Nausea,";
-                if(runnyNoseCheckBox.isChecked()) symptoms = symptoms + "Runny Nose,";
-                if(coughCheckBox.isChecked()) symptoms = symptoms + "Cough,";
-                if(fatigueCheckBox.isChecked()) symptoms = symptoms + "Fatigue,";
+                for(CheckBox checkBox: staticCheckBoxes){
+                    if(checkBox.isChecked()){
+                        symptoms = symptoms + checkBox.getText().toString() + ",";
+                    }
+                }
 
                 //add the user added symptoms too
 

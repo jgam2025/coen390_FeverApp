@@ -53,6 +53,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 "timestamp DATETIME DEFAULT CURRENT_TIMESTAMP)");
 
         sqLiteDatabase.execSQL("CREATE TABLE user_added_symptoms (" +
+                "user_id INTEGER NOT NULL, " +
                 "symptom TEXT NOT NULL)"); //table solely to store any new symptoms added by user
     }
 
@@ -159,7 +160,6 @@ public class DBHelper extends SQLiteOpenHelper {
         } catch (Exception e){
             Toast.makeText(context, "Get error: " + e.getMessage(), Toast.LENGTH_LONG).show();
         }
-
         return profileList;
     }
 
@@ -223,19 +223,18 @@ public class DBHelper extends SQLiteOpenHelper {
                     } while (cursor.moveToNext());
                 } cursor.close();
             }
-
         } catch (Exception e){
             Toast.makeText(context, "Get error: " + e.getMessage(), Toast.LENGTH_LONG).show();
             System.out.println("get error: " + e.getMessage());
         }
-
         return symptomsList;
     }
 
-    public boolean insertNewSymptom(String symptom){
+    public boolean insertNewSymptom(String symptom, int userID){
         SQLiteDatabase myDB = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put("symptom",symptom);
+        contentValues.put("user_id",userID);
         long result = myDB.insert("user_added_symptoms",null,contentValues);
         return result != -1;
     }
