@@ -108,7 +108,16 @@ public class SymptomLogActivity extends AppCompatActivity {
                 String logTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date());
                 System.out.println(logTime);
 
-                dbHelper.insertSymptoms(currentProfile,symptoms,logTime);
+                //dbHelper.insertSymptoms(currentProfile,symptoms,logTime);
+                boolean inserted = dbHelper.insertSymptoms(currentProfile, symptoms, logTime);
+
+                if (inserted) {
+                    Toast.makeText(getApplicationContext(), "Symptoms saved", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getApplicationContext(), "Error saving symptoms", Toast.LENGTH_SHORT).show();
+                }
+
+                unCheckBoxes();
             }
         });
 
@@ -143,6 +152,17 @@ public class SymptomLogActivity extends AppCompatActivity {
             public void onNothingSelected(AdapterView<?> parent) { }
         });
 
+    }
+
+    private void unCheckBoxes(){
+        chillsCheckBox.setChecked(false);
+        soreThroatCheckBox.setChecked(false);
+        headacheCheckBox.setChecked(false);
+        achesCheckBox.setChecked(false);
+        nauseaCheckBox.setChecked(false);
+        runnyNoseCheckBox.setChecked(false);
+        coughCheckBox.setChecked(false);
+        fatigueCheckBox.setChecked(false);
     }
 
     @Override

@@ -176,7 +176,6 @@ public class DBHelper extends SQLiteOpenHelper {
         );
     }
 
-
     public boolean insertMedication(String profile, String name, String dose) {
         SQLiteDatabase myDB = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
@@ -214,7 +213,7 @@ public class DBHelper extends SQLiteOpenHelper {
         List<String> symptomsList = new ArrayList<>();
         Cursor cursor = null;
         try {
-            cursor = myDB.rawQuery("SELECT symptom_type FROM symptoms WHERE profile_name = ? ORDER BY _id DESC", new String[]{profile});
+            cursor = myDB.rawQuery("SELECT symptom_type, timestamp FROM symptoms WHERE profile_name = ? ORDER BY _id DESC", new String[]{profile});
             if(cursor!=null){
                 if (cursor.moveToFirst()) {
                     do{
