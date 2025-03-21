@@ -191,6 +191,15 @@ public class DBHelper extends SQLiteOpenHelper {
         return myDB.rawQuery("SELECT * FROM medication WHERE profile_name = ? ORDER BY _id DESC", new String[]{profile});
     }
 
+    public Cursor getAllMeasurementsByProfile(String profile) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        return db.rawQuery(
+                "SELECT * FROM temperature WHERE profile_name = ? ORDER BY measurement_time ASC",
+                new String[]{profile}
+        );
+    }
+
+
     // Deletes a medication record by its _id.
     public boolean deleteMedication(long id) {
         SQLiteDatabase myDB = this.getWritableDatabase();

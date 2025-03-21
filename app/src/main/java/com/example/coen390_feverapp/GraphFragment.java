@@ -1,6 +1,9 @@
 package com.example.coen390_feverapp;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.database.Cursor;
 import android.graphics.Color;
@@ -9,6 +12,8 @@ import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,28 +38,46 @@ public class GraphFragment extends DialogFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_graph, container, false);
         chart = view.findViewById(R.id.chart);
-        dbHelper = new DBHelper(getContext());
+        dbHelper = new DBHelper(requireActivity());
+
+        SharedPreferences prefs = requireActivity().getSharedPreferences("user_prefs", android.content.Context.MODE_PRIVATE);
+        currentProfile = prefs.getString("current_profile", "default");
+        Log.d("GRAPH_DEBUG", "Current profile in graph: " + currentProfile);
 
         fetchTemperatureData();
         return view;
     }
 
     private void fetchTemperatureData() {
+        Log.d("GRAPH_DEBUG", "fetchTemperatureData() was called");
         List<Entry> entries = new ArrayList<>();
         final List<String> dateTimeLabels = new ArrayList<>();
 
         // Get the current profile
-        currentProfile = requireActivity().getSharedPreferences("user_prefs", getContext().MODE_PRIVATE)
+        currentProfile = requireActivity().getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
                 .getString("current_profile", "default");
+        Log.d("GRAPH_DEBUG", "Current Profile: " + currentProfile);
+
 
         // Retrieve all temperature data
-        Cursor cursor = dbHelper.getMeasurementsByFullDateAndProfile("", "", currentProfile); // Get all data
+        Cursor cursor = dbHelper.getAllMeasurementsByProfile(currentProfile);
+// Get all data
+
+        if (cursor == null) {
+            Log.d("GRAPH_DEBUG", "Cursor is null!");
+        } else if (!cursor.moveToFirst()) {
+            Log.d("GRAPH_DEBUG", "Cursor is empty for profile: " + currentProfile);
+        } else {
+            Log.d("GRAPH_DEBUG", "Data found for profile: " + currentProfile);
+        }
         int index = 0;
 
         if (cursor != null && cursor.moveToFirst()) {
             do {
                 @SuppressLint("Range") float temperature = cursor.getFloat(cursor.getColumnIndex("temperature_value"));
                 @SuppressLint("Range") String measurementTime = cursor.getString(cursor.getColumnIndex("measurement_time"));
+
+                Log.d("GRAPH_DEBUG", "Reading: " + measurementTime + " - " + temperature); // 👈 DEBUG
 
                 // Store temperature values and corresponding date-time labels
                 entries.add(new Entry(index, temperature));
