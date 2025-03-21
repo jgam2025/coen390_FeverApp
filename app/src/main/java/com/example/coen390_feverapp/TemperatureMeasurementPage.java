@@ -33,6 +33,7 @@ public class TemperatureMeasurementPage extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
+        insertTestTemperatureData();
         setContentView(R.layout.activity_temperature_measurement_page);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -133,6 +134,25 @@ public class TemperatureMeasurementPage extends AppCompatActivity {
         GraphFragment graphDialog = new GraphFragment();
         graphDialog.show(getSupportFragmentManager(), "GraphDialog");
     }
+
+    private void insertTestTemperatureData() {
+        DBHelper dbHelper = new DBHelper(this);
+
+        // Insert 10 test values with different dates and times
+        for (int i = 1; i <= 10; i++) {
+            String profileName = "amira";  // Change if needed
+            String measurementTime = "2025-03-1" + i + " 12:0" + i + ":00"; // YYYY-MM-DD HH:MM:SS
+            String temperatureValue = String.valueOf(36.5 + (i * 0.1)); // Example: 36.5, 36.6, ...
+
+            boolean result = dbHelper.insertTemperature(profileName, measurementTime, temperatureValue);
+            if (result) {
+                System.out.println("Inserted: " + measurementTime + " - " + temperatureValue);
+            } else {
+                System.out.println("Failed to insert data.");
+            }
+        }
+    }
+
 
     private void goToLoginPage(){
         Intent intent = new Intent(this, LoginActivity.class);
