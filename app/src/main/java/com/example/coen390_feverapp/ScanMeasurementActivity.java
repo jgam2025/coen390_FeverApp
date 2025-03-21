@@ -10,6 +10,7 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -46,11 +47,15 @@ public class ScanMeasurementActivity extends AppCompatActivity {
     protected ProgressBar measurementProgressBar;
     protected LinearLayout cancelAndSaveButtonLayout;
     protected Button startButton, cancelButton, saveButton;
-    protected ConstraintLayout dialogLayout;
-    protected FloatingActionButton closeDialogButton;
+    protected ConstraintLayout instructionDialogLayout, feverAlertDialogLayout;
+    protected FloatingActionButton closeInstructionDialogButton, closeAlertDialogButton;
     protected ImageView imageViewArrowScanPage;
+    protected FrameLayout scaleConversionButton;
 
     protected volatile boolean measurementCanceled = false;
+
+    String temperatureScaleText;
+    int feverTemperatureThresholdCelsius = 38;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +70,8 @@ public class ScanMeasurementActivity extends AppCompatActivity {
 
         setupUI();
 
+        temperatureScaleText = getSharedPreferences("user_prefs", MODE_PRIVATE).getString("temperatureScaleText", "°C");
+
         bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         if (bluetoothAdapter == null) {
             Toast.makeText(this, "Bluetooth not supported", Toast.LENGTH_SHORT).show();
@@ -73,7 +80,7 @@ public class ScanMeasurementActivity extends AppCompatActivity {
 
         // Attempt connection on a background thread
         new Thread(() -> connectToESP32()).start();
-        dialogLayout.setVisibility(android.view.View.VISIBLE);
+        instructionDialogLayout.setVisibility(android.view.View.VISIBLE);
     }
 
     private void setupUI() {
@@ -83,9 +90,13 @@ public class ScanMeasurementActivity extends AppCompatActivity {
         cancelAndSaveButtonLayout = findViewById(R.id.linearLayoutCancelAndSave);
         cancelButton = findViewById(R.id.buttonCancel);
         saveButton = findViewById(R.id.buttonProgressAndSave);
-        dialogLayout = findViewById(R.id.scanInstructionDialog);
-        closeDialogButton = findViewById(R.id.closeScanDialogButton);
+        instructionDialogLayout = findViewById(R.id.scanInstructionDialog);
+        closeInstructionDialogButton = findViewById(R.id.closeScanDialogButton);
+        feverAlertDialogLayout = findViewById(R.id.feverAlertDialog);
+        closeAlertDialogButton = findViewById(R.id.closeFeverAlertDialogButton);
         imageViewArrowScanPage = findViewById(R.id.imageViewArrowScanPage);
+        scaleConversionButton = findViewById(R.id.scaleConversionButton);
+
 
         measurementProgressBar.setProgress(0);
         cancelAndSaveButtonLayout.setVisibility(android.view.View.GONE);
@@ -94,7 +105,8 @@ public class ScanMeasurementActivity extends AppCompatActivity {
         startButton.setOnClickListener(v -> startMeasurement());
         cancelButton.setOnClickListener(v -> cancelMeasurement());
         saveButton.setOnClickListener(v -> saveMeasurement());
-        closeDialogButton.setOnClickListener(v -> dialogLayout.setVisibility(android.view.View.GONE));
+        closeInstructionDialogButton.setOnClickListener(v -> instructionDialogLayout.setVisibility(android.view.View.GONE));
+        closeAlertDialogButton.setOnClickListener(v -> feverAlertDialogLayout.setVisibility(android.view.View.GONE));
 
         imageViewArrowScanPage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -103,6 +115,8 @@ public class ScanMeasurementActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        scaleConversionButton.setOnClickListener(view -> changeTemperatureScale());
     }
 
     // Attempt to connect to the ESP32 on a background thread
@@ -168,7 +182,7 @@ public class ScanMeasurementActivity extends AppCompatActivity {
                 int progress = (int) ((elapsed / (float) duration) * 100);
                 String finalTemp = temp;
                 runOnUiThread(() -> {
-                    temperatureTextView.setText(" " + finalTemp + " °C ");
+                    temperatureTextView.setText(" " + finalTemp + " " + temperatureScaleText + " ");
                     measurementProgressBar.setProgress(progress);
                     saveButton.setText(progress + "%");
                 });
@@ -181,6 +195,13 @@ public class ScanMeasurementActivity extends AppCompatActivity {
             runOnUiThread(() -> {
                 saveButton.setText("SAVE");
                 saveButton.setClickable(true);
+
+                // Show fever alert if the user temperature is higher than the threshold
+                String temperatureTextValue = temperatureTextView.getText().toString().replace(temperatureScaleText, "").trim();
+                int temperatureValue = convertToCelsius(Integer.parseInt(temperatureTextValue));
+                if (temperatureValue >= feverTemperatureThresholdCelsius){
+                    feverAlertDialogLayout.setVisibility(android.view.View.VISIBLE);
+                }
             });
         }).start();
     }
@@ -196,10 +217,9 @@ public class ScanMeasurementActivity extends AppCompatActivity {
     }
 
     private void saveMeasurement() {
-
         String temperatureText = temperatureTextView.getText().toString().trim();
 
-        temperatureText = temperatureText.replace("°C", "").trim();
+        temperatureText = temperatureText.replace(temperatureScaleText, "").trim();
 
         String measurementTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date());
 
@@ -256,5 +276,43 @@ public class ScanMeasurementActivity extends AppCompatActivity {
         inputStream = null;
     }
 
+    private void changeTemperatureScale(){
+        String temperatureTextValue = temperatureTextView.getText().toString().replace(temperatureScaleText, "").trim();
 
+        if (temperatureScaleText.equals("°C")){
+            int temperatureValue = convertToFahrenheit(Integer.parseInt(temperatureTextValue));
+
+            temperatureTextView.setText(" " + temperatureValue + " " + temperatureScaleText + " ");
+
+            SharedPreferences sharedPreferences = getSharedPreferences("user_prefs", MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+
+            editor.putString("temperatureScaleText","°F");
+            editor.apply();
+        } else {
+            int temperatureValue = convertToCelsius(Integer.parseInt(temperatureTextValue));
+
+            temperatureTextView.setText(" " + temperatureValue + " " + temperatureScaleText + " ");
+
+            SharedPreferences sharedPreferences = getSharedPreferences("user_prefs", MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+
+            editor.putString("temperatureScaleText","°C");
+            editor.apply();
+        }
+    }
+
+    private int convertToCelsius(int temperature){
+        if (temperatureScaleText.equals("°F")){
+            return (int)(((5.0/9)*temperature) - 32);
+        }
+        return temperature;
+    }
+
+    private int convertToFahrenheit(int temperature){
+        if (temperatureScaleText.equals("°C")){
+            return (int)(((9.0/9)*temperature) + 32);
+        }
+        return temperature;
+    }
 }
