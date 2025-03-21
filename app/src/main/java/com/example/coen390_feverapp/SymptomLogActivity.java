@@ -51,6 +51,7 @@ public class SymptomLogActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
         dbHelper = new DBHelper(this);
         setupUI();
 
@@ -106,7 +107,9 @@ public class SymptomLogActivity extends AppCompatActivity {
                     }
                 }
 
-                //add the user added symptoms too
+                // TODO: add the user-added symptoms to the string as well
+                // access checkbox list from fragment in here
+                // initialize checkboxes from db in here if theyve been created
 
                 System.out.println(symptoms);
                 SharedPreferences sharedPrefs = getSharedPreferences("user_prefs",MODE_PRIVATE);
@@ -115,7 +118,6 @@ public class SymptomLogActivity extends AppCompatActivity {
                 String logTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date());
                 System.out.println(logTime);
 
-                //dbHelper.insertSymptoms(currentProfile,symptoms,logTime);
                 boolean inserted = dbHelper.insertSymptoms(currentProfile, symptoms, logTime);
 
                 if (inserted) {
