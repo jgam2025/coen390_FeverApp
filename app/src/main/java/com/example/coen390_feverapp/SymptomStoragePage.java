@@ -124,6 +124,10 @@ public class SymptomStoragePage extends AppCompatActivity {
             goToTemperatureMeasurementPage();
             return true;
         }
+        else if (id == R.id.miGraph) {
+            Graph();
+            return true;
+        }
         else if (id==R.id.miSymptoms){
             goToSymptomLogActivity();
             return true;
@@ -163,6 +167,11 @@ public class SymptomStoragePage extends AppCompatActivity {
     private void goToSymptomLogActivity(){
         Intent intent = new Intent(this,SymptomLogActivity.class);
         startActivity(intent);
+    }
+
+    private void Graph(){
+        GraphFragment graphDialog = new GraphFragment();
+        graphDialog.show(getSupportFragmentManager(), "GraphDialog");
     }
 
 }

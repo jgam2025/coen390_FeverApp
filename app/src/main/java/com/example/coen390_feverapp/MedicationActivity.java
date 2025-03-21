@@ -93,6 +93,9 @@ public class MedicationActivity extends AppCompatActivity {
             goToLoginPage();
             return true;
         }
+        else if (id==R.id.miGraph){
+            Graph();
+            return true;}
         else if(id ==R.id.miTemperature) {
             goToTemperatureMeasurementPage();
             return true;
@@ -156,6 +159,11 @@ public class MedicationActivity extends AppCompatActivity {
     private void goToTemperatureStoragePage(){
         Intent intent = new Intent(this, TemperatureStoragePage.class);
         startActivity(intent);
+    }
+
+    private void Graph(){
+        GraphFragment graphDialog = new GraphFragment();
+        graphDialog.show(getSupportFragmentManager(), "GraphDialog");
     }
 
 

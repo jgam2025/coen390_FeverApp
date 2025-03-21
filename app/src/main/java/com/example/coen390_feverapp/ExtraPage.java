@@ -46,16 +46,21 @@ public class ExtraPage extends AppCompatActivity {
             goToTemperatureStorage();
             return true;
 
-        } else if (id == R.id.miadd) {
+        }  else if (id == R.id.miGraph) {
+            Graph();
+            return true;
+        }
+
+        else if (id == R.id.miadd) {
             addProfile();
             return true;
 
         }
-        /*else if (id==R.id.miTemperature) {
+        else if (id==R.id.miTemperature) {
             goToTemperatureMeasurementPage();
             return true;
         }
-         */
+
         else if (id==R.id.miLogOut) {
 
             goToLogin();
@@ -97,5 +102,9 @@ public class ExtraPage extends AppCompatActivity {
     private void goToMedicationPage(){
         Intent intent = new Intent(this, MedicationActivity.class);
         startActivity(intent);
+    }
+    private void Graph(){
+        GraphFragment graphDialog = new GraphFragment();
+        graphDialog.show(getSupportFragmentManager(), "GraphDialog");
     }
 }

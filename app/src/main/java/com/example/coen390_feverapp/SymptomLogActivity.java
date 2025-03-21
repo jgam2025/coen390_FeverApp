@@ -206,6 +206,10 @@ public class SymptomLogActivity extends AppCompatActivity {
             goToTemperatureMeasurementPage();
             return true;
         }
+        else if (id==R.id.miGraph) {
+            Graph();
+            return true;
+        }
         else if (id==R.id.miLogOut) {
             goToLogin();
             return true;
@@ -245,6 +249,11 @@ public class SymptomLogActivity extends AppCompatActivity {
     private void addProfile(){
         NewProfileFragment newProfile = new NewProfileFragment();
         newProfile.show(getFragmentManager(), "InsertProfile");
+    }
+
+    private void Graph(){
+        GraphFragment graphDialog = new GraphFragment();
+        graphDialog.show(getSupportFragmentManager(), "GraphDialog");
     }
 
 }

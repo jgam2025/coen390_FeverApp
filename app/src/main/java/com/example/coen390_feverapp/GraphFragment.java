@@ -97,11 +97,16 @@ public class GraphFragment extends DialogFragment {
         dataSet.setColor(Color.BLUE);
         dataSet.setCircleColor(Color.RED);
         dataSet.setValueTextSize(12f);
+        dataSet.setDrawValues(false);
 
         // Configure X Axis to display date & time
         XAxis xAxis = chart.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setGranularity(1f);
+        xAxis.setDrawLabels(false);
+        xAxis.setDrawAxisLine(true);
+        chart.setExtraBottomOffset(16f); // Adds space to show X-axis clearly
+
 
         // Format X-axis labels directly in GraphDialogFragment
         xAxis.setValueFormatter(new ValueFormatter() {
@@ -120,10 +125,13 @@ public class GraphFragment extends DialogFragment {
         YAxis leftAxis = chart.getAxisLeft();
         leftAxis.setGranularity(0.5f);
         chart.getAxisRight().setEnabled(false);
+        chart.setExtraLeftOffset(10f);
 
         // Set data and refresh chart
         chart.setData(new LineData(dataSet));
         chart.invalidate();
+
+        chart.getDescription().setEnabled(false);
     }
 }
 
