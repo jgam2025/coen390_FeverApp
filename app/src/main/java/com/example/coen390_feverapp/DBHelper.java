@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
+import java.sql.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,7 +49,7 @@ public class DBHelper extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL("CREATE TABLE symptoms (" +
                 "_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "profile_name TEXT NOT NULL, " +
-                "symptoms TEXT, " +
+                "symptom_type TEXT, " +
                 "timestamp DATETIME DEFAULT CURRENT_TIMESTAMP)");
 
         sqLiteDatabase.execSQL("CREATE TABLE user_added_symptoms (" +
@@ -208,10 +209,34 @@ public class DBHelper extends SQLiteOpenHelper {
         SQLiteDatabase myDB = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put("profile_name",profile);
-        contentValues.put("symptoms",symptoms);
+        contentValues.put("symptom_type",symptoms);
         contentValues.put("timestamp",timestamp);
         long result = myDB.insert("symptoms",null,contentValues);
         return result != -1;
+    }
+
+    public List<String> getSymptomHistory(String profile){
+        SQLiteDatabase myDB = this.getReadableDatabase();
+        List<String> symptomsList = new ArrayList<>();
+        Cursor cursor = null;
+        try {
+            cursor = myDB.rawQuery("SELECT symptom_type FROM symptoms WHERE profile_name = ? ORDER BY _id DESC", new String[]{profile});
+            if(cursor!=null){
+                if (cursor.moveToFirst()) {
+                    do{
+                        @SuppressLint("Range") String symptomsString = cursor.getString(cursor.getColumnIndex("symptom_type"));
+                        @SuppressLint("Range") String time = cursor.getString(cursor.getColumnIndex("timestamp"));
+                        symptomsList.add("Date & Time: " + time + ", Symptoms: " + symptomsString);
+                    } while (cursor.moveToNext());
+                } cursor.close();
+            }
+
+        } catch (Exception e){
+            Toast.makeText(context, "Get error: " + e.getMessage(), Toast.LENGTH_LONG).show();
+            System.out.println("get error: " + e.getMessage());
+        }
+
+        return symptomsList;
     }
 
     public boolean insertNewSymptom(String symptom){

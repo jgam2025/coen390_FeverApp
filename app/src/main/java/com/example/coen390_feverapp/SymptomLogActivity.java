@@ -31,7 +31,7 @@ public class SymptomLogActivity extends AppCompatActivity {
     protected TextView selectTextView;
     protected CheckBox chillsCheckBox, soreThroatCheckBox, headacheCheckBox, achesCheckBox,
                         nauseaCheckBox, runnyNoseCheckBox, coughCheckBox, fatigueCheckBox;
-    protected Button submitButton, newSymptomButton;
+    protected Button submitButton, newSymptomButton, goToLogButton;
     protected Spinner profileOptionSpinner;
     DBHelper dbHelper;
 
@@ -50,7 +50,7 @@ public class SymptomLogActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-
+        dbHelper = new DBHelper(this);
         setupUI();
 
     }
@@ -73,6 +73,7 @@ public class SymptomLogActivity extends AppCompatActivity {
 
         submitButton = findViewById(R.id.submitButton);
         newSymptomButton = findViewById(R.id.newSymptomButton);
+        goToLogButton = findViewById(R.id.goToLogButton);
 
         newSymptomButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -97,15 +98,24 @@ public class SymptomLogActivity extends AppCompatActivity {
                 if(runnyNoseCheckBox.isChecked()) symptoms = symptoms + "Runny Nose,";
                 if(coughCheckBox.isChecked()) symptoms = symptoms + "Cough,";
                 if(fatigueCheckBox.isChecked()) symptoms = symptoms + "Fatigue,";
-                //Toast.makeText(getApplicationContext(),symptoms,Toast.LENGTH_LONG).show();
+
                 //add the user added symptoms too
+
+                System.out.println(symptoms);
                 SharedPreferences sharedPrefs = getSharedPreferences("user_prefs",MODE_PRIVATE);
                 String currentProfile = sharedPrefs.getString("current_profile",null);
-                //Toast.makeText(getApplicationContext(),currentProfile,Toast.LENGTH_LONG).show();
+                System.out.println(currentProfile);
                 String logTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date());
+                System.out.println(logTime);
 
-                dbHelper = new DBHelper(getApplicationContext());
                 dbHelper.insertSymptoms(currentProfile,symptoms,logTime);
+            }
+        });
+
+        goToLogButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goToSymptomStoragePage();
             }
         });
     }
@@ -113,7 +123,6 @@ public class SymptomLogActivity extends AppCompatActivity {
     public void showUsersOnSpinner(){
         SharedPreferences sharedPrefs = getSharedPreferences("user_prefs", MODE_PRIVATE);
         String currentUser = sharedPrefs.getString("current_user",null);
-        dbHelper = new DBHelper(getApplicationContext());
         List<String> profileList = dbHelper.getProfiles(currentUser);
         if(profileList.isEmpty()){
 
@@ -174,6 +183,11 @@ public class SymptomLogActivity extends AppCompatActivity {
         } else {
             return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void goToSymptomStoragePage(){
+        Intent intent = new Intent(this, SymptomStoragePage.class);
+        startActivity(intent);
     }
 
     private void goToExtraPage(){

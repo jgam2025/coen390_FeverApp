@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/checkBoxLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -23,8 +24,9 @@
 
     <ScrollView
         android:id="@+id/checkboxScroll"
-        android:layout_width="match_parent"
-        android:layout_height="350dp">
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:translationX="40dp">
 
         <LinearLayout
             android:id="@+id/linearCheckBoxLayout"
@@ -83,37 +85,49 @@
         </LinearLayout>
     </ScrollView>
 
-    <TextView
-        android:id="@+id/profileTextView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Logging for:"
-        android:textSize="16sp" />
-
-    <Spinner
-        android:id="@+id/profileOptionSpinner"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
     <Button
         android:id="@+id/newSymptomButton"
-        android:layout_width="wrap_content"
+        style="@style/Widget.AppCompat.Button"
+        android:layout_width="180dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
         android:backgroundTint="@color/BUTTON_COLOR"
+        android:backgroundTintMode="src_over"
         android:gravity="center_horizontal"
         android:text="Add New Symptom"
-        android:translationX="100dp" />
+        android:translationX="90dp" />
+
+    <TextView
+        android:id="@+id/profileTextView"
+        android:layout_width="342dp"
+        android:layout_height="wrap_content"
+        android:text="Logging for:"
+        android:textSize="16sp"
+        android:translationX="15dp" />
+
+    <Spinner
+        android:id="@+id/profileOptionSpinner"
+        android:layout_width="332dp"
+        android:layout_height="wrap_content"
+        android:translationX="10dp" />
 
     <Button
         android:id="@+id/submitButton"
-        android:layout_width="wrap_content"
+        android:layout_width="351dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
         android:backgroundTint="@color/BUTTON_COLOR"
         android:gravity="center_horizontal"
         android:text="Submit"
-        android:translationX="140dp" />
+        android:translationX="10dp" />
+
+    <Button
+        android:id="@+id/goToLogButton"
+        android:layout_width="351dp"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/BUTTON_COLOR"
+        android:text="Go To Log"
+        android:translationX="10dp" />
 
     <Space
         android:layout_width="match_parent"
