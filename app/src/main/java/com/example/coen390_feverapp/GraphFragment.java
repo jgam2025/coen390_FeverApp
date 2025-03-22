@@ -105,7 +105,10 @@ public class GraphFragment extends DialogFragment {
         xAxis.setGranularity(1f);
         xAxis.setDrawLabels(false);
         xAxis.setDrawAxisLine(true);
-        chart.setExtraBottomOffset(16f); // Adds space to show X-axis clearly
+        chart.setExtraBottomOffset(16f);
+        xAxis.setAxisMinimum(0f);
+        xAxis.setAxisMaximum(entries.size() - 1);
+
 
 
         // Format X-axis labels directly in GraphDialogFragment
@@ -126,7 +129,7 @@ public class GraphFragment extends DialogFragment {
         leftAxis.setGranularity(0.5f);
         chart.getAxisRight().setEnabled(false);
         chart.setExtraLeftOffset(15f);
-        chart.setExtraRightOffset(10f);
+        chart.setExtraRightOffset(30f);
 
         // Set data and refresh chart
         chart.setData(new LineData(dataSet));
