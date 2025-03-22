@@ -116,7 +116,7 @@ public class ScanMeasurementActivity extends AppCompatActivity {
             }
         });
 
-        scaleConversionButton.setOnClickListener(view -> changeTemperatureScale());
+       // scaleConversionButton.setOnClickListener(view -> changeTemperatureScale());
     }
 
     // Attempt to connect to the ESP32 on a background thread
@@ -182,7 +182,7 @@ public class ScanMeasurementActivity extends AppCompatActivity {
                 int progress = (int) ((elapsed / (float) duration) * 100);
                 String finalTemp = temp;
                 runOnUiThread(() -> {
-                    temperatureTextView.setText(" " + finalTemp + " " + temperatureScaleText + " ");
+                    temperatureTextView.setText(" " + finalTemp  + " °C " );
                     measurementProgressBar.setProgress(progress);
                     saveButton.setText(progress + "%");
                 });
@@ -197,11 +197,11 @@ public class ScanMeasurementActivity extends AppCompatActivity {
                 saveButton.setClickable(true);
 
                 // Show fever alert if the user temperature is higher than the threshold
-                String temperatureTextValue = temperatureTextView.getText().toString().replace(temperatureScaleText, "").trim();
-                int temperatureValue = convertToCelsius(Integer.parseInt(temperatureTextValue));
+                //String temperatureTextValue = temperatureTextView.getText().toString().replace(temperatureScaleText, "").trim();
+               /* int temperatureValue = convertToCelsius(Integer.parseInt(temperatureTextValue));
                 if (temperatureValue >= feverTemperatureThresholdCelsius){
                     feverAlertDialogLayout.setVisibility(android.view.View.VISIBLE);
-                }
+                }*/
             });
         }).start();
     }
@@ -217,10 +217,12 @@ public class ScanMeasurementActivity extends AppCompatActivity {
     }
 
     private void saveMeasurement() {
+        // Retrieve the measured temperature from the TextView
         String temperatureText = temperatureTextView.getText().toString().trim();
+        // Remove the "°C" part (if present)
+        temperatureText = temperatureText.replace("°C", "").trim();
 
-        temperatureText = temperatureText.replace(temperatureScaleText, "").trim();
-
+        // Get current time as a formatted string
         String measurementTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date());
 
         // Retrieve current profile name from SharedPreferences.
@@ -232,17 +234,21 @@ public class ScanMeasurementActivity extends AppCompatActivity {
         DBHelper dbHelper = new DBHelper(this);
         boolean inserted = dbHelper.insertTemperature(currentProfile, measurementTime, temperatureText);
 
+        // Display a confirmation message
         if (inserted) {
-            Toast.makeText(ScanMeasurementActivity.this, "Temperature has been saved", Toast.LENGTH_SHORT).show();
+            Toast.makeText(ScanMeasurementActivity.this, "temperature has been saved", Toast.LENGTH_SHORT).show();
         } else {
             Toast.makeText(ScanMeasurementActivity.this, "Error saving temperature", Toast.LENGTH_SHORT).show();
         }
 
+        // Close Bluetooth connection and redirect to TemperatureMeasurementPage
         closeBluetoothConnection();
         Intent intent = new Intent(ScanMeasurementActivity.this, TemperatureMeasurementPage.class);
         startActivity(intent);
         finish();
     }
+
+
 
     private String readTemperature() {
         if (socket == null || !socket.isConnected()) {
@@ -276,43 +282,4 @@ public class ScanMeasurementActivity extends AppCompatActivity {
         inputStream = null;
     }
 
-    private void changeTemperatureScale(){
-        String temperatureTextValue = temperatureTextView.getText().toString().replace(temperatureScaleText, "").trim();
-
-        if (temperatureScaleText.equals("°C")){
-            int temperatureValue = convertToFahrenheit(Integer.parseInt(temperatureTextValue));
-
-            temperatureTextView.setText(" " + temperatureValue + " " + temperatureScaleText + " ");
-
-            SharedPreferences sharedPreferences = getSharedPreferences("user_prefs", MODE_PRIVATE);
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-
-            editor.putString("temperatureScaleText","°F");
-            editor.apply();
-        } else {
-            int temperatureValue = convertToCelsius(Integer.parseInt(temperatureTextValue));
-
-            temperatureTextView.setText(" " + temperatureValue + " " + temperatureScaleText + " ");
-
-            SharedPreferences sharedPreferences = getSharedPreferences("user_prefs", MODE_PRIVATE);
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-
-            editor.putString("temperatureScaleText","°C");
-            editor.apply();
-        }
-    }
-
-    private int convertToCelsius(int temperature){
-        if (temperatureScaleText.equals("°F")){
-            return (int)(((5.0/9)*temperature) - 32);
-        }
-        return temperature;
-    }
-
-    private int convertToFahrenheit(int temperature){
-        if (temperatureScaleText.equals("°C")){
-            return (int)(((9.0/9)*temperature) + 32);
-        }
-        return temperature;
-    }
 }
