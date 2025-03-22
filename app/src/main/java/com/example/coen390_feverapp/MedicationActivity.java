@@ -92,6 +92,9 @@ public class MedicationActivity extends AppCompatActivity {
         } else if(id ==R.id.miLogOut) {
             goToLoginPage();
             return true;
+        }else if(id ==R.id.miSymptoms) {
+            goSymptomPage();
+            return true;
         }
         else if (id==R.id.miGraph){
             Graph();
@@ -164,6 +167,11 @@ public class MedicationActivity extends AppCompatActivity {
     private void Graph(){
         GraphFragment graphDialog = new GraphFragment();
         graphDialog.show(getSupportFragmentManager(), "GraphDialog");
+    }
+
+    private void goSymptomPage(){
+        Intent intent = new Intent(this, SymptomLogActivity.class);
+        startActivity(intent);
     }
 
 
