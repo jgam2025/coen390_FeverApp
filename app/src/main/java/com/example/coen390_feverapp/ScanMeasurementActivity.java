@@ -212,9 +212,9 @@ public class ScanMeasurementActivity extends AppCompatActivity {
                     try {
                         double c = Double.parseDouble(finalTemp);
                         if (temperatureScaleText.equals("°F")) {
-                            display = String.format(Locale.getDefault(), "%.2f °F", (c * 9/5) + 32);
+                            display = String.format(Locale.getDefault(), " %.2f °F ", (c * 9/5) + 32);
                         } else {
-                            display = String.format(Locale.getDefault(), "%.2f °C", c);
+                            display = String.format(Locale.getDefault(), " %.2f °C ", c);
                         }
                     } catch (NumberFormatException e) {
                         display = finalTemp + " " + temperatureScaleText;
@@ -250,10 +250,6 @@ public class ScanMeasurementActivity extends AppCompatActivity {
     }
 
     private void saveMeasurement() {
-       /*// Retrieve the measured temperature from the TextView
-        String temperatureText = temperatureTextView.getText().toString().trim();
-        // Remove the "°C" part (if present)
-        temperatureText = temperatureText.replace("°C", "").trim();*/
         String measurementValue = temperatureTextView.getText().toString().trim();
 
         String measurementTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date());
@@ -265,14 +261,10 @@ public class ScanMeasurementActivity extends AppCompatActivity {
 
         // Save the measurement to the temperature table using the profile name
         DBHelper dbHelper = new DBHelper(this);
-        //boolean inserted = dbHelper.insertTemperature(currentProfile, measurementTime, temperatureText);
         boolean inserted = dbHelper.insertTemperature(currentProfile, measurementTime, measurementValue);
 
-
-
-        // Display a confirmation message
         if (inserted) {
-            Toast.makeText(ScanMeasurementActivity.this, "temperature has been saved", Toast.LENGTH_SHORT).show();
+            Toast.makeText(ScanMeasurementActivity.this, "Temperature has been saved", Toast.LENGTH_SHORT).show();
         } else {
             Toast.makeText(ScanMeasurementActivity.this, "Error saving temperature", Toast.LENGTH_SHORT).show();
         }
