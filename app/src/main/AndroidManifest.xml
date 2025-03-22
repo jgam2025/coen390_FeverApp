@@ -18,16 +18,16 @@
         android:theme="@style/Base.Theme.Coen390_FeverApp"
         tools:targetApi="31">
         <activity
+            android:name=".PhoneNumberActivity"
+            android:exported="false" />
+        <activity
             android:name=".SymptomStoragePage"
             android:exported="false" />
         <activity
             android:name=".MedicationActivity"
             android:exported="false" />
         <activity
-            android:name=".ExtraPage"
-            android:exported="false" />
-        <activity
-            android:name=".ExtraPage"
+            android:name=".ExtraPageActivity"
             android:exported="false" />
         <activity
             android:name=".SymptomLogActivity"

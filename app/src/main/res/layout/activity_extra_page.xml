@@ -5,7 +5,7 @@
     android:id="@+id/checkBoxLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ExtraPage">
+    tools:context=".ExtraPageActivity">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
@@ -19,13 +19,12 @@
         android:backgroundTint="#D2665A"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <TextView
-        android:id="@+id/textView4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="41dp"
-        android:layout_marginTop="48dp"
-        android:text="Extra Page"
+    <ListView
+        android:id="@+id/additionalPageListView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/toolbar"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

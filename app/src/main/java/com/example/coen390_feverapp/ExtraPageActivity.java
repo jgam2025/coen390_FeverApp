@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,13 +14,18 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-public class ExtraPage extends AppCompatActivity {
+public class ExtraPageActivity extends AppCompatActivity {
+
+    String[] pageNames = {"Important Phone Numbers"};
+
+    protected ListView additionalPageListView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_extra_page);
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
@@ -29,6 +36,8 @@ public class ExtraPage extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        setupUI();
     }
 
     @Override
@@ -62,10 +71,8 @@ public class ExtraPage extends AppCompatActivity {
         }
 
         else if (id==R.id.miLogOut) {
-
             goToLogin();
             return true;
-
         } else if(id==R.id.miMedication) {
             goToMedicationPage();
             return true;
@@ -76,7 +83,7 @@ public class ExtraPage extends AppCompatActivity {
     }
 
     private void goToExtraPage(){
-        Intent intent = new Intent(this, ExtraPage.class);
+        Intent intent = new Intent(this, ExtraPageActivity.class);
         startActivity(intent);
     }
 
@@ -107,4 +114,24 @@ public class ExtraPage extends AppCompatActivity {
         GraphFragment graphDialog = new GraphFragment();
         graphDialog.show(getSupportFragmentManager(), "GraphDialog");
     }
+
+    private void setupUI() {
+
+        additionalPageListView = findViewById(R.id.additionalPageListView);
+
+        // set adapter (will write the items on the listView)
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, pageNames);
+        additionalPageListView.setAdapter(adapter);
+
+        additionalPageListView.setOnItemClickListener((parent, view, position, id) -> {
+            String selectedPage = pageNames[position];
+
+            if (selectedPage.equals("Additional Info")){
+                Intent intent = new Intent(ExtraPageActivity.this, PhoneNumberActivity.class);
+                startActivity(intent);
+            }
+        });
+    }
+
+
 }

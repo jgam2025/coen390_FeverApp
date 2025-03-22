@@ -1,9 +1,7 @@
 package com.example.coen390_feverapp;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -21,7 +19,6 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class SymptomStoragePage extends AppCompatActivity {
@@ -141,7 +138,7 @@ public class SymptomStoragePage extends AppCompatActivity {
     }
 
     private void goToExtraPage(){
-        Intent intent = new Intent(this, ExtraPage.class);
+        Intent intent = new Intent(this, ExtraPageActivity.class);
         startActivity(intent);
     }
 

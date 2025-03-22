@@ -149,7 +149,7 @@ public class TemperatureMeasurementPage extends AppCompatActivity {
 
 
     private void goToExtraPage(){
-        Intent intent = new Intent(this, ExtraPage.class);
+        Intent intent = new Intent(this, ExtraPageActivity.class);
         startActivity(intent);
     }
 

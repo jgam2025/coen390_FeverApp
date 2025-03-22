@@ -11,7 +11,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Toast;
-import android.util.Log;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
@@ -141,7 +141,7 @@ public class MedicationActivity extends AppCompatActivity {
 
 
     private void goToExtraPage(){
-        Intent intent = new Intent(this, ExtraPage.class);
+        Intent intent = new Intent(this, ExtraPageActivity.class);
         startActivity(intent);
     }
 
