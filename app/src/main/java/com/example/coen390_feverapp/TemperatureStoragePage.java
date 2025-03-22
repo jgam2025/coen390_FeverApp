@@ -72,7 +72,7 @@ public class TemperatureStoragePage extends AppCompatActivity {
         if (cursor != null && cursor.moveToFirst()) {
             @SuppressLint("Range") String lastTemp = cursor.getString(cursor.getColumnIndex("temperature_value"));
             @SuppressLint("Range") String lastTime = cursor.getString(cursor.getColumnIndex("measurement_time"));
-            textViewLastTemperature.setText("Last Temperature: " + lastTemp + " °C\n" + lastTime);
+            textViewLastTemperature.setText("Last Temperature: " + lastTemp + "\n" + lastTime);
             cursor.close();
         } else {
             textViewLastTemperature.setText("Last Temperature: None");
@@ -172,7 +172,8 @@ public class TemperatureStoragePage extends AppCompatActivity {
             do {
                 @SuppressLint("Range") String time = cursor.getString(cursor.getColumnIndex("measurement_time"));
                 @SuppressLint("Range") String temp = cursor.getString(cursor.getColumnIndex("temperature_value"));
-                measurements.add("Date & Time: " + time + "\nTemperature: " + temp + " °C");
+                measurements.add("Date & Time: " + time + "\nTemperature: " + temp);
+
             } while (cursor.moveToNext());
             cursor.close();
         }

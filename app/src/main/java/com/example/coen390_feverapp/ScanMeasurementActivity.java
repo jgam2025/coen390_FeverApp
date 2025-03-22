@@ -34,6 +34,10 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 import java.util.UUID;
+import android.widget.Spinner;
+import android.widget.ArrayAdapter;
+import android.widget.AdapterView;
+
 
 public class ScanMeasurementActivity extends AppCompatActivity {
 
@@ -50,12 +54,13 @@ public class ScanMeasurementActivity extends AppCompatActivity {
     protected ConstraintLayout instructionDialogLayout, feverAlertDialogLayout;
     protected FloatingActionButton closeInstructionDialogButton, closeAlertDialogButton;
     protected ImageView imageViewArrowScanPage;
-    protected FrameLayout scaleConversionButton;
 
     protected volatile boolean measurementCanceled = false;
 
-    String temperatureScaleText;
     int feverTemperatureThresholdCelsius = 38;
+    private Spinner scaleSpinner;
+    private String temperatureScaleText;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,7 +100,6 @@ public class ScanMeasurementActivity extends AppCompatActivity {
         feverAlertDialogLayout = findViewById(R.id.feverAlertDialog);
         closeAlertDialogButton = findViewById(R.id.closeFeverAlertDialogButton);
         imageViewArrowScanPage = findViewById(R.id.imageViewArrowScanPage);
-        scaleConversionButton = findViewById(R.id.scaleConversionButton);
 
 
         measurementProgressBar.setProgress(0);
@@ -108,6 +112,27 @@ public class ScanMeasurementActivity extends AppCompatActivity {
         closeInstructionDialogButton.setOnClickListener(v -> instructionDialogLayout.setVisibility(android.view.View.GONE));
         closeAlertDialogButton.setOnClickListener(v -> feverAlertDialogLayout.setVisibility(android.view.View.GONE));
 
+        scaleSpinner = findViewById(R.id.scaleSpinner);
+        String[] scales = {"°C", "°F"};
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, scales);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        scaleSpinner.setAdapter(adapter);
+
+// Load saved preference (default = °C)
+        temperatureScaleText = getSharedPreferences("user_prefs", MODE_PRIVATE)
+                .getString("temperatureScaleText", "°C");
+        scaleSpinner.setSelection(temperatureScaleText.equals("°F") ? 1 : 0);
+
+        scaleSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
+                temperatureScaleText = parent.getItemAtPosition(pos).toString();
+                getSharedPreferences("user_prefs", MODE_PRIVATE)
+                        .edit().putString("temperatureScaleText", temperatureScaleText).apply();
+            }
+            @Override public void onNothingSelected(AdapterView<?> parent) { }
+        });
+
+
         imageViewArrowScanPage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -116,7 +141,6 @@ public class ScanMeasurementActivity extends AppCompatActivity {
             }
         });
 
-       // scaleConversionButton.setOnClickListener(view -> changeTemperatureScale());
     }
 
     // Attempt to connect to the ESP32 on a background thread
@@ -172,26 +196,42 @@ public class ScanMeasurementActivity extends AppCompatActivity {
             }
 
             long startTime = System.currentTimeMillis();
-            int duration = 3000; // 8 seconds measurement period
+            int duration = 3000;
+
             while (System.currentTimeMillis() - startTime < duration && !measurementCanceled) {
                 String temp = readTemperature();
-                if (temp == null) {
-                    temp = "Error";
-                }
+                if (temp == null) temp = "Error";
+
                 long elapsed = System.currentTimeMillis() - startTime;
                 int progress = (int) ((elapsed / (float) duration) * 100);
-                String finalTemp = temp;
+                String finalTemp = temp;              // <-- defined here
+
                 runOnUiThread(() -> {
-                    temperatureTextView.setText(" " + finalTemp  + " °C " );
+                    // ← Replace only this block’s contents (the old setText line) with conversion logic
+                    String display;
+                    try {
+                        double c = Double.parseDouble(finalTemp);
+                        if (temperatureScaleText.equals("°F")) {
+                            display = String.format(Locale.getDefault(), "%.2f °F", (c * 9/5) + 32);
+                        } else {
+                            display = String.format(Locale.getDefault(), "%.2f °C", c);
+                        }
+                    } catch (NumberFormatException e) {
+                        display = finalTemp + " " + temperatureScaleText;
+                    }
+
+                    temperatureTextView.setText(" " + display);
                     measurementProgressBar.setProgress(progress);
                     saveButton.setText(progress + "%");
                 });
+
                 try {
                     Thread.sleep(500);
                 } catch (InterruptedException e) {
-                    break;
+                    throw new RuntimeException(e);
                 }
             }
+
             runOnUiThread(() -> {
                 saveButton.setText("SAVE");
                 saveButton.setClickable(true);
@@ -205,15 +245,16 @@ public class ScanMeasurementActivity extends AppCompatActivity {
         runOnUiThread(() -> {
             cancelAndSaveButtonLayout.setVisibility(android.view.View.GONE);
             startButton.setVisibility(android.view.View.VISIBLE);
-            temperatureTextView.setText(" 0 °C ");
+            temperatureTextView.setText(" Press Start ");
         });
     }
 
     private void saveMeasurement() {
-        // Retrieve the measured temperature from the TextView
+       /*// Retrieve the measured temperature from the TextView
         String temperatureText = temperatureTextView.getText().toString().trim();
         // Remove the "°C" part (if present)
-        temperatureText = temperatureText.replace("°C", "").trim();
+        temperatureText = temperatureText.replace("°C", "").trim();*/
+        String measurementValue = temperatureTextView.getText().toString().trim();
 
         String measurementTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date());
 
@@ -224,7 +265,10 @@ public class ScanMeasurementActivity extends AppCompatActivity {
 
         // Save the measurement to the temperature table using the profile name
         DBHelper dbHelper = new DBHelper(this);
-        boolean inserted = dbHelper.insertTemperature(currentProfile, measurementTime, temperatureText);
+        //boolean inserted = dbHelper.insertTemperature(currentProfile, measurementTime, temperatureText);
+        boolean inserted = dbHelper.insertTemperature(currentProfile, measurementTime, measurementValue);
+
+
 
         // Display a confirmation message
         if (inserted) {
