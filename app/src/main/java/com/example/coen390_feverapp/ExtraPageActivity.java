@@ -16,7 +16,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 public class ExtraPageActivity extends AppCompatActivity {
 
-    String[] pageNames = {"Important Phone Numbers"};
+    String[] pageNames = {"Health Tips & Phone Numbers"};
 
     protected ListView additionalPageListView;
 
@@ -126,7 +126,7 @@ public class ExtraPageActivity extends AppCompatActivity {
         additionalPageListView.setOnItemClickListener((parent, view, position, id) -> {
             String selectedPage = pageNames[position];
 
-            if (selectedPage.equals("Additional Info")){
+            if (selectedPage.equals("Health Tips & Phone Numbers")){
                 Intent intent = new Intent(ExtraPageActivity.this, PhoneNumberActivity.class);
                 startActivity(intent);
             }

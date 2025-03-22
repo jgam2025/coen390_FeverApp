@@ -15,6 +15,8 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -142,6 +144,25 @@ public class PhoneNumberActivity extends AppCompatActivity {
                 }
             });
         }
+
+        TextView webMdLink = findViewById(R.id.webMdLink);
+        TextView clevelandClinicLink = findViewById(R.id.clevelandClinicLink);
+
+        webMdLink.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent webLinkIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.webmd.com/first-aid/fevers-causes-symptoms-treatments"));
+                startActivity(webLinkIntent);
+            }
+        });
+
+        clevelandClinicLink.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent webLinkIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://my.clevelandclinic.org/health/symptoms/10880-fever"));
+                startActivity(webLinkIntent);
+            }
+        });
 
     }
 
