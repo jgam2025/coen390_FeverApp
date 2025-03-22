@@ -65,14 +65,47 @@ public class TemperatureStoragePage extends AppCompatActivity {
         updateTemperatureHistory();
     }
 
+    @SuppressLint("ResourceAsColor")
     private void loadLastTemperature() {
         SharedPreferences sharedPrefs = getSharedPreferences("user_prefs", MODE_PRIVATE);
         String currentProfile = sharedPrefs.getString("current_profile", "default");
         Cursor cursor = dbHelper.getLastTemperatureByProfile(currentProfile);
+
+        TextView lastTempTv = findViewById(R.id.textViewLastTemperature);
+        TextView alertTv = findViewById(R.id.textView5);
+
         if (cursor != null && cursor.moveToFirst()) {
-            @SuppressLint("Range") String lastTemp = cursor.getString(cursor.getColumnIndex("temperature_value"));
-            @SuppressLint("Range") String lastTime = cursor.getString(cursor.getColumnIndex("measurement_time"));
-            textViewLastTemperature.setText("Last Temperature: " + lastTemp + "\n" + lastTime);
+            @SuppressLint("Range") String saved = cursor.getString(cursor.getColumnIndex("temperature_value"));
+            @SuppressLint("Range") String time = cursor.getString(cursor.getColumnIndex("measurement_time"));
+            lastTempTv.setText("Last Temperature: " + saved + "\n" + "    " + time);
+
+            // Parse value + unit
+            String[] parts = saved.split(" ");
+            double value = Double.parseDouble(parts[0]);
+            boolean isF = saved.contains("°F");
+
+            // Convert to °C if needed
+            double celsius = isF ? (value - 32) * 5/9 : value;
+
+            // Determine category + colour
+            String category;
+            int colorRes;
+            if (celsius < 37.5) {
+                category = " No Fever ";
+                colorRes = android.R.color.transparent;
+            } else if (celsius < 38.0) {
+                category = " Mild Fever ";
+                colorRes = getResources().getColor(R.color.mild_fever_bg);
+            } else if (celsius < 39.0) {
+                category = " Fever ";
+                colorRes = getResources().getColor(R.color.fever_bg);
+            } else {
+                category = " High Fever ";
+                colorRes = getResources().getColor(R.color.high_fever_bg);
+            }
+
+            alertTv.setText(category);
+            alertTv.setBackgroundColor(colorRes);
             cursor.close();
         } else {
             textViewLastTemperature.setText("Last Temperature: None");
