@@ -24,8 +24,13 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.ValueFormatter;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class GraphFragment extends DialogFragment {
 
@@ -103,26 +108,45 @@ public class GraphFragment extends DialogFragment {
         XAxis xAxis = chart.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setGranularity(1f);
-        xAxis.setDrawLabels(false);
+        xAxis.setTextSize(0.2f);
+        //xAxis.setDrawLabels(false);
         xAxis.setDrawAxisLine(true);
         chart.setExtraBottomOffset(16f);
         xAxis.setAxisMinimum(0f);
         xAxis.setAxisMaximum(entries.size() - 1);
+        xAxis.setLabelRotationAngle(0f); // Keep labels upright
 
 
 
-        // Format X-axis labels directly in GraphDialogFragment
+
+
         xAxis.setValueFormatter(new ValueFormatter() {
             @Override
             public String getFormattedValue(float value) {
                 int index = Math.round(value);
                 if (index >= 0 && index < dateTimeLabels.size()) {
-                    return dateTimeLabels.get(index); // Display date-time instead of index numbers
-                } else {
-                    return "";
+                    String fullLabel = dateTimeLabels.get(index); // "2025-03-20 14:30"
+
+                    try {
+                        // Parse the original timestamp
+                        SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
+                        Date date = inputFormat.parse(fullLabel);
+
+                        // Format to "MMM dd\nHH:mm" → e.g., "Mar 20\n14:30"
+                        SimpleDateFormat outputFormat = new SimpleDateFormat("MMM dd\nHH:mm", Locale.getDefault());
+                        return outputFormat.format(date);
+
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                        return fullLabel; // fallback
+                    }
                 }
+                return "";
             }
         });
+
+
+
 
         // Configure Y Axis (Temperature)
         YAxis leftAxis = chart.getAxisLeft();
@@ -130,6 +154,10 @@ public class GraphFragment extends DialogFragment {
         chart.getAxisRight().setEnabled(false);
         chart.setExtraLeftOffset(15f);
         chart.setExtraRightOffset(30f);
+        chart.setExtraBottomOffset(30f);
+
+
+
 
         // Set data and refresh chart
         chart.setData(new LineData(dataSet));

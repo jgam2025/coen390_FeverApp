@@ -41,16 +41,14 @@
 
 
   <item
-      android:id="@+id/miLogOut"
-      android:icon ="@drawable/ic_logout"
-      app:showAsAction="always" />
-
-  <item
         android:id="@+id/miMore"
         android:icon ="@drawable/ic_more"
         app:showAsAction="always" />
 
-
+  <item
+      android:id="@+id/miLogOut"
+      android:icon ="@drawable/ic_logout"
+      app:showAsAction="always" />
 
 
 
