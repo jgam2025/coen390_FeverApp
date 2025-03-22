@@ -195,13 +195,6 @@ public class ScanMeasurementActivity extends AppCompatActivity {
             runOnUiThread(() -> {
                 saveButton.setText("SAVE");
                 saveButton.setClickable(true);
-
-                // Show fever alert if the user temperature is higher than the threshold
-                //String temperatureTextValue = temperatureTextView.getText().toString().replace(temperatureScaleText, "").trim();
-               /* int temperatureValue = convertToCelsius(Integer.parseInt(temperatureTextValue));
-                if (temperatureValue >= feverTemperatureThresholdCelsius){
-                    feverAlertDialogLayout.setVisibility(android.view.View.VISIBLE);
-                }*/
             });
         }).start();
     }
@@ -222,7 +215,6 @@ public class ScanMeasurementActivity extends AppCompatActivity {
         // Remove the "°C" part (if present)
         temperatureText = temperatureText.replace("°C", "").trim();
 
-        // Get current time as a formatted string
         String measurementTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date());
 
         // Retrieve current profile name from SharedPreferences.
