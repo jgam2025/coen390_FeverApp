@@ -1,6 +1,7 @@
 package com.example.coen390_feverapp;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
@@ -17,6 +18,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
@@ -38,12 +41,18 @@ public class GraphFragment extends DialogFragment {
     private DBHelper dbHelper;
     private String currentProfile; // Profile name for filtering
 
+
+
+
+
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_graph, container, false);
         chart = view.findViewById(R.id.chart);
         dbHelper = new DBHelper(requireActivity());
+
 
         SharedPreferences prefs = requireActivity().getSharedPreferences("user_prefs", android.content.Context.MODE_PRIVATE);
         currentProfile = prefs.getString("current_profile", "default");
