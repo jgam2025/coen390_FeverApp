@@ -16,7 +16,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 public class ExtraPageActivity extends AppCompatActivity {
 
-    String[] pageNames = {"Health Tips & Phone Numbers"};
+    String[] pageNames = {"Health Resources & Phone Numbers"};
 
     protected ListView additionalPageListView;
 
@@ -63,13 +63,14 @@ public class ExtraPageActivity extends AppCompatActivity {
         else if (id == R.id.miadd) {
             addProfile();
             return true;
-
         }
-        else if (id==R.id.miTemperature) {
+        else if(id ==R.id.miSymptoms) {
+            goSymptomPage();
+            return true;
+        }else if (id==R.id.miTemperature) {
             goToTemperatureMeasurementPage();
             return true;
         }
-
         else if (id==R.id.miLogOut) {
             goToLogin();
             return true;
@@ -114,6 +115,10 @@ public class ExtraPageActivity extends AppCompatActivity {
         GraphFragment graphDialog = new GraphFragment();
         graphDialog.show(getSupportFragmentManager(), "GraphDialog");
     }
+    private void goSymptomPage(){
+        Intent intent = new Intent(this, SymptomLogActivity.class);
+        startActivity(intent);
+    }
 
     private void setupUI() {
 
@@ -126,7 +131,7 @@ public class ExtraPageActivity extends AppCompatActivity {
         additionalPageListView.setOnItemClickListener((parent, view, position, id) -> {
             String selectedPage = pageNames[position];
 
-            if (selectedPage.equals("Health Tips & Phone Numbers")){
+            if (selectedPage.equals("Health Resources & Phone Numbers")){
                 Intent intent = new Intent(ExtraPageActivity.this, PhoneNumberActivity.class);
                 startActivity(intent);
             }

@@ -10,5 +10,7 @@
     <color name="mild_fever_bg">#FFF59D</color>
     <color name="fever_bg">#FF8A80</color>
     <color name="high_fever_bg">#D32F2F</color>
+    <color name="fever_app_background">#921D35</color>
+    <color name="toolbar">#B44848</color>
 
 </resources>

@@ -5,7 +5,7 @@
     android:id="@+id/checkBoxLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#B82132"
+    android:background="@color/fever_app_background"
     tools:context=".RegisterActivity">
 
 

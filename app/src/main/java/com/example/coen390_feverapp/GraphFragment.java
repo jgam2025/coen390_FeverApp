@@ -1,6 +1,7 @@
 package com.example.coen390_feverapp;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
@@ -17,6 +18,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
@@ -38,12 +41,18 @@ public class GraphFragment extends DialogFragment {
     private DBHelper dbHelper;
     private String currentProfile; // Profile name for filtering
 
+
+
+
+
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_graph, container, false);
         chart = view.findViewById(R.id.chart);
         dbHelper = new DBHelper(requireActivity());
+
 
         SharedPreferences prefs = requireActivity().getSharedPreferences("user_prefs", android.content.Context.MODE_PRIVATE);
         currentProfile = prefs.getString("current_profile", "default");
@@ -76,8 +85,24 @@ public class GraphFragment extends DialogFragment {
             Log.d("GRAPH_DEBUG", "Data found for profile: " + currentProfile);
         }
         int index = 0;
-
         if (cursor != null && cursor.moveToFirst()) {
+            do {
+                @SuppressLint("Range") float rawTemp = cursor.getFloat(cursor.getColumnIndex("temperature_value"));
+                float temperature = autoConvertIfFahrenheit(rawTemp);
+
+                @SuppressLint("Range") String measurementTime = cursor.getString(cursor.getColumnIndex("measurement_time"));
+
+                Log.d("GRAPH_DEBUG", "Reading: " + measurementTime + " - " + temperature);
+
+                entries.add(new Entry(index, temperature));
+                dateTimeLabels.add(measurementTime);
+                index++;
+            } while (cursor.moveToNext());
+            cursor.close();
+        }
+
+
+        /*if (cursor != null && cursor.moveToFirst()) {
             do {
                 @SuppressLint("Range") float temperature = cursor.getFloat(cursor.getColumnIndex("temperature_value"));
                 @SuppressLint("Range") String measurementTime = cursor.getString(cursor.getColumnIndex("measurement_time"));
@@ -90,12 +115,22 @@ public class GraphFragment extends DialogFragment {
                 index++;
             } while (cursor.moveToNext());
             cursor.close();
-        }
+        }*/
 
         if (!entries.isEmpty()) {
             plotGraph(entries, dateTimeLabels);
         }
     }
+
+    private float autoConvertIfFahrenheit(float value) {
+        // Assume anything over 60 is in Fahrenheit
+        if (value > 60f) {
+            return (value - 32f) * 5f / 9f;
+        } else {
+            return value; // Assume Celsius
+        }
+    }
+
 
     private void plotGraph(List<Entry> entries, final List<String> dateTimeLabels) {
         LineDataSet dataSet = new LineDataSet(entries, "Temperature Readings");

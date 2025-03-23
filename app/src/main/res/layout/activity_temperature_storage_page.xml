@@ -12,11 +12,11 @@
         android:layout_width="409dp"
         android:layout_height="80dp"
         android:background="?attr/colorPrimary"
+        android:backgroundTint="@color/toolbar"
         android:minHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:backgroundTint="#D2665A"
         app:layout_constraintStart_toStartOf="parent" />
 
 
@@ -87,7 +87,7 @@
         android:id="@+id/textView5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="25dp"
+        android:layout_marginTop="20dp"
         android:text="Alert"
         android:textSize="40dp"
         app:layout_constraintBottom_toTopOf="@+id/linearLayoutDateSelection"
