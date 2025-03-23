@@ -63,7 +63,22 @@ public class NewSymptomFragment extends DialogFragment {
                 //create checkbox
                 CheckBox newSymptomCheckbox = new CheckBox(getContext());
                 newSymptomCheckbox.setText(symptom);
+
                 LinearLayout container = getActivity().findViewById(R.id.linearCheckBoxLayout);
+
+                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT,
+                        LinearLayout.LayoutParams.WRAP_CONTENT);
+
+                int marginL = 0;
+                int marginT = 20;
+                int marginR = 0;
+                int marginB = 20;
+
+                params.setMargins(marginL, marginT, marginR, marginB);
+
+                newSymptomCheckbox.setLayoutParams(params);
+
                 container.addView(newSymptomCheckbox);
                 ScrollView scrollView = getActivity().findViewById(R.id.checkboxScroll);
                 scrollView.requestLayout();

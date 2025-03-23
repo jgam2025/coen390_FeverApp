@@ -171,6 +171,20 @@ public class SymptomLogActivity extends AppCompatActivity  {
         for (String symptom : userAddedSymptoms) {
             CheckBox symptomCheckBox = new CheckBox(this);
             symptomCheckBox.setText(symptom);
+
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT);
+
+            int marginL = 0;
+            int marginT = 20;
+            int marginR = 0;
+            int marginB = 20;
+
+            params.setMargins(marginL, marginT, marginR, marginB);
+
+            symptomCheckBox.setLayoutParams(params);
+
             LinearLayout container = findViewById(R.id.linearCheckBoxLayout);
             container.addView(symptomCheckBox);
             ScrollView scrollView = findViewById(R.id.checkboxScroll);
