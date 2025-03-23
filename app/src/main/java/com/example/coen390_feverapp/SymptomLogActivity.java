@@ -3,6 +3,7 @@ package com.example.coen390_feverapp;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -100,15 +101,18 @@ public class SymptomLogActivity extends AppCompatActivity  {
                 }
 
                 if(!symptoms.isEmpty()){
-                    symptoms = symptoms.substring(0,symptoms.length()-2);
+                    symptoms = symptoms.substring(0,symptoms.length()-2); // removes last ", " from string for display
                 }
+                Log.d("symptom_check", "symptom string: " + symptoms);
 
-                System.out.println(symptoms);
                 SharedPreferences sharedPrefs = getSharedPreferences("user_prefs",MODE_PRIVATE);
                 String currentProfile = sharedPrefs.getString("current_profile",null);
-                System.out.println(currentProfile);
+                String currentUser = sharedPrefs.getString("current_user", null);
+                Log.d("current_profile_check", "current profile: " + currentProfile);
+                int userID = dbHelper.getUserID(currentUser);
+                Log.d("current_user_check","current user: " + currentUser + " , id: " + userID);
                 String logTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date());
-                System.out.println(logTime);
+                Log.d("time_check", "time: " + logTime);
 
                 boolean inserted = dbHelper.insertSymptoms(currentProfile, symptoms, logTime);
 
@@ -192,7 +196,6 @@ public class SymptomLogActivity extends AppCompatActivity  {
             scrollView.fullScroll(View.FOCUS_DOWN);
             checkBoxes.add(symptomCheckBox);
         }
-
         return checkBoxes;
     }
 
@@ -201,7 +204,7 @@ public class SymptomLogActivity extends AppCompatActivity  {
         String currentUser = sharedPrefs.getString("current_user",null);
         List<String> profileList = dbHelper.getProfiles(currentUser);
         if(profileList.isEmpty()){
-
+            //do nothing
         }
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this,android.R.layout.simple_spinner_item,profileList);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -220,6 +223,7 @@ public class SymptomLogActivity extends AppCompatActivity  {
         });
 
     }
+
 
 
 

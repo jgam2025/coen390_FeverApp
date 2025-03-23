@@ -27,50 +27,47 @@ public class DBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase){
-        sqLiteDatabase.execSQL("create table users(username TEXT primary key, password TEXT )");
+        sqLiteDatabase.execSQL("create table users(username TEXT primary key, password TEXT )"); //users table
 
         sqLiteDatabase.execSQL("CREATE TABLE profiles (user_id INTEGER NOT NULL, " +
                 "profile_name TEXT NOT NULL, " +
-                "FOREIGN KEY(user_id) REFERENCES users(username))");
+                "FOREIGN KEY(user_id) REFERENCES users(username))"); //profiles table
 
         sqLiteDatabase.execSQL("CREATE TABLE temperature (" +
                 "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "profile_name TEXT NOT NULL, " +
                 "measurement_time TEXT NOT NULL, " +
-                "temperature_value TEXT NOT NULL)");
+                "temperature_value TEXT NOT NULL)"); // temp data table
 
         sqLiteDatabase.execSQL("CREATE TABLE medication (" +
                 "_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "profile_name TEXT NOT NULL, " +
                 "name TEXT NOT NULL, " +
                 "dose TEXT, " +
-                "timestamp DATETIME DEFAULT CURRENT_TIMESTAMP)");
+                "timestamp DATETIME DEFAULT CURRENT_TIMESTAMP)"); //medication data table
 
         sqLiteDatabase.execSQL("CREATE TABLE symptoms (" +
-                "_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "user_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "profile_name TEXT NOT NULL, " +
                 "symptom_type TEXT, " +
-                "timestamp DATETIME DEFAULT CURRENT_TIMESTAMP)");
+                "timestamp DATETIME DEFAULT CURRENT_TIMESTAMP)"); //symptoms data table
 
         sqLiteDatabase.execSQL("CREATE TABLE user_added_symptoms (" +
                 "user_id INTEGER NOT NULL, " +
-                "symptom TEXT NOT NULL)"); //table solely to store any new symptoms added by user
+                "symptom TEXT NOT NULL)"); //new user added symptoms data table
     }
 
-    public boolean insertTemperature(String profileName, String measurementTime, String temperatureValue) {
-        SQLiteDatabase myDB = this.getWritableDatabase();
-        ContentValues contentValues = new ContentValues();
-        contentValues.put("profile_name", profileName);
-        contentValues.put("measurement_time", measurementTime);
-        contentValues.put("temperature_value", temperatureValue);
-        long result = myDB.insert("temperature", null, contentValues);
-        return result != -1;
-    }
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1){
-        sqLiteDatabase.execSQL("drop table if exists users");
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS users");
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS temperature");
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS medication");
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS symptoms");
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS user_added_symptoms");
 
     }
+
+    //functions for user creation and validation
     public boolean insertData(String username, String password){
         SQLiteDatabase myDB = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -80,16 +77,6 @@ public class DBHelper extends SQLiteOpenHelper {
         if (result==-1)return false;
         else return true;
 
-    }
-
-    public boolean insertProfile(Profile profile){
-        SQLiteDatabase myDB = this.getWritableDatabase();
-        ContentValues contentValues = new ContentValues();
-        contentValues.put("user_id",profile.getUserId());
-        contentValues.put("profile_name",profile.getName());
-        long result = myDB.insert("profiles",null,contentValues);
-        if (result == -1) return false;
-        else return true;
     }
 
     public int getUserID(String username) {
@@ -115,30 +102,15 @@ public class DBHelper extends SQLiteOpenHelper {
         return cursor.getCount() > 0;
     }
 
-    public Cursor getAllUsersCursor(){
-        SQLiteDatabase myDB = this.getReadableDatabase();
-        return myDB.query("users", new String[] {"_id","username"},null,null,null,null,"username");
-    }
-
-    public List<String> getAllUsers(){
-        SQLiteDatabase myDB = this.getReadableDatabase();
-        List<String> userList = new ArrayList<>();
-        Cursor cursor = null;
-        try {
-            cursor = myDB.query("users", null, null, null, null, null, null);
-            if (cursor != null){
-                if(cursor.moveToFirst()){
-                    do {
-                        @SuppressLint("Range") String username = cursor.getString(cursor.getColumnIndex("username"));
-                        userList.add(username);
-                    } while (cursor.moveToNext());
-                }
-                cursor.close();
-            }
-        } catch (Exception e) {
-            Toast.makeText(context, "Get error: " + e.getMessage(), Toast.LENGTH_LONG).show();
-        }
-        return userList;
+    //functions for inserting and retrieving profiles
+    public boolean insertProfile(Profile profile){
+        SQLiteDatabase myDB = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("user_id",profile.getUserId());
+        contentValues.put("profile_name",profile.getName());
+        long result = myDB.insert("profiles",null,contentValues);
+        if (result == -1) return false;
+        else return true;
     }
 
     public List<String> getProfiles(String user){
@@ -163,6 +135,17 @@ public class DBHelper extends SQLiteOpenHelper {
         return profileList;
     }
 
+    //functions for inserting and retrieving temp data
+
+    public boolean insertTemperature(String profileName, String measurementTime, String temperatureValue) {
+        SQLiteDatabase myDB = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("profile_name", profileName);
+        contentValues.put("measurement_time", measurementTime);
+        contentValues.put("temperature_value", temperatureValue);
+        long result = myDB.insert("temperature", null, contentValues);
+        return result != -1;
+    }
     public Cursor getLastTemperatureByProfile(String profile) {
         SQLiteDatabase db = this.getReadableDatabase();
         return db.rawQuery("SELECT * FROM temperature WHERE profile_name = ? ORDER BY id DESC LIMIT 1", new String[]{profile});
@@ -176,6 +159,7 @@ public class DBHelper extends SQLiteOpenHelper {
         );
     }
 
+    //functions for inserting and retreiving medications
     public boolean insertMedication(String profile, String name, String dose) {
         SQLiteDatabase myDB = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
@@ -207,6 +191,7 @@ public class DBHelper extends SQLiteOpenHelper {
         return result > 0;
     }
 
+
     //functions for inserting and retrieving symptoms from checkboxes
     public boolean insertSymptoms(String profile, String symptoms, String timestamp){
         SQLiteDatabase myDB = this.getWritableDatabase();
@@ -223,7 +208,7 @@ public class DBHelper extends SQLiteOpenHelper {
         List<String> symptomsList = new ArrayList<>();
         Cursor cursor = null;
         try {
-            cursor = myDB.rawQuery("SELECT symptom_type, timestamp FROM symptoms WHERE profile_name = ? ORDER BY _id DESC", new String[]{profile});
+            cursor = myDB.rawQuery("SELECT symptom_type, timestamp FROM symptoms WHERE profile_name = ? ORDER BY user_id DESC", new String[]{profile});
             if(cursor!=null){
                 if (cursor.moveToFirst()) {
                     do{

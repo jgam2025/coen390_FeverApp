@@ -60,6 +60,8 @@ public class SymptomStoragePage extends AppCompatActivity {
     private void getSymptomHistory(){
         SharedPreferences sharedPrefs = getSharedPreferences("user_prefs", MODE_PRIVATE);
         String currentProfile = sharedPrefs.getString("current_profile", "default");
+        String currentUser = sharedPrefs.getString("current_user", null);
+        int userID = dbHelper.getUserID(currentUser);
 
         List<String> symptomList = dbHelper.getSymptomHistory(currentProfile);
 

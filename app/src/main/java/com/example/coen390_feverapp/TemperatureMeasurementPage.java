@@ -49,6 +49,67 @@ public class TemperatureMeasurementPage extends AppCompatActivity {
         dbHelper = new DBHelper(this);
         showUsersOnSpinner();
     }
+
+    void setupUI(){
+
+        ScanButton = findViewById(R.id.ScanButton);
+        ScanButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goToScanMeasurementPage();
+            }
+        });
+
+        infoFAB = findViewById(R.id.infoFAB);
+        infoFAB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                InsertInfoFragment infoDialog = new InsertInfoFragment();
+                infoDialog.show(getSupportFragmentManager(),"InfoPage");
+            }
+        });
+
+        userSpinner = findViewById(R.id.userSpinner);
+    }
+
+    public void showUsersOnSpinner(){
+        SharedPreferences sharedPrefs = getSharedPreferences("user_prefs", MODE_PRIVATE);
+        String currentUser = sharedPrefs.getString("current_user",null);
+        List<String> profileList = dbHelper.getProfiles(currentUser);
+        if(profileList.isEmpty()){
+
+        }
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,android.R.layout.simple_spinner_item,profileList);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        userSpinner.setAdapter(adapter);
+
+        // Check if a profile was previously selected and set it.
+        String savedProfile = sharedPrefs.getString("current_profile", null);
+        if (savedProfile != null) {
+            int index = profileList.indexOf(savedProfile);
+            if (index >= 0) {
+                userSpinner.setSelection(index);
+            }
+        }
+
+        // Save the selected profile into SharedPreferences when the user changes it.
+        userSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String selectedProfile = (String) parent.getItemAtPosition(position);
+                SharedPreferences.Editor editor = sharedPrefs.edit();
+                editor.putString("current_profile", selectedProfile);
+                editor.apply();
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) { }
+        });
+
+    }
+
+
+
+//menu setup functions
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu from the menu.xml file in the menu directory
@@ -93,29 +154,6 @@ public class TemperatureMeasurementPage extends AppCompatActivity {
         }
     }
 
-
-    void setupUI(){
-
-        ScanButton = findViewById(R.id.ScanButton);
-        ScanButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                goToScanMeasurementPage();
-            }
-        });
-
-        infoFAB = findViewById(R.id.infoFAB);
-        infoFAB.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                InsertInfoFragment infoDialog = new InsertInfoFragment();
-                infoDialog.show(getSupportFragmentManager(),"InfoPage");
-            }
-        });
-
-        userSpinner = findViewById(R.id.userSpinner);
-    }
-
     private void goToScanMeasurementPage(){
         Intent intent = new Intent(this, ScanMeasurementActivity.class);
         startActivity(intent);
@@ -156,41 +194,6 @@ public class TemperatureMeasurementPage extends AppCompatActivity {
     private void goToSymptomLogActivity(){
         Intent intent = new Intent(this,SymptomLogActivity.class);
         startActivity(intent);
-    }
-
-    public void showUsersOnSpinner(){
-        SharedPreferences sharedPrefs = getSharedPreferences("user_prefs", MODE_PRIVATE);
-        String currentUser = sharedPrefs.getString("current_user",null);
-        List<String> profileList = dbHelper.getProfiles(currentUser);
-        if(profileList.isEmpty()){
-
-        }
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,android.R.layout.simple_spinner_item,profileList);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        userSpinner.setAdapter(adapter);
-
-        // Check if a profile was previously selected and set it.
-        String savedProfile = sharedPrefs.getString("current_profile", null);
-        if (savedProfile != null) {
-            int index = profileList.indexOf(savedProfile);
-            if (index >= 0) {
-                userSpinner.setSelection(index);
-            }
-        }
-
-        // Save the selected profile into SharedPreferences when the user changes it.
-        userSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String selectedProfile = (String) parent.getItemAtPosition(position);
-                SharedPreferences.Editor editor = sharedPrefs.edit();
-                editor.putString("current_profile", selectedProfile);
-                editor.apply();
-            }
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) { }
-        });
-
     }
 
 }
