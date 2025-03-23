@@ -90,6 +90,8 @@ public class NewSymptomFragment extends DialogFragment {
                     int user = dbHelper.getUserID(currentUser);
                     dbHelper.insertNewSymptom(symptom, user);
 
+                    Toast.makeText(getContext(),"New symptom saved to list", Toast.LENGTH_SHORT).show();
+
                     dismiss();
                 }
             }
