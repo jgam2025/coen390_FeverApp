@@ -74,6 +74,8 @@ public class NewProfileFragment extends DialogFragment {
                     Profile profile = new Profile(name,userID);
                     dbHelper.insertProfile(profile);
 
+                    Toast.makeText(getContext(), "Profile Saved", Toast.LENGTH_SHORT).show();
+
                     if(temp_activity != null){
                         temp_activity.showUsersOnSpinner();
                     }
