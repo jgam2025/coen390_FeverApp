@@ -50,7 +50,6 @@ public class SymptomStoragePage extends AppCompatActivity {
     }
 
     private void setupUI(){
-        textTextView = findViewById(R.id.textTextView);
 
         profileSelectSpinner = findViewById(R.id.profileSelectSpinner);
         showUsersOnSpinner();
@@ -113,6 +112,10 @@ public class SymptomStoragePage extends AppCompatActivity {
         } else if (id == R.id.miadd) {
             addProfile();
             return true;
+        }else if (id == R.id.miperson) {
+            goToTemperatureStorage();
+            return true;
+
         }else if(id == R.id.miMedication){
             goToMedicationPage();
             return true;
@@ -158,6 +161,11 @@ public class SymptomStoragePage extends AppCompatActivity {
 
     private void goToMedicationPage(){
         Intent intent = new Intent(this, MedicationActivity.class);
+        startActivity(intent);
+    }
+
+    private void goToTemperatureStorage(){
+        Intent intent = new Intent(this, TemperatureStoragePage.class);
         startActivity(intent);
     }
 

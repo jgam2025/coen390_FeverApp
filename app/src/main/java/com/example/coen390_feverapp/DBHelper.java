@@ -228,7 +228,7 @@ public class DBHelper extends SQLiteOpenHelper {
                     do{
                         @SuppressLint("Range") String symptomsString = cursor.getString(cursor.getColumnIndex("symptom_type"));
                         @SuppressLint("Range") String time = cursor.getString(cursor.getColumnIndex("timestamp"));
-                        symptomsList.add("Date & Time: " + time + ", Symptoms: " + symptomsString);
+                        symptomsList.add("Date & Time: " + time + "\nSymptoms: " + symptomsString);
                     } while (cursor.moveToNext());
                 } cursor.close();
             }
