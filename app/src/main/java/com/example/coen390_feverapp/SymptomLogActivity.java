@@ -27,7 +27,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-public class SymptomLogActivity extends AppCompatActivity {
+public class SymptomLogActivity extends AppCompatActivity  {
 
     protected TextView selectTextView;
     protected CheckBox chillsCheckBox, soreThroatCheckBox, headacheCheckBox, achesCheckBox,
@@ -136,6 +136,15 @@ public class SymptomLogActivity extends AppCompatActivity {
                 goToSymptomStoragePage();
             }
         });
+
+        List<String> symptoms = dbHelper.getSymptomsForUser(userId);
+        LinearLayout container = findViewById(R.id.linearCheckBoxLayout);
+        for (String symptom : symptoms) {
+            CheckBox checkBox = new CheckBox(this);
+            checkBox.setText(symptom);
+            container.addView(checkBox);
+        }
+
     }
 
     public void showUsersOnSpinner(){
