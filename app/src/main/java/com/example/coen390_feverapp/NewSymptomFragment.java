@@ -59,38 +59,39 @@ public class NewSymptomFragment extends DialogFragment {
                 String symptom = newSymptomEditText.getText().toString();
                 if(symptom.isEmpty()){
                     Toast.makeText(getContext(), "Please enter a symptom", Toast.LENGTH_LONG).show();
+                } else {
+                    //create checkbox
+                    CheckBox newSymptomCheckbox = new CheckBox(getContext());
+                    newSymptomCheckbox.setText(symptom);
+
+                    LinearLayout container = getActivity().findViewById(R.id.linearCheckBoxLayout);
+
+                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MATCH_PARENT,
+                            LinearLayout.LayoutParams.WRAP_CONTENT);
+
+                    int marginL = 0;
+                    int marginT = 20;
+                    int marginR = 0;
+                    int marginB = 20;
+
+                    params.setMargins(marginL, marginT, marginR, marginB);
+
+                    newSymptomCheckbox.setLayoutParams(params);
+
+                    container.addView(newSymptomCheckbox);
+                    ScrollView scrollView = getActivity().findViewById(R.id.checkboxScroll);
+                    scrollView.requestLayout();
+                    scrollView.fullScroll(View.FOCUS_DOWN);
+
+                    //save checkbox into db associated w user
+                    SharedPreferences sharedPrefs = getActivity().getSharedPreferences("user_prefs", 0);
+                    String currentUser = sharedPrefs.getString("current_user", null);
+                    int user = dbHelper.getUserID(currentUser);
+                    dbHelper.insertNewSymptom(symptom, user);
+
+                    dismiss();
                 }
-                //create checkbox
-                CheckBox newSymptomCheckbox = new CheckBox(getContext());
-                newSymptomCheckbox.setText(symptom);
-
-                LinearLayout container = getActivity().findViewById(R.id.linearCheckBoxLayout);
-
-                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                        LinearLayout.LayoutParams.MATCH_PARENT,
-                        LinearLayout.LayoutParams.WRAP_CONTENT);
-
-                int marginL = 0;
-                int marginT = 20;
-                int marginR = 0;
-                int marginB = 20;
-
-                params.setMargins(marginL, marginT, marginR, marginB);
-
-                newSymptomCheckbox.setLayoutParams(params);
-
-                container.addView(newSymptomCheckbox);
-                ScrollView scrollView = getActivity().findViewById(R.id.checkboxScroll);
-                scrollView.requestLayout();
-                scrollView.fullScroll(View.FOCUS_DOWN);
-
-                //save checkbox into db associated w user
-                SharedPreferences sharedPrefs = getActivity().getSharedPreferences("user_prefs", 0);
-                String currentUser = sharedPrefs.getString("current_user",null);
-                int user = dbHelper.getUserID(currentUser);
-                dbHelper.insertNewSymptom(symptom,user);
-
-                dismiss();
             }
         });
 
