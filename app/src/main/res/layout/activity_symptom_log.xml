@@ -22,8 +22,8 @@
 
     <ScrollView
         android:id="@+id/checkboxScroll"
-        android:layout_width="362dp"
-        android:layout_height="456dp"
+        android:layout_width="364dp"
+        android:layout_height="350dp"
         android:layout_margin="16dp"
         android:layout_marginStart="20dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -33,7 +33,7 @@
         <LinearLayout
             android:id="@+id/linearCheckBoxLayout"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:baselineAligned="false"
             android:orientation="vertical">
 
@@ -108,6 +108,7 @@
                 android:text="Fatigue"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/coughCheckBox" />
+
         </LinearLayout>
     </ScrollView>
 
@@ -121,62 +122,46 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
+        android:id="@+id/newSymptomButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="400dp"
+        android:backgroundTint="@color/BUTTON_COLOR"
+        android:text="Add New Symptom"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.468"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/profileOptionSpinner" />
+
+    <Button
         android:id="@+id/submitButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:layout_marginBottom="10dp"
         android:backgroundTint="@color/BUTTON_COLOR"
-        android:gravity="center_horizontal"
         android:text="Submit"
-        app:layout_constraintBottom_toTopOf="@+id/toolbar"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.248"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/newSymptomButton"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintTop_toBottomOf="@id/newSymptomButton"
+        android:layout_marginTop="16dp" />
 
     <Button
         android:id="@+id/goToLogButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="48dp"
-        android:layout_marginBottom="30dp"
         android:backgroundTint="@color/BUTTON_COLOR"
         android:text="Go To Log"
-        android:translationX="10dp"
-        app:layout_constraintBottom_toTopOf="@+id/toolbar"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.852"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/checkboxScroll" />
+        app:layout_constraintTop_toBottomOf="@id/newSymptomButton"
+        android:layout_marginTop="16dp" />
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
-        android:layout_width="409dp"
+        android:layout_width="match_parent"
         android:layout_height="80dp"
         android:background="?attr/colorPrimary"
         android:backgroundTint="@color/toolbar"
-        android:minHeight="?attr/actionBarSize"
-        android:theme="?attr/actionBarTheme"
-        android:title=""
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <Button
-        android:id="@+id/newSymptomButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="12dp"
-        android:layout_marginEnd="78dp"
-        android:backgroundTint="@color/BUTTON_COLOR"
-        android:text="Add New Symptom"
-        app:layout_constraintEnd_toStartOf="@+id/goToLogButton"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/checkboxScroll" />
+        app:layout_constraintEnd_toEndOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

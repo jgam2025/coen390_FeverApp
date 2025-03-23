@@ -33,6 +33,7 @@ public class NewSymptomFragment extends DialogFragment {
         // Required empty public constructor
     }
 
+    /*
     public interface onSymptomSavedListener {
         void onSymptomSaved(List<CheckBox> newCheckBoxList);
     }
@@ -49,6 +50,8 @@ public class NewSymptomFragment extends DialogFragment {
         }
     }
 
+
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -86,7 +89,7 @@ public class NewSymptomFragment extends DialogFragment {
 
                 List<CheckBox> newCheckBoxList = new ArrayList<>();
                 newCheckBoxList.add(newSymptomCheckbox);
-                listener.onSymptomSaved(newCheckBoxList);
+                //listener.onSymptomSaved(newCheckBoxList);
                 //save checkbox into db associated w user
                 SharedPreferences sharedPrefs = getActivity().getSharedPreferences("user_prefs", 0);
                 String currentUser = sharedPrefs.getString("current_user",null);

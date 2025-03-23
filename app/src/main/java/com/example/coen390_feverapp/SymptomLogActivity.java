@@ -137,6 +137,7 @@ public class SymptomLogActivity extends AppCompatActivity  {
             }
         });
 
+        /*
         List<String> symptoms = dbHelper.getSymptomsForUser(userId);
         LinearLayout container = findViewById(R.id.linearCheckBoxLayout);
         for (String symptom : symptoms) {
@@ -144,6 +145,8 @@ public class SymptomLogActivity extends AppCompatActivity  {
             checkBox.setText(symptom);
             container.addView(checkBox);
         }
+
+         */
 
     }
 
