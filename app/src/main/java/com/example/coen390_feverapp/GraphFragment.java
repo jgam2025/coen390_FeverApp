@@ -76,8 +76,24 @@ public class GraphFragment extends DialogFragment {
             Log.d("GRAPH_DEBUG", "Data found for profile: " + currentProfile);
         }
         int index = 0;
-
         if (cursor != null && cursor.moveToFirst()) {
+            do {
+                @SuppressLint("Range") float rawTemp = cursor.getFloat(cursor.getColumnIndex("temperature_value"));
+                float temperature = autoConvertIfFahrenheit(rawTemp);
+
+                @SuppressLint("Range") String measurementTime = cursor.getString(cursor.getColumnIndex("measurement_time"));
+
+                Log.d("GRAPH_DEBUG", "Reading: " + measurementTime + " - " + temperature);
+
+                entries.add(new Entry(index, temperature));
+                dateTimeLabels.add(measurementTime);
+                index++;
+            } while (cursor.moveToNext());
+            cursor.close();
+        }
+
+
+        /*if (cursor != null && cursor.moveToFirst()) {
             do {
                 @SuppressLint("Range") float temperature = cursor.getFloat(cursor.getColumnIndex("temperature_value"));
                 @SuppressLint("Range") String measurementTime = cursor.getString(cursor.getColumnIndex("measurement_time"));
@@ -90,12 +106,22 @@ public class GraphFragment extends DialogFragment {
                 index++;
             } while (cursor.moveToNext());
             cursor.close();
-        }
+        }*/
 
         if (!entries.isEmpty()) {
             plotGraph(entries, dateTimeLabels);
         }
     }
+
+    private float autoConvertIfFahrenheit(float value) {
+        // Assume anything over 60 is in Fahrenheit
+        if (value > 60f) {
+            return (value - 32f) * 5f / 9f;
+        } else {
+            return value; // Assume Celsius
+        }
+    }
+
 
     private void plotGraph(List<Entry> entries, final List<String> dateTimeLabels) {
         LineDataSet dataSet = new LineDataSet(entries, "Temperature Readings");
