@@ -114,27 +114,31 @@ public class SymptomLogActivity extends AppCompatActivity  {
                 String logTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date());
                 Log.d("time_check", "time: " + logTime);
 
-                boolean inserted = dbHelper.insertSymptoms(currentProfile, symptoms, logTime);
-
-                if (inserted) {
-                    Toast.makeText(getApplicationContext(), "Symptoms saved", Toast.LENGTH_SHORT).show();
+                if(symptoms.isEmpty()){
+                    Toast.makeText(getApplicationContext(),"No symptoms selected", Toast.LENGTH_LONG).show();
                 } else {
-                    Toast.makeText(getApplicationContext(), "Error saving symptoms", Toast.LENGTH_SHORT).show();
-                }
 
-                for(CheckBox checkBox : checkBoxes){
-                    if (checkBox.isChecked()){
-                        checkBox.setChecked(false);
+                    boolean inserted = dbHelper.insertSymptoms(currentProfile, symptoms, logTime);
+
+                    if (inserted) {
+                        Toast.makeText(getApplicationContext(), "Symptoms saved", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(getApplicationContext(), "Error saving symptoms", Toast.LENGTH_SHORT).show();
+                    }
+
+                    for (CheckBox checkBox : checkBoxes) {
+                        if (checkBox.isChecked()) {
+                            checkBox.setChecked(false);
+                        }
+                    }
+
+                    for (int i = 0; i < container.getChildCount(); i++) {
+                        View child = container.getChildAt(i);
+                        if (child instanceof CheckBox) {
+                            ((CheckBox) child).setChecked(false);
+                        }
                     }
                 }
-
-                for (int i = 0; i < container.getChildCount(); i++) {
-                    View child = container.getChildAt(i);
-                    if (child instanceof CheckBox) {
-                        ((CheckBox) child).setChecked(false);
-                    }
-                }
-
             }
         });
 
