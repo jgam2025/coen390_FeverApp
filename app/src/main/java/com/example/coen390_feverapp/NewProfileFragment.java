@@ -23,7 +23,9 @@ public class NewProfileFragment extends DialogFragment {
     protected EditText nameEditText;
     protected Button saveButton;
     protected FloatingActionButton closeButton;
-    private TemperatureMeasurementPage activity;
+    private TemperatureMeasurementPage temp_activity;
+    private SymptomLogActivity symptom_activity;
+
 
     public NewProfileFragment() {
         // Required empty public constructor
@@ -33,7 +35,10 @@ public class NewProfileFragment extends DialogFragment {
     public void onAttach(Context context){
         super.onAttach(context);
         if(context instanceof TemperatureMeasurementPage){
-            activity = (TemperatureMeasurementPage) context;
+            temp_activity = (TemperatureMeasurementPage) context;
+        }
+        if(context instanceof SymptomLogActivity){
+            symptom_activity = (SymptomLogActivity) context;
         }
     }
 
@@ -69,8 +74,11 @@ public class NewProfileFragment extends DialogFragment {
                     Profile profile = new Profile(name,userID);
                     dbHelper.insertProfile(profile);
 
-                    if(activity != null){
-                        activity.showUsersOnSpinner();
+                    if(temp_activity != null){
+                        temp_activity.showUsersOnSpinner();
+                    }
+                    if(symptom_activity != null){
+                        symptom_activity.showUsersOnSpinner();
                     }
                     dismiss();
                 } else {

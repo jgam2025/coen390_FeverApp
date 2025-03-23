@@ -29,28 +29,10 @@ public class NewSymptomFragment extends DialogFragment {
     protected Button saveSymptomButton;
     protected FloatingActionButton closeNewFAB;
 
+
     public NewSymptomFragment() {
         // Required empty public constructor
     }
-
-
-    public interface onSymptomSavedListener {
-        void onSymptomSaved(List<CheckBox> newCheckBoxList);
-    }
-
-    private onSymptomSavedListener listener;
-
-    @Override
-    public void onAttach(Context context){
-        super.onAttach(context);
-        if(context instanceof onSymptomSavedListener){
-            listener = (onSymptomSavedListener) context;
-        } else {
-            throw new RuntimeException(context.toString() + " must implement OnSymptomSavedListener");
-        }
-    }
-
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -87,9 +69,6 @@ public class NewSymptomFragment extends DialogFragment {
                 scrollView.requestLayout();
                 scrollView.fullScroll(View.FOCUS_DOWN);
 
-                List<CheckBox> newCheckBoxList = new ArrayList<>();
-                newCheckBoxList.add(newSymptomCheckbox);
-                //listener.onSymptomSaved(newCheckBoxList);
                 //save checkbox into db associated w user
                 SharedPreferences sharedPrefs = getActivity().getSharedPreferences("user_prefs", 0);
                 String currentUser = sharedPrefs.getString("current_user",null);
