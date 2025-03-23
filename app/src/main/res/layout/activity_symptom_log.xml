@@ -43,7 +43,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="0dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="0dp"
                 android:text="Runny Nose"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/chillsCheckBox" />
@@ -52,7 +52,7 @@
                 android:id="@+id/soreThroatCheckBox"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="0dp"
                 android:text="Sore Throat"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/achesCheckBox" />
@@ -61,7 +61,7 @@
                 android:id="@+id/chillsCheckBox"
                 android:layout_width="88dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="0dp"
                 android:text="Chills"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/nauseaCheckBox" />
@@ -70,7 +70,7 @@
                 android:id="@+id/headacheCheckBox"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="0dp"
                 android:text="Headache"
                 app:layout_constraintEnd_toEndOf="parent" />
 
@@ -78,7 +78,7 @@
                 android:id="@+id/achesCheckBox"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="0dp"
                 android:text="Muscle Aches"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/headacheCheckBox" />
@@ -87,7 +87,7 @@
                 android:id="@+id/coughCheckBox"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="0dp"
                 android:text="Cough"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/runnyNoseCheckBox" />
@@ -96,7 +96,7 @@
                 android:id="@+id/nauseaCheckBox"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="0dp"
                 android:text="Nausea"
                 app:layout_constraintStart_toStartOf="parent" />
 
@@ -104,7 +104,7 @@
                 android:id="@+id/fatigueCheckBox"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="0dp"
                 android:text="Fatigue"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/coughCheckBox" />
