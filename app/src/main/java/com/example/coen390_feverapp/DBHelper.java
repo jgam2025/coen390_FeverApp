@@ -207,6 +207,7 @@ public class DBHelper extends SQLiteOpenHelper {
         return result > 0;
     }
 
+    //functions for inserting and retrieving symptoms from checkboxes
     public boolean insertSymptoms(String profile, String symptoms, String timestamp){
         SQLiteDatabase myDB = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -239,6 +240,7 @@ public class DBHelper extends SQLiteOpenHelper {
         return symptomsList;
     }
 
+    //functions for inserting and retrieving user-added symptoms
     public boolean insertNewSymptom(String symptom, int userID){
         SQLiteDatabase myDB = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -246,6 +248,28 @@ public class DBHelper extends SQLiteOpenHelper {
         contentValues.put("user_id",userID);
         long result = myDB.insert("user_added_symptoms",null,contentValues);
         return result != -1;
+    }
+
+    public List<String> getUserAddedSymptoms(int userId) {
+        List<String> symptoms = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = null;
+        try {
+            cursor = db.rawQuery("SELECT symptom FROM user_added_symptoms WHERE user_id = ?", new String[]{String.valueOf(userId)});
+            if (cursor != null) {
+                if (cursor.moveToFirst()) {
+                    do {
+                        @SuppressLint("Range") String symptom = cursor.getString(cursor.getColumnIndex("symptom"));
+                        symptoms.add(symptom);
+                    } while (cursor.moveToNext());
+                }
+            }
+            cursor.close();
+        } catch (Exception e){
+            Toast.makeText(context, "Get error: " + e.getMessage(), Toast.LENGTH_LONG).show();
+            System.out.println("get error: " + e.getMessage());
+        }
+        return symptoms;
     }
 
 }

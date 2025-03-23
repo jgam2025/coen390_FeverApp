@@ -33,7 +33,7 @@ public class NewSymptomFragment extends DialogFragment {
         // Required empty public constructor
     }
 
-    /*
+
     public interface onSymptomSavedListener {
         void onSymptomSaved(List<CheckBox> newCheckBoxList);
     }
@@ -51,7 +51,7 @@ public class NewSymptomFragment extends DialogFragment {
     }
 
 
-     */
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

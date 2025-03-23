@@ -10,6 +10,8 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -126,7 +128,12 @@ public class SymptomLogActivity extends AppCompatActivity  {
                     Toast.makeText(getApplicationContext(), "Error saving symptoms", Toast.LENGTH_SHORT).show();
                 }
 
-                unCheckBoxes();
+                for(CheckBox checkBox : staticCheckBoxes){
+                    if (checkBox.isChecked()){
+                        checkBox.setChecked(false);
+                    }
+                }
+
             }
         });
 
@@ -137,17 +144,25 @@ public class SymptomLogActivity extends AppCompatActivity  {
             }
         });
 
-        /*
-        List<String> symptoms = dbHelper.getSymptomsForUser(userId);
-        LinearLayout container = findViewById(R.id.linearCheckBoxLayout);
-        for (String symptom : symptoms) {
-            CheckBox checkBox = new CheckBox(this);
-            checkBox.setText(symptom);
-            container.addView(checkBox);
+        loadUserAddedSymptoms();
+
+    }
+
+    private void loadUserAddedSymptoms(){
+        SharedPreferences sharedPrefs = getSharedPreferences("user_prefs", MODE_PRIVATE);
+        String currentUser = sharedPrefs.getString("current_user", null);
+        int userID = dbHelper.getUserID(currentUser);
+
+        List<String> userAddedSymptomsList = dbHelper.getUserAddedSymptoms(userID);
+        for (String symptom : userAddedSymptomsList) {
+            CheckBox symptomCheckBox = new CheckBox(this);
+            symptomCheckBox.setText(symptom);
+            LinearLayout container = findViewById(R.id.linearCheckBoxLayout);
+            container.addView(symptomCheckBox);
+            ScrollView scrollView = findViewById(R.id.checkboxScroll);
+            scrollView.requestLayout();
+            scrollView.fullScroll(View.FOCUS_DOWN);
         }
-
-         */
-
     }
 
     public void showUsersOnSpinner(){
@@ -175,17 +190,9 @@ public class SymptomLogActivity extends AppCompatActivity  {
 
     }
 
-    private void unCheckBoxes(){
-        chillsCheckBox.setChecked(false);
-        soreThroatCheckBox.setChecked(false);
-        headacheCheckBox.setChecked(false);
-        achesCheckBox.setChecked(false);
-        nauseaCheckBox.setChecked(false);
-        runnyNoseCheckBox.setChecked(false);
-        coughCheckBox.setChecked(false);
-        fatigueCheckBox.setChecked(false);
-    }
 
+
+    //menu functions
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu from the menu.xml file in the menu directory
