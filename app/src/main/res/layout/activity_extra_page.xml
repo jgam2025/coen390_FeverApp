@@ -21,14 +21,16 @@
 
     <ListView
         android:id="@+id/additionalPageListView"
-        android:layout_width="395dp"
-        android:layout_height="580dp"
+        android:layout_width="407dp"
+        android:layout_height="534dp"
         android:layout_marginStart="10dp"
         android:layout_marginTop="13dp"
         app:layout_constraintBottom_toTopOf="@+id/toolbar"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView11" />
+        app:layout_constraintTop_toBottomOf="@+id/textView11"
+        app:layout_constraintVertical_bias="0.136" />
 
     <TextView
         android:id="@+id/textView11"

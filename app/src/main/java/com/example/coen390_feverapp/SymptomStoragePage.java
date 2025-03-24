@@ -100,6 +100,7 @@ public class SymptomStoragePage extends AppCompatActivity {
     }
 
 
+    //menu functions
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu from the menu.xml file in the menu directory
