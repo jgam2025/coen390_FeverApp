@@ -134,7 +134,6 @@ public class PhoneNumberActivity extends AppCompatActivity {
         phoneNumberTextViewList.add(findViewById(R.id.emergencyNumber));
         phoneNumberTextViewList.add(findViewById(R.id.infoSanteNumber));
         phoneNumberTextViewList.add(findViewById(R.id.QMASNumber));
-        phoneNumberTextViewList.add(findViewById(R.id.emergencyContactNumber));
 
         for (TextView phoneNumberTextView:phoneNumberTextViewList) {
             phoneNumberTextView.setOnClickListener(new View.OnClickListener() {

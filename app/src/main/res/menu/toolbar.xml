@@ -33,8 +33,8 @@
 
   <item
       android:id="@+id/miSymptoms"
+      android:icon="@mipmap/symptomicon_foreground"
       android:title="symptoms"
-      android:icon="@drawable/ic_symptoms"
       app:showAsAction="always" />
 
 
