@@ -191,8 +191,12 @@ public class GraphFragment extends DialogFragment {
         chart.setExtraRightOffset(30f);
         chart.setExtraBottomOffset(30f);
 
-
-
+        leftAxis.setValueFormatter(new ValueFormatter() {
+            @Override
+            public String getFormattedValue(float value) {
+                return String.format(Locale.getDefault(), "%.1f°C", value);
+            }
+        });
 
         // Set data and refresh chart
         chart.setData(new LineData(dataSet));
