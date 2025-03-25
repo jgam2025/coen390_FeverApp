@@ -3,8 +3,16 @@
     <!-- Base application theme with custom status bar color -->
     <style name="Base.Theme.Coen390_FeverApp" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Set the status bar color to your desired background color -->
-        <item name="android:statusBarColor">#B82132</item>
+        <item name="android:statusBarColor">@color/fever_app_background</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
     </style>
 
-    <style name="Theme.Coen390_FeverApp" parent="Base.Theme.Coen390_FeverApp" />
+    <style name="Base.Theme.Coen390_FeverApp2" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="android:statusBarColor">@color/white</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+    </style>
+
+
+
+
 </resources>

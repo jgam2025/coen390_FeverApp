@@ -27,6 +27,7 @@
             android:exported="false" />
         <activity
             android:name=".MedicationActivity"
+            android:theme="@style/Base.Theme.Coen390_FeverApp2"
             android:exported="false" />
         <activity
             android:name=".ExtraPageActivity"
@@ -54,9 +55,11 @@
             android:exported="false" />
         <activity
             android:name=".LoginActivity"
+            android:theme="@style/Base.Theme.Coen390_FeverApp"
             android:exported="true" />
         <activity
             android:name=".RegisterActivity"
+            android:theme="@style/Base.Theme.Coen390_FeverApp"
             android:exported="false" />
     </application>
 
