@@ -58,11 +58,11 @@ public class GraphFragment extends DialogFragment {
         currentProfile = prefs.getString("current_profile", "default");
         Log.d("GRAPH_DEBUG", "Current profile in graph: " + currentProfile);
 
-        fetchTemperatureData();
+        fetchTemperatureData(view);
         return view;
     }
 
-    private void fetchTemperatureData() {
+    private void fetchTemperatureData(View view) {
         Log.d("GRAPH_DEBUG", "fetchTemperatureData() was called");
         List<Entry> entries = new ArrayList<>();
         final List<String> dateTimeLabels = new ArrayList<>();
@@ -116,7 +116,8 @@ public class GraphFragment extends DialogFragment {
             } while (cursor.moveToNext());
             cursor.close();
         }*/
-
+        TextView avgText = view.findViewById(R.id.averageTemperatureText);
+        displayAverageTemperature(entries, avgText);
         if (!entries.isEmpty()) {
             plotGraph(entries, dateTimeLabels);
         }
@@ -191,6 +192,7 @@ public class GraphFragment extends DialogFragment {
         chart.setExtraRightOffset(30f);
         chart.setExtraBottomOffset(30f);
 
+
         leftAxis.setValueFormatter(new ValueFormatter() {
             @Override
             public String getFormattedValue(float value) {
@@ -203,6 +205,21 @@ public class GraphFragment extends DialogFragment {
         chart.invalidate();
 
         chart.getDescription().setEnabled(false);
+    }
+
+    private void displayAverageTemperature(List<Entry> entries, TextView textView) {
+        if (entries == null || entries.isEmpty()) {
+            textView.setText("Average: -- °C");
+            return;
+        }
+
+        float sum = 0f;
+        for (Entry entry : entries) {
+            sum += entry.getY();
+        }
+
+        float average = sum / entries.size();
+        textView.setText(String.format(Locale.getDefault(), "Average: %.1f°C", average));
     }
 }
 

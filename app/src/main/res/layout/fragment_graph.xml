@@ -11,9 +11,22 @@
         android:id="@+id/chart"
         android:layout_width="400dp"
         android:layout_height="400dp"
+        android:layout_marginTop="16dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
 
 
+    </com.github.mikephil.charting.charts.LineChart>
+
+    <TextView
+        android:id="@+id/averageTemperatureText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:paddingTop="10dp"
+        android:text="Average: -- °C"
+        android:textSize="16sp"
+        android:textStyle="bold" />
 </androidx.constraintlayout.widget.ConstraintLayout>
