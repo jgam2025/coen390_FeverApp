@@ -147,7 +147,7 @@ public class GraphFragment extends DialogFragment {
         xAxis.setTextSize(0.2f);
         //xAxis.setDrawLabels(false);
         xAxis.setDrawAxisLine(true);
-        chart.setExtraBottomOffset(16f);
+        //chart.setExtraBottomOffset(16f);
         xAxis.setAxisMinimum(0f);
         xAxis.setAxisMaximum(entries.size() - 1);
         xAxis.setLabelRotationAngle(0f); // Keep labels upright
@@ -189,8 +189,8 @@ public class GraphFragment extends DialogFragment {
         leftAxis.setGranularity(0.5f);
         chart.getAxisRight().setEnabled(false);
         chart.setExtraLeftOffset(15f);
-        chart.setExtraRightOffset(30f);
-        chart.setExtraBottomOffset(30f);
+        chart.setExtraRightOffset(45f);
+        //chart.setExtraBottomOffset(30f);
 
 
         leftAxis.setValueFormatter(new ValueFormatter() {
