@@ -22,8 +22,8 @@
 
     <ScrollView
         android:id="@+id/checkboxScroll"
-        android:layout_width="364dp"
-        android:layout_height="350dp"
+        android:layout_width="363dp"
+        android:layout_height="433dp"
         android:layout_margin="16dp"
         android:layout_marginStart="20dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -125,12 +125,11 @@
         android:id="@+id/newSymptomButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="432dp"
+        android:layout_marginTop="472dp"
         android:backgroundTint="@color/BUTTON_COLOR"
         android:text="Add New Symptom"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.468"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/profileOptionSpinner" />
 
@@ -139,7 +138,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="40dp"
-        android:layout_marginTop="48dp"
+        android:layout_marginTop="20dp"
         android:backgroundTint="@color/BUTTON_COLOR"
         android:text="Submit"
         android:textSize="20sp"
@@ -150,7 +149,7 @@
         android:id="@+id/goToLogButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="48dp"
+        android:layout_marginTop="20dp"
         android:layout_marginEnd="40dp"
         android:backgroundTint="@color/BUTTON_COLOR"
         android:text="Go To Log"
