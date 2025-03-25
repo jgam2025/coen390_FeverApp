@@ -188,8 +188,8 @@ public class GraphFragment extends DialogFragment {
         YAxis leftAxis = chart.getAxisLeft();
         leftAxis.setGranularity(0.5f);
         chart.getAxisRight().setEnabled(false);
-        chart.setExtraLeftOffset(15f);
-        chart.setExtraRightOffset(45f);
+        chart.setExtraLeftOffset(13f);
+        chart.setExtraRightOffset(60f);
         //chart.setExtraBottomOffset(30f);
 
 
