@@ -1,6 +1,7 @@
 package com.example.coen390_feverapp;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -12,6 +13,10 @@ import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 public class BaseActivity extends AppCompatActivity {
 
@@ -32,8 +37,17 @@ public class BaseActivity extends AppCompatActivity {
     }
 
     void setupUI(){
+        SharedPreferences sharedPrefs = getSharedPreferences("user_prefs", 0);
+        String currentUser = sharedPrefs.getString("current_user",null);
         homeTextView = findViewById(R.id.homeTextView);
+        homeTextView.setText("Welcome, " + currentUser + "!");
+
+        String date = new SimpleDateFormat("M dd, yyyy", Locale.getDefault()).format(new Date());
+        //todo: put month into words
+
         dateTextView = findViewById(R.id.dateTextView);
+        dateTextView.setText("Today's date: " + date);
+
         qTextView = findViewById(R.id.qTextView);
 
         tempButton = findViewById(R.id.tempButton);

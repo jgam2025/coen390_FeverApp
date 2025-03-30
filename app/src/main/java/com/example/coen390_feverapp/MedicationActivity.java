@@ -27,11 +27,11 @@ public class MedicationActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_medication);
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayShowTitleEnabled(false); // Hide the title
-        }
+        //Toolbar toolbar = findViewById(R.id.toolbar);
+        //setSupportActionBar(toolbar);
+       // if (getSupportActionBar() != null) {
+       //     getSupportActionBar().setDisplayShowTitleEnabled(false); // Hide the title
+       // }
 
         dbHelper = new DBHelper(this);
 
@@ -67,6 +67,42 @@ public class MedicationActivity extends AppCompatActivity {
         loadMedicationHistory();
     }
 
+    private void loadMedicationHistory() {
+        SharedPreferences sharedPrefs = getSharedPreferences("user_prefs", MODE_PRIVATE);
+        String currentProfile = sharedPrefs.getString("current_profile", "default");
+
+        Cursor cursor = dbHelper.getMedicationHistoryByProfile(currentProfile);
+        String[] fromColumns = {"name", "dose", "timestamp"};
+        int[] toViews = {R.id.med_name, R.id.med_dose, R.id.med_timestamp};
+
+        SimpleCursorAdapter adapter = new SimpleCursorAdapter(
+                this, R.layout.item_medication, cursor, fromColumns, toViews, 0);
+
+        listViewMedication.setAdapter(adapter);
+
+        listViewMedication.setOnItemClickListener((parent, view, position, id) -> {
+            new AlertDialog.Builder(this)
+                    .setTitle("Confirmation")
+                    .setMessage("Do you want to delete this medication?")
+                    .setPositiveButton("Yes", (dialog, which) -> {
+                        if (dbHelper.deleteMedication(id)) {
+                            Toast.makeText(MedicationActivity.this, "Medication deleted!", Toast.LENGTH_SHORT).show();
+                            loadMedicationHistory();
+                        } else {
+                            Toast.makeText(MedicationActivity.this, "Failed to delete", Toast.LENGTH_SHORT).show();
+                        }
+                    })
+                    .setNegativeButton("No", (dialog, which) -> dialog.dismiss())
+                    .show();
+        });
+    }
+
+
+
+
+    //toolbar menu items
+
+    /*
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu from the menu.xml file in the menu directory
@@ -108,38 +144,6 @@ public class MedicationActivity extends AppCompatActivity {
         }
     }
 
-
-    private void loadMedicationHistory() {
-        SharedPreferences sharedPrefs = getSharedPreferences("user_prefs", MODE_PRIVATE);
-        String currentProfile = sharedPrefs.getString("current_profile", "default");
-
-        Cursor cursor = dbHelper.getMedicationHistoryByProfile(currentProfile);
-        String[] fromColumns = {"name", "dose", "timestamp"};
-        int[] toViews = {R.id.med_name, R.id.med_dose, R.id.med_timestamp};
-
-        SimpleCursorAdapter adapter = new SimpleCursorAdapter(
-                this, R.layout.item_medication, cursor, fromColumns, toViews, 0);
-
-        listViewMedication.setAdapter(adapter);
-
-        listViewMedication.setOnItemClickListener((parent, view, position, id) -> {
-            new AlertDialog.Builder(this)
-                    .setTitle("Confirmation")
-                    .setMessage("Do you want to delete this medication?")
-                    .setPositiveButton("Yes", (dialog, which) -> {
-                        if (dbHelper.deleteMedication(id)) {
-                            Toast.makeText(MedicationActivity.this, "Medication deleted!", Toast.LENGTH_SHORT).show();
-                            loadMedicationHistory();
-                        } else {
-                            Toast.makeText(MedicationActivity.this, "Failed to delete", Toast.LENGTH_SHORT).show();
-                        }
-                    })
-                    .setNegativeButton("No", (dialog, which) -> dialog.dismiss())
-                    .show();
-        });
-    }
-
-
     private void goToExtraPage(){
         Intent intent = new Intent(this, ExtraPageActivity.class);
         startActivity(intent);
@@ -175,6 +179,8 @@ public class MedicationActivity extends AppCompatActivity {
     }
 
 
+
+     */
 
 
 

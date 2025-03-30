@@ -65,7 +65,7 @@ public class RegisterActivity extends AppCompatActivity {
                            Profile profile = new Profile(user,userID);
                            dbHelper.insertProfile(profile);
 
-                           Intent intent = new Intent(RegisterActivity.this, TemperatureMeasurementPage.class);
+                           Intent intent = new Intent(RegisterActivity.this, BaseActivity.class);
                            startActivity(intent);
                            finish();
                        }
