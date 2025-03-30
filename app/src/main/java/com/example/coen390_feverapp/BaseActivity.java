@@ -1,17 +1,24 @@
 package com.example.coen390_feverapp;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.LinearLayoutCompat;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 public class BaseActivity extends AppCompatActivity {
 
@@ -23,6 +30,11 @@ public class BaseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_base);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayShowTitleEnabled(false); // Hide the title
+        }
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
@@ -31,10 +43,48 @@ public class BaseActivity extends AppCompatActivity {
         setupUI();
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu from the menu.xml file in the menu directory
+        getMenuInflater().inflate(R.menu.toolbar, menu);
+
+        return true;
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.miperson) {
+            goToHealth();
+            return true;
+
+        }  else if (id == R.id.miMore) {
+            goToExtra();
+            return true;
+
+        } else{
+            return super.onOptionsItemSelected(item);
+
+        }
+    }
+
+    private void goToHealth(){
+        Intent intent = new Intent(this, HealthDataActivity.class);
+        startActivity(intent);
+    }
+
+
+    private void goToExtra(){
+        Intent intent = new Intent(this, ExtraPageActivity.class);
+        startActivity(intent);
+    }
     void setupUI(){
+        SharedPreferences sharedPrefs = getSharedPreferences("user_prefs", 0);
+        String currentUser = sharedPrefs.getString("current_user",null);
         homeTextView = findViewById(R.id.homeTextView);
-        dateTextView = findViewById(R.id.dateTextView);
-        qTextView = findViewById(R.id.qTextView);
+        homeTextView.setText("Welcome, " + currentUser + "!");
+
+
 
         tempButton = findViewById(R.id.tempButton);
         tempButton.setOnClickListener(new View.OnClickListener() {
@@ -44,11 +94,11 @@ public class BaseActivity extends AppCompatActivity {
             }
         });
 
-        histButton = findViewById(R.id.histButton);
+        histButton = findViewById(R.id.symptomButton);
         histButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                goToHistory();
+                goToSymptomLog();
             }
         });
 
