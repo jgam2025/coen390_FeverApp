@@ -56,8 +56,8 @@ public class ScanMeasurementActivity extends AppCompatActivity {
     protected ImageView imageViewArrowScanPage;
 
     protected volatile boolean measurementCanceled = false;
-
-    int feverTemperatureThresholdCelsius = 38;
+    // Calibration offset loaded from SharedPreferences (default = 0.0)
+    private double calibrationOffset = 0.0;
     private Spinner scaleSpinner;
     private String temperatureScaleText;
 
@@ -76,6 +76,10 @@ public class ScanMeasurementActivity extends AppCompatActivity {
         setupUI();
 
         temperatureScaleText = getSharedPreferences("user_prefs", MODE_PRIVATE).getString("temperatureScaleText", "°C");
+
+        // Load the calibration offset from SharedPreferences (saved by your calibration page)
+        calibrationOffset = getSharedPreferences("user_prefs", MODE_PRIVATE)
+                .getFloat("calibrationOffset", 0.0f);
 
         bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         if (bluetoothAdapter == null) {
@@ -211,6 +215,10 @@ public class ScanMeasurementActivity extends AppCompatActivity {
                     String display;
                     try {
                         double c = Double.parseDouble(finalTemp);
+
+                        // Apply the calibration offset here
+                        c = c + calibrationOffset;
+
                         if (temperatureScaleText.equals("°F")) {
                             display = String.format(Locale.getDefault(), " %.2f °F ", (c * 9/5) + 32);
                         } else {

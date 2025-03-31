@@ -16,7 +16,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 public class ExtraPageActivity extends AppCompatActivity {
 
-    String[] pageNames = {"Health Resources & Phone Numbers"};
+    String[] pageNames = {"Health Resources & Phone Numbers", "Sensor Calibration"};
 
     protected ListView additionalPageListView;
 
@@ -133,6 +133,11 @@ public class ExtraPageActivity extends AppCompatActivity {
 
             if (selectedPage.equals("Health Resources & Phone Numbers")){
                 Intent intent = new Intent(ExtraPageActivity.this, PhoneNumberActivity.class);
+                startActivity(intent);
+            }
+
+            if(selectedPage.equals("Sensor Calibration")){
+                Intent intent = new Intent(ExtraPageActivity.this, CalibrationActivity.class);
                 startActivity(intent);
             }
         });
