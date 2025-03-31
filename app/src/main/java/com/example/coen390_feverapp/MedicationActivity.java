@@ -6,10 +6,14 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,56 +21,111 @@ import androidx.appcompat.widget.Toolbar;
 
 import android.app.AlertDialog;
 
+import java.util.List;
+
 public class MedicationActivity extends AppCompatActivity {
-    private EditText etMedicationName, etMedicationDose;
-    private Button btnSaveMedication;
-    private ListView listViewMedication;
+
+    private EditText medsEditText, doseEditText;
+    private Button submitMedButton;
+    private Spinner medsSpinner, profilesSpinner;
     private DBHelper dbHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_medication);
-        //Toolbar toolbar = findViewById(R.id.toolbar);
-        //setSupportActionBar(toolbar);
-       // if (getSupportActionBar() != null) {
-       //     getSupportActionBar().setDisplayShowTitleEnabled(false); // Hide the title
-       // }
 
         dbHelper = new DBHelper(this);
 
-        etMedicationName = findViewById(R.id.et_medication_name);
-        etMedicationDose = findViewById(R.id.et_medication_dose);
-        btnSaveMedication = findViewById(R.id.btn_save_medication);
-        listViewMedication = findViewById(R.id.list_medication);
+        medsEditText = findViewById(R.id.medsEditText);
+        doseEditText = findViewById(R.id.doseEditText);
 
-        btnSaveMedication.setOnClickListener(v -> {
-            String name = etMedicationName.getText().toString().trim();
-            String dose = etMedicationDose.getText().toString().trim();
+        medsSpinner = findViewById(R.id.medsSpinner);
+        showMedicationsOnSpinner();
 
-            if (!name.isEmpty()) {
-                // Retrieve current profile from SharedPreferences
+        profilesSpinner = findViewById(R.id.profilesSpinner);
+        showProfilesOnSpinner();
+
+        submitMedButton = findViewById(R.id.submitMedButton);
+        submitMedButton.setOnClickListener(v -> {
+
+            SharedPreferences sharedPrefsForMeds = getSharedPreferences("medication_prefs", MODE_PRIVATE);
+            String medicationNameSpinner = sharedPrefsForMeds.getString("chosen_medication", null);
+            String medicationNameText = medsEditText.getText().toString().trim();
+            String medicationDose = doseEditText.getText().toString().trim();
+
+            if ((!medicationNameText.isEmpty()) ^ (!medicationNameSpinner.isEmpty())) { // XOR - only one can be chosen
+
                 SharedPreferences sharedPrefs = getSharedPreferences("user_prefs", MODE_PRIVATE);
                 String currentProfile = sharedPrefs.getString("current_profile", "default");
 
-                // Insert medication with the profile name
-                boolean inserted = dbHelper.insertMedication(currentProfile, name, dose);
+                boolean inserted = dbHelper.insertMedication(currentProfile, medicationNameText, medicationDose);
                 if(inserted){
                     Toast.makeText(this, "Medication saved!", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(this, "Error saving medication", Toast.LENGTH_SHORT).show();
                 }
-                etMedicationName.setText("");
-                etMedicationDose.setText("");
-                loadMedicationHistory();
+                medsEditText.setText("");
+                doseEditText.setText("");
             } else {
                 Toast.makeText(this, "Please enter a medication name", Toast.LENGTH_SHORT).show();
             }
         });
 
-        loadMedicationHistory();
     }
 
+    private void showProfilesOnSpinner(){
+        SharedPreferences sharedPrefs = getSharedPreferences("user_prefs", MODE_PRIVATE);
+        String currentUser = sharedPrefs.getString("current_user",null);
+        List<String> profileList = dbHelper.getProfiles(currentUser);
+        if(profileList.isEmpty()){
+            //do nothing
+        }
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,android.R.layout.simple_spinner_item,profileList);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        profilesSpinner.setAdapter(adapter);
+
+        profilesSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String selectedProfile = (String) parent.getItemAtPosition(position);
+                SharedPreferences.Editor editor = sharedPrefs.edit();
+                editor.putString("current_profile", selectedProfile);
+                editor.apply();
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) { }
+        });
+
+    }
+
+    private void showMedicationsOnSpinner(){
+        SharedPreferences sharedPrefs = getSharedPreferences("user_prefs", MODE_PRIVATE);
+        SharedPreferences sharedPrefsForMeds = getSharedPreferences("medication_prefs", MODE_PRIVATE);
+        String currentUser = sharedPrefs.getString("current_user",null);
+        int userID = dbHelper.getUserID(currentUser);
+        List<String> medicationList = dbHelper.getUserAddedMedications(userID);
+        if(medicationList.isEmpty()){
+            //todo: say that no new medications have been saved
+        }
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,android.R.layout.simple_spinner_item,medicationList);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        medsSpinner.setAdapter(adapter);
+
+        medsSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String selectedMedication = (String) parent.getItemAtPosition(position);
+                SharedPreferences.Editor editor = sharedPrefsForMeds.edit();
+                editor.putString("selected_medication", selectedMedication);
+                editor.apply();
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) { }
+        });
+    }
+
+    /*
     private void loadMedicationHistory() {
         SharedPreferences sharedPrefs = getSharedPreferences("user_prefs", MODE_PRIVATE);
         String currentProfile = sharedPrefs.getString("current_profile", "default");
@@ -95,9 +154,12 @@ public class MedicationActivity extends AppCompatActivity {
                     .setNegativeButton("No", (dialog, which) -> dialog.dismiss())
                     .show();
         });
+
     }
 
 
+
+     */
 
 
     //toolbar menu items

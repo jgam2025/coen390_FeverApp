@@ -66,7 +66,7 @@ public class SymptomLogActivity extends AppCompatActivity  {
         selectTextView = findViewById(R.id.selectTextView);
 
         profileOptionSpinner = findViewById(R.id.profileOptionSpinner);
-        showUsersOnSpinner();
+        showProfilesOnSpinner();
 
         submitButton = findViewById(R.id.submitButton);
         newSymptomButton = findViewById(R.id.newSymptomButton);
@@ -111,7 +111,7 @@ public class SymptomLogActivity extends AppCompatActivity  {
                 Log.d("current_profile_check", "current profile: " + currentProfile);
                 int userID = dbHelper.getUserID(currentUser);
                 Log.d("current_user_check","current user: " + currentUser + " , id: " + userID);
-                String logTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date());
+                String logTime = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault()).format(new Date());
                 Log.d("time_check", "time: " + logTime);
 
                 if(symptoms.isEmpty()){
@@ -203,7 +203,7 @@ public class SymptomLogActivity extends AppCompatActivity  {
         return checkBoxes;
     }
 
-    public void showUsersOnSpinner(){
+    public void showProfilesOnSpinner(){
         SharedPreferences sharedPrefs = getSharedPreferences("user_prefs", MODE_PRIVATE);
         String currentUser = sharedPrefs.getString("current_user",null);
         List<String> profileList = dbHelper.getProfiles(currentUser);

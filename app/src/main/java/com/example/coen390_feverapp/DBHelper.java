@@ -55,6 +55,10 @@ public class DBHelper extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL("CREATE TABLE user_added_symptoms (" +
                 "user_id INTEGER NOT NULL, " +
                 "symptom TEXT NOT NULL)"); //new user added symptoms data table
+
+        sqLiteDatabase.execSQL("CREATE TABLE user_added_medications (" +
+                "user_id INTEGER NOT NULL, " +
+                "medication_name TEXT NOT NULL)"); // new user added medications data table
     }
 
     @Override
@@ -64,7 +68,7 @@ public class DBHelper extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS medication");
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS symptoms");
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS user_added_symptoms");
-
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS user_added_medications");
     }
 
     //functions for user creation and validation
@@ -168,6 +172,37 @@ public class DBHelper extends SQLiteOpenHelper {
         cv.put("dose", dose);
         long result = myDB.insert("medication", null, cv);
         return result != -1;
+    }
+
+    public boolean insertNewMedication(String medicationName, int userID){
+        SQLiteDatabase myDB = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("medication_name", medicationName);
+        contentValues.put("user_id", userID);
+        long result = myDB.insert("user_added_medications", null, contentValues);
+        return result != -1;
+    }
+
+    public List<String> getUserAddedMedications(int userId) {
+        List<String> newMeds = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = null;
+        try {
+            cursor = db.rawQuery("SELECT medication_name FROM user_added_medications WHERE user_id = ?", new String[]{String.valueOf(userId)});
+            if (cursor != null) {
+                if (cursor.moveToFirst()) {
+                    do {
+                        @SuppressLint("Range") String medication = cursor.getString(cursor.getColumnIndex("medication_name"));
+                        newMeds.add(medication);
+                    } while (cursor.moveToNext());
+                }
+            }
+            cursor.close();
+        } catch (Exception e){
+            Toast.makeText(context, "Get error: " + e.getMessage(), Toast.LENGTH_LONG).show();
+            System.out.println("get error: " + e.getMessage());
+        }
+        return newMeds;
     }
 
     public Cursor getMedicationHistoryByProfile(String profile) {

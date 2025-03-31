@@ -80,7 +80,7 @@ public class NewProfileFragment extends DialogFragment {
                         temp_activity.showUsersOnSpinner();
                     }
                     if(symptom_activity != null){
-                        symptom_activity.showUsersOnSpinner();
+                        symptom_activity.showProfilesOnSpinner();
                     }
                     dismiss();
                 } else {

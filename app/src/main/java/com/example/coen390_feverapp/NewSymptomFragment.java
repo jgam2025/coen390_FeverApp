@@ -59,6 +59,7 @@ public class NewSymptomFragment extends DialogFragment {
                 String symptom = newSymptomEditText.getText().toString();
                 if(symptom.isEmpty()){
                     Toast.makeText(getContext(), "Please enter a symptom", Toast.LENGTH_LONG).show();
+                    //todo: if symptom already in db
                 } else {
                     //create checkbox
                     CheckBox newSymptomCheckbox = new CheckBox(getContext());
