@@ -94,7 +94,8 @@ public class BaseActivity extends AppCompatActivity {
     }
 
     void goToHistory(){
-        //TODO: create history page
+        Intent intent = new Intent(this, HealthDataActivity.class);
+        startActivity(intent);
     }
 
     void goToSymptomLog(){
