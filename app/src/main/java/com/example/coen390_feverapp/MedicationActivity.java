@@ -50,7 +50,6 @@ public class MedicationActivity extends AppCompatActivity {
         submitMedButton = findViewById(R.id.submitMedButton);
         submitMedButton.setOnClickListener(v -> {
 
-            //SharedPreferences sharedPrefsForMeds = getSharedPreferences("medication_prefs", MODE_PRIVATE);
             String medicationNameSpinner = (String) medsSpinner.getSelectedItem();
             medicationNameText = medsEditText.getText().toString().trim();
             String medicationDose = doseEditText.getText().toString().trim();
@@ -115,7 +114,7 @@ public class MedicationActivity extends AppCompatActivity {
 
     }
 
-    private void showMedicationsOnSpinner(){
+    public void showMedicationsOnSpinner(){
         SharedPreferences sharedPrefs = getSharedPreferences("user_prefs", MODE_PRIVATE);
         String currentUser = sharedPrefs.getString("current_user",null);
         int userID = dbHelper.getUserID(currentUser);

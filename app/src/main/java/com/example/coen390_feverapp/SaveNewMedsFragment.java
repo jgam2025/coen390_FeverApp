@@ -53,6 +53,7 @@ public class SaveNewMedsFragment extends DialogFragment {
                     else{
                         Toast.makeText(getContext(),"Error inserting medication", Toast.LENGTH_LONG).show();
                     }
+                    medicationActivity.showMedicationsOnSpinner();
                 }
                 //save into db
                 dismiss();
