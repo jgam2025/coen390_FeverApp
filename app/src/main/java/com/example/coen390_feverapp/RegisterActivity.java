@@ -8,6 +8,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
+import android.text.InputType;
+import android.widget.CheckBox;
+
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -16,6 +19,8 @@ public class RegisterActivity extends AppCompatActivity {
     Button btnRegister;
     ImageView imageViewArrow;
     DBHelper dbHelper;
+    CheckBox cbShowPassword;
+
 
 
     @Override
@@ -26,6 +31,7 @@ public class RegisterActivity extends AppCompatActivity {
         etUser=findViewById(R.id.editTextText);
         etPwd=findViewById(R.id.editTextText2);
         etRepwd=findViewById(R.id.editTextText3);
+        cbShowPassword = findViewById(R.id.cbShowPassword);
         btnRegister=findViewById(R.id.button1);
         dbHelper= new DBHelper(this);
         imageViewArrow=findViewById(R.id.imageViewArrowScanPage);
@@ -38,6 +44,19 @@ public class RegisterActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        cbShowPassword.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) {
+                etPwd.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+                etRepwd.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+            } else {
+                etPwd.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                etRepwd.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+            }
+
+            etPwd.setSelection(etPwd.length());
+            etRepwd.setSelection(etRepwd.length());
+        });
+
         btnRegister.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){

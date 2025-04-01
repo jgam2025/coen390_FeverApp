@@ -7,6 +7,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+import android.text.InputType;
+import android.widget.CheckBox;
+
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,6 +22,8 @@ public class LoginActivity extends AppCompatActivity {
     Button btnSignup;
     DBHelper dbHelper;
     EditText etUsername, etPwd;
+    CheckBox cbShowPassword;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +34,8 @@ public class LoginActivity extends AppCompatActivity {
         etPwd=findViewById(R.id.etPassword);
         btnlogin=findViewById(R.id.btnlogin);
         btnSignup = findViewById(R.id.btnSignup);
+        cbShowPassword = findViewById(R.id.cbShowPassword);
+
 
         btnlogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -49,6 +56,15 @@ public class LoginActivity extends AppCompatActivity {
                 }
             }
         });
+        cbShowPassword.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) {
+                etPwd.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+            } else {
+                etPwd.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+            }
+            etPwd.setSelection(etPwd.length());
+        });
+
 
         btnSignup.setOnClickListener(new View.OnClickListener() {
             @Override
