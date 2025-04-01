@@ -46,6 +46,7 @@ public class SaveNewMedsFragment extends DialogFragment {
                 DBHelper dbHelper = new DBHelper(getActivity().getBaseContext());
                 int userID = dbHelper.getUserID(currentUser);
                 if(medicationActivity != null){
+                    //todo: check if the medication is already in the medication list
                     boolean inserted = dbHelper.insertNewMedication(medicationActivity.getMedicationNameText(), userID);
                     if(inserted){
                         Toast.makeText(getContext(), "New medication saved!", Toast.LENGTH_LONG).show();

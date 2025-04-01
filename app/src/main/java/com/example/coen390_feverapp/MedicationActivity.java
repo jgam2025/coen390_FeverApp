@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -49,18 +50,22 @@ public class MedicationActivity extends AppCompatActivity {
 
         submitMedButton = findViewById(R.id.submitMedButton);
         submitMedButton.setOnClickListener(v -> {
-
+            //todo: create separate function for this code to go into because its a lot for oncreate
             String medicationNameSpinner = (String) medsSpinner.getSelectedItem();
             medicationNameText = medsEditText.getText().toString().trim();
             String medicationDose = doseEditText.getText().toString().trim();
 
-            if ((!medicationNameText.isEmpty() && medicationNameSpinner == null) ||
-                    (medicationNameSpinner != null && !medicationNameSpinner.isEmpty() && medicationNameText.isEmpty())) {
+            Log.d("edit_text_check", "medication from edit text: " + medicationNameText);
+            Log.d("spinner_check", "medication from spinner: " + medicationNameSpinner);
 
+            if(!medicationNameText.isEmpty() ^ medicationNameSpinner != "")
+            {
+                Log.d("progress_check", "if condition reached");
                 SharedPreferences sharedPrefs = getSharedPreferences("user_prefs", MODE_PRIVATE);
                 String currentProfile = sharedPrefs.getString("current_profile", "default");
 
                 if(!medicationNameText.isEmpty()) { // selected medication from edit text
+                    Log.d("edit_text_check", "Edit text not empty");
                     SaveNewMedsFragment newMedsFragment = new SaveNewMedsFragment();
                     newMedsFragment.show(getFragmentManager(), "NewMedication");
                     boolean inserted = dbHelper.insertMedication(currentProfile, medicationNameText, medicationDose);
@@ -71,7 +76,8 @@ public class MedicationActivity extends AppCompatActivity {
                     }
                     medsEditText.setText("");
                     doseEditText.setText("");
-                } else if (medicationNameSpinner!=null && !medicationNameSpinner.isEmpty()){ // selected medication from spinner
+                } else if (medicationNameSpinner!=null && !medicationNameSpinner.isEmpty()){
+                    Log.d("spinner_check", "spinner item selected");// selected medication from spinner
                     boolean inserted = dbHelper.insertMedication(currentProfile, medicationNameSpinner, medicationDose);
                     if (inserted) {
                         Toast.makeText(this, "Medication saved!", Toast.LENGTH_SHORT).show();
@@ -81,13 +87,16 @@ public class MedicationActivity extends AppCompatActivity {
                     medsEditText.setText("");
                     doseEditText.setText("");
                 }
-            } else {
-                Toast.makeText(this, "Please enter a medication name", Toast.LENGTH_SHORT).show();
+            } else if (!medicationNameText.isEmpty() && medicationNameSpinner != "") {
+                Toast.makeText(this,
+                        "Please select from the dropdown menu OR enter a medication in the text field",
+                        Toast.LENGTH_LONG).show();
+            } else if (medicationNameSpinner == "" && medicationNameText.isEmpty()){
+                Toast.makeText(this,"Please select a medication", Toast.LENGTH_LONG).show();
             }
         });
 
     }
-
 
     private void showProfilesOnSpinner(){
         SharedPreferences sharedPrefs = getSharedPreferences("user_prefs", MODE_PRIVATE);
@@ -172,11 +181,7 @@ public class MedicationActivity extends AppCompatActivity {
 
     }
      */
-
-
-
     //toolbar menu items
-
     /*
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -252,11 +257,6 @@ public class MedicationActivity extends AppCompatActivity {
         Intent intent = new Intent(this, SymptomLogActivity.class);
         startActivity(intent);
     }
-
-
-
      */
-
-
 
 }

@@ -186,6 +186,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public List<String> getUserAddedMedications(int userId) {
         List<String> newMeds = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
+        newMeds.add("");
         Cursor cursor = null;
         try {
             cursor = db.rawQuery("SELECT medication_name FROM user_added_medications WHERE user_id = ?", new String[]{String.valueOf(userId)});
