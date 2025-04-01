@@ -1,33 +1,82 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
-    tools:context=".ExportDataActivity">
+    android:padding="24dp"
+    android:background="@color/fever_app_background">
 
-    <com.google.android.material.appbar.AppBarLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fitsSystemWindows="true">
+        android:orientation="vertical">
 
-        <com.google.android.material.appbar.MaterialToolbar
-            android:id="@+id/toolbar"
+        <EditText
+            android:id="@+id/etFirstName"
+            android:layout_width="373dp"
+            android:layout_height="66dp"
+            android:hint="First Name"
+            android:background="#FFFFFF" />
+
+
+
+        <EditText
+            android:id="@+id/etLastName"
+            android:layout_width="374dp"
+            android:layout_height="69dp"
+            android:hint="Last Name"
+            android:background="#FFFFFF"/>
+
+        <EditText
+            android:id="@+id/etBirthDate"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize" />
+            android:layout_height="63dp"
+            android:hint="Date of Birth (YYYY-MM-DD)"
+            android:background="#FFFFFF"/>
 
-    </com.google.android.material.appbar.AppBarLayout>
+        <EditText
+            android:id="@+id/etHealthCardNumber"
+            android:layout_width="375dp"
+            android:layout_height="62dp"
+            android:hint="Health Insurance Number"
+            android:background="#FFFFFF"/>
 
-    <include layout="@layout/content_export_data" />
+        <EditText
+            android:id="@+id/etAddress"
+            android:layout_width="379dp"
+            android:layout_height="61dp"
+            android:background="#FFFFFF"
+            android:hint="Address" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_marginEnd="@dimen/fab_margin"
-        android:layout_marginBottom="16dp"
-        app:srcCompat="@android:drawable/ic_dialog_email" />
+        <EditText
+            android:id="@+id/etDoctorName"
+            android:layout_width="376dp"
+            android:layout_height="55dp"
+            android:hint="Family Doctor Name"
+            android:background="#FFFFFF"/>
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+        <Button
+            android:id="@+id/btnSaveUserInfo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Save Info"
+            android:layout_marginTop="16dp"
+            android:backgroundTint="#D2665A"
+            android:textColor="#FFFFFF" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginVertical="20dp"
+            android:background="#BBBBBB" />
+
+        <Button
+            android:id="@+id/btnExportAll"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Export Datas"
+            android:textColor="#FFFFFF"
+            android:backgroundTint="#ED7F7F" />
+
+
+    </LinearLayout>
+</ScrollView>

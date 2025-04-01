@@ -77,6 +77,20 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/btnlogin" />
 
+    <Button
+        android:id="@+id/btnPrivacy"
+        android:layout_width="178dp"
+        android:layout_height="57dp"
+        android:layout_marginTop="16dp"
+        android:backgroundTint="#ED7F7F"
+        android:text="privacy and security"
+        android:textColor="#FFFFFF"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btnSignup" />
+
     <ImageView
         android:id="@+id/imageView3"
         android:layout_width="250dp"
@@ -89,5 +103,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@mipmap/feverapplogo_foreground" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

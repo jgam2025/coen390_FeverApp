@@ -16,8 +16,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 public class ExtraPageActivity extends AppCompatActivity {
 
-    String[] pageNames = {"Health Resources & Phone Numbers", "Add Profile", "Export Data", "Log Out"};
-
+    String[] pageNames = {"Health Resources & Phone Numbers", "Sensor Calibration"};
 
     protected ListView additionalPageListView;
 
@@ -30,8 +29,7 @@ public class ExtraPageActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayShowTitleEnabled(false);
-
+            getSupportActionBar().setDisplayShowTitleEnabled(false); // Hide the title
         }
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.checkBoxLayout), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
@@ -54,27 +52,54 @@ public class ExtraPageActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         if (id == R.id.miperson) {
-            goToHealth();
+            goToTemperatureStorage();
             return true;
 
-        }  else if (id == R.id.mihome) {
-            goToHomepage();
+        }  else if (id == R.id.miGraph) {
+            Graph();
             return true;
+        }
 
+        else if (id == R.id.miadd) {
+            addProfile();
+            return true;
+        }
+        else if(id ==R.id.miSymptoms) {
+            goSymptomPage();
+            return true;
+        }else if (id==R.id.miTemperature) {
+            goToTemperatureMeasurementPage();
+            return true;
+        }
+        else if (id==R.id.miLogOut) {
+            goToLogin();
+            return true;
+        } else if(id==R.id.miMedication) {
+            goToMedicationPage();
+            return true;
         } else{
                 return super.onOptionsItemSelected(item);
 
         }
     }
 
-    private void goToHealth(){
-        Intent intent = new Intent(this, HealthDataActivity.class);
+    private void goToExtraPage(){
+        Intent intent = new Intent(this, ExtraPageActivity.class);
         startActivity(intent);
     }
 
+    private void goToTemperatureStorage(){
+        Intent intent = new Intent(this, TemperatureStoragePage.class);
+        startActivity(intent);
+    }
 
-    private void goToHomepage(){
-        Intent intent = new Intent(this, BaseActivity.class);
+    private void goToLogin(){
+        Intent intent = new Intent(this, LoginActivity.class);
+        startActivity(intent);
+    }
+
+    private void goToTemperatureMeasurementPage(){
+        Intent intent = new Intent(this, TemperatureMeasurementPage.class);
         startActivity(intent);
     }
     private void addProfile(){
@@ -86,7 +111,14 @@ public class ExtraPageActivity extends AppCompatActivity {
         Intent intent = new Intent(this, MedicationActivity.class);
         startActivity(intent);
     }
-
+    private void Graph(){
+        GraphFragment graphDialog = new GraphFragment();
+        graphDialog.show(getSupportFragmentManager(), "GraphDialog");
+    }
+    private void goSymptomPage(){
+        Intent intent = new Intent(this, SymptomLogActivity.class);
+        startActivity(intent);
+    }
 
     private void setupUI() {
 
@@ -102,14 +134,12 @@ public class ExtraPageActivity extends AppCompatActivity {
             if (selectedPage.equals("Health Resources & Phone Numbers")){
                 Intent intent = new Intent(ExtraPageActivity.this, PhoneNumberActivity.class);
                 startActivity(intent);
-            } else if (selectedPage.equals("Add Profile")) {
-                NewProfileFragment newProfile = new NewProfileFragment();
-                newProfile.show(getFragmentManager(), "InsertProfile");
-            } else if (selectedPage.equals("Log Out")) {
-                Intent intent = new Intent(ExtraPageActivity.this, LoginActivity.class);
-                startActivity(intent);
             }
 
+            if(selectedPage.equals("Sensor Calibration")){
+                Intent intent = new Intent(ExtraPageActivity.this, CalibrationActivity.class);
+                startActivity(intent);
+            }
         });
     }
 
