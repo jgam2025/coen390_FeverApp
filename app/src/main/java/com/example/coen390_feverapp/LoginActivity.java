@@ -64,6 +64,12 @@ public class LoginActivity extends AppCompatActivity {
             }
             etPwd.setSelection(etPwd.length());
         });
+        Button btnPrivacy = findViewById(R.id.btnPrivacy);
+        btnPrivacy.setOnClickListener(v -> {
+            Intent intent = new Intent(LoginActivity.this, PrivacySecurityActivity.class);
+            startActivity(intent);
+        });
+
 
 
         btnSignup.setOnClickListener(new View.OnClickListener() {

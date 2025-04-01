@@ -1,52 +1,130 @@
 package com.example.coen390_feverapp;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
-
-import com.google.android.material.snackbar.Snackbar;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.view.View;
-
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
-
-import com.example.coen390_feverapp.databinding.ActivityExportDataBinding;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.util.List;
 
 public class ExportDataActivity extends AppCompatActivity {
 
-    private AppBarConfiguration appBarConfiguration;
-    private ActivityExportDataBinding binding;
+    Button btnExportAll, btnSaveUserInfo;
+
+    EditText etFirstName, etLastName, etBirthDate, etHealthCardNumber, etAddress, etDoctorName;
+    SharedPreferences sharedPreferences;
+    String currentProfile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_export_data);
 
-        binding = ActivityExportDataBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
+        // User info SharedPreferences
+        SharedPreferences prefs = getSharedPreferences("user_prefs", MODE_PRIVATE);
+        currentProfile = prefs.getString("current_profile", "default");
+        sharedPreferences = getSharedPreferences("user_info_" + currentProfile, MODE_PRIVATE);
 
-        setSupportActionBar(binding.toolbar);
+        // Connect views
+        etFirstName = findViewById(R.id.etFirstName);
+        etLastName = findViewById(R.id.etLastName);
+        etBirthDate = findViewById(R.id.etBirthDate);
+        etHealthCardNumber = findViewById(R.id.etHealthCardNumber);
+        etAddress = findViewById(R.id.etAddress);
+        etDoctorName = findViewById(R.id.etDoctorName);
+        btnSaveUserInfo = findViewById(R.id.btnSaveUserInfo);
+        btnExportAll = findViewById(R.id.btnExportAll);
 
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_export_data);
-        appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
-        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
 
-        binding.fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAnchorView(R.id.fab)
-                        .setAction("Action", null).show();
-            }
+        etFirstName.setText(sharedPreferences.getString("first_name", ""));
+        etLastName.setText(sharedPreferences.getString("last_name", ""));
+        etBirthDate.setText(sharedPreferences.getString("birth_date", ""));
+        etHealthCardNumber.setText(sharedPreferences.getString("health_card", ""));
+        etAddress.setText(sharedPreferences.getString("address", ""));
+        etDoctorName.setText(sharedPreferences.getString("doctor", ""));
+
+        //save infos
+        btnSaveUserInfo.setOnClickListener(v -> {
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString("first_name", etFirstName.getText().toString());
+            editor.putString("last_name", etLastName.getText().toString());
+            editor.putString("birth_date", etBirthDate.getText().toString());
+            editor.putString("health_card", etHealthCardNumber.getText().toString());
+            editor.putString("address", etAddress.getText().toString());
+            editor.putString("doctor", etDoctorName.getText().toString());
+            editor.apply();
+            Toast.makeText(this, "User info saved ", Toast.LENGTH_SHORT).show();
         });
+
+        // Export all
+        btnExportAll.setOnClickListener(v -> exportAllTemperatureData());
+
     }
 
-    @Override
-    public boolean onSupportNavigateUp() {
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_export_data);
-        return NavigationUI.navigateUp(navController, appBarConfiguration)
-                || super.onSupportNavigateUp();
+    private void exportAllTemperatureData() {
+        DBHelper dbHelper = new DBHelper(this);
+        List<String> temps = dbHelper.getAllTemperatures(currentProfile);
+        List<String> meds = dbHelper.getAllMedications(currentProfile);
+
+        if (temps.isEmpty() && meds.isEmpty()) {
+            Toast.makeText(this, "No data to export", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        writeExportToFile(currentProfile + "_export.csv", temps, meds, currentProfile);
+
     }
+
+
+
+    private void writeExportToFile(String filename, List<String> temps, List<String> meds, String profileLabel) {
+        Toast.makeText(this, "⏳ Starting export...", Toast.LENGTH_SHORT).show(); // ➤
+        String firstName = sharedPreferences.getString("first_name", "");
+        String lastName = sharedPreferences.getString("last_name", "");
+        String birthDate = sharedPreferences.getString("birth_date", "");
+        String healthCard = sharedPreferences.getString("health_card", "");
+        String address = sharedPreferences.getString("address", "");
+        String doctor = sharedPreferences.getString("doctor", "");
+
+        StringBuilder data = new StringBuilder();
+        data.append("---- Health Information ----\n");
+        data.append("Name: ").append(firstName).append(" ").append(lastName).append("\n");
+        data.append("Date of Birth: ").append(birthDate).append("\n");
+        data.append("Health Card #: ").append(healthCard).append("\n");
+        data.append("Address: ").append(address).append("\n");
+        data.append("Family Doctor: ").append(doctor).append("\n\n");
+
+        data.append("---- Temperature Records: ").append(" ----\n");
+        data.append("Timestamp,Temperature\n");
+        for (String temp : temps) {
+            data.append(temp).append("\n");
+        }
+
+        data.append("\n---- Medication Records for: ").append(" ----\n");
+        data.append("Date,Medication,Dose\n");
+        for (String med : meds) {
+            data.append(med).append("\n");
+        }
+
+        try {
+            File dir = getExternalFilesDir(null);
+            File file = new File(dir, filename);
+            Toast.makeText(this, "📁 Path: " + file.getAbsolutePath(), Toast.LENGTH_SHORT).show(); // ➤ 2️⃣
+            FileOutputStream fos = new FileOutputStream(file);
+            fos.write(data.toString().getBytes());
+            fos.close();
+
+            Toast.makeText(this, "Exported to:\n" + file.getAbsolutePath(), Toast.LENGTH_LONG).show();
+        } catch (Exception e) {
+            Toast.makeText(this, "Export failed: " + e.getMessage(), Toast.LENGTH_LONG).show();
+        }
+    }
+
+
+
 }
