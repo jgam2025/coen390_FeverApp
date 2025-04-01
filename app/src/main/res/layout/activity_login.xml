@@ -32,22 +32,35 @@
         android:backgroundTint="#FFB8B8"
         android:ems="10"
         android:hint="  Password"
-        android:inputType="text"
+        android:inputType="textPassword"
         android:textColorHint="#E74F4F"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/etUsername" />
 
+
+    <CheckBox
+        android:id="@+id/cbShowPassword"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="12dp"
+        android:text="show your password"
+        android:textColor="#E74F4F"
+        app:layout_constraintStart_toStartOf="@id/etPassword"
+        app:layout_constraintTop_toBottomOf="@id/etPassword" />
+
     <Button
         android:id="@+id/btnlogin"
         android:layout_width="188dp"
         android:layout_height="59dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="72dp"
         android:backgroundTint="#ED7F7F"
         android:text="LOGIN"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/etPassword" />
 
@@ -55,11 +68,12 @@
         android:id="@+id/btnSignup"
         android:layout_width="188dp"
         android:layout_height="59dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="20dp"
         android:backgroundTint="#ED7F7F"
         android:text="SIGN UP"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/btnlogin" />
 
