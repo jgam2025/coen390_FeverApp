@@ -308,6 +308,7 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
 
+    // Deletes a medication record by its _id.
     public boolean deleteMedication(long id) {
         SQLiteDatabase myDB = this.getWritableDatabase();
         int result = myDB.delete("medication", "_id=?", new String[]{String.valueOf(id)});
@@ -408,51 +409,6 @@ public class DBHelper extends SQLiteOpenHelper {
         }
         return symptoms;
     }
-    public List<String> getAllMedications(String profileName) {
-        List<String> data = new ArrayList<>();
-        SQLiteDatabase db = this.getReadableDatabase();
-
-        Cursor cursor = db.rawQuery(
-                "SELECT timestamp, name, dose FROM medication WHERE profile_name = ? ORDER BY timestamp ASC",
-                new String[]{profileName}
-        );
-
-        if (cursor.moveToFirst()) {
-            do {
-                String timestamp = cursor.getString(cursor.getColumnIndexOrThrow("timestamp"));
-                String name = cursor.getString(cursor.getColumnIndexOrThrow("name"));
-                String dose = cursor.getString(cursor.getColumnIndexOrThrow("dose"));
-                data.add(timestamp + "," + name + "," + dose);
-            } while (cursor.moveToNext());
-        }
-
-        cursor.close();
-        return data;
-    }
-
-    public List<String> getAllTemperatures(String profileName) {
-        List<String> data = new ArrayList<>();
-        SQLiteDatabase db = this.getReadableDatabase();
-
-        Cursor cursor = db.rawQuery(
-                "SELECT measurement_time, temperature_value FROM temperature WHERE profile_name = ? ORDER BY measurement_time ASC",
-                new String[]{profileName}
-        );
-
-        if (cursor.moveToFirst()) {
-            do {
-                String timestamp = cursor.getString(cursor.getColumnIndexOrThrow("measurement_time"));
-                String temp = cursor.getString(cursor.getColumnIndexOrThrow("temperature_value"));
-                data.add(timestamp + "," + temp);
-            } while (cursor.moveToNext());
-        }
-
-        cursor.close();
-        return data;
-    }
-
-
-
 
     public boolean checkSymptom(String symptom){
         SQLiteDatabase myDB = this.getReadableDatabase();

@@ -22,6 +22,7 @@
     <string name="select_year">Select Month</string>
     <string name="select_month">Select Month</string>
     <string name="select_day">Select Day</string>
+    <string name="empty_meds">No medications saved yet!</string>
 
     <string-array name="date_options">
         <item>Today</item>
