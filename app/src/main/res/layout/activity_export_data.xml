@@ -51,8 +51,8 @@
             android:id="@+id/etDoctorName"
             android:layout_width="376dp"
             android:layout_height="55dp"
-            android:hint="Family Doctor Name"
-            android:background="#FFFFFF"/>
+            android:background="#FFFFFF"
+            android:hint="Family Doctor Name" />
 
         <Button
             android:id="@+id/btnSaveUserInfo"
