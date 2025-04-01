@@ -83,7 +83,7 @@ public class ExportDataActivity extends AppCompatActivity {
 
 
     private void writeExportToFile(String filename, List<String> temps, List<String> meds, String profileLabel) {
-        Toast.makeText(this, "⏳ Starting export...", Toast.LENGTH_SHORT).show(); // ➤
+
         String firstName = sharedPreferences.getString("first_name", "");
         String lastName = sharedPreferences.getString("last_name", "");
         String birthDate = sharedPreferences.getString("birth_date", "");
@@ -114,7 +114,7 @@ public class ExportDataActivity extends AppCompatActivity {
         try {
             File dir = getExternalFilesDir(null);
             File file = new File(dir, filename);
-            Toast.makeText(this, "📁 Path: " + file.getAbsolutePath(), Toast.LENGTH_SHORT).show(); // ➤ 2️⃣
+
             FileOutputStream fos = new FileOutputStream(file);
             fos.write(data.toString().getBytes());
             fos.close();
