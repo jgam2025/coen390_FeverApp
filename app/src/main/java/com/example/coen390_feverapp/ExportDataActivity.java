@@ -5,6 +5,11 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+import android.Manifest;
+import android.content.pm.PackageManager;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import android.os.Environment;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -60,6 +65,12 @@ public class ExportDataActivity extends AppCompatActivity {
             editor.apply();
             Toast.makeText(this, "User info saved ", Toast.LENGTH_SHORT).show();
         });
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                    1);
+        }
 
         // Export all
         btnExportAll.setOnClickListener(v -> exportAllTemperatureData());
@@ -112,7 +123,8 @@ public class ExportDataActivity extends AppCompatActivity {
         }
 
         try {
-            File dir = getExternalFilesDir(null);
+            File dir = android.os.Environment.getExternalStoragePublicDirectory(android.os.Environment.DIRECTORY_DOWNLOADS);
+
             File file = new File(dir, filename);
 
             FileOutputStream fos = new FileOutputStream(file);
