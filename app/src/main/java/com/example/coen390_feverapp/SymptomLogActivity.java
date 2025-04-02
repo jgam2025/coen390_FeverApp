@@ -37,6 +37,7 @@ public class SymptomLogActivity extends AppCompatActivity  {
                         nauseaCheckBox, runnyNoseCheckBox, coughCheckBox, fatigueCheckBox;
     protected Button submitButton, newSymptomButton, goToLogButton;
     protected Spinner profileOptionSpinner;
+    String selectedProfile;
     DBHelper dbHelper;
 
     @Override
@@ -116,7 +117,10 @@ public class SymptomLogActivity extends AppCompatActivity  {
 
                 if(symptoms.isEmpty()){
                     Toast.makeText(getApplicationContext(),"No symptoms selected", Toast.LENGTH_LONG).show();
-                } else {
+                } else if (selectedProfile == "Select profile"){
+                    Toast.makeText(getApplicationContext(), "Please select a profile", Toast.LENGTH_LONG).show();
+                }
+                else {
 
                     boolean inserted = dbHelper.insertSymptoms(currentProfile, symptoms, logTime);
 
@@ -212,7 +216,7 @@ public class SymptomLogActivity extends AppCompatActivity  {
         profileOptionSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String selectedProfile = (String) parent.getItemAtPosition(position);
+                selectedProfile = (String) parent.getItemAtPosition(position);
                 SharedPreferences.Editor editor = sharedPrefs.edit();
                 editor.putString("current_profile", selectedProfile);
                 editor.apply();

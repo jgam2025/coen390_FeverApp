@@ -120,6 +120,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public List<String> getProfiles(String user){
         SQLiteDatabase myDB = this.getReadableDatabase();
         List<String> profileList = new ArrayList<>();
+        profileList.add("Select profile");
         Cursor cursor = null;
         int userID = getUserID(user);
         try {
