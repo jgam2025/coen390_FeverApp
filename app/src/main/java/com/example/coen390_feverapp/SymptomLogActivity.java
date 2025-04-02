@@ -142,12 +142,7 @@ public class SymptomLogActivity extends AppCompatActivity  {
             }
         });
 
-        goToLogButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                goToSymptomStoragePage();
-            }
-        });
+
 
     }
 
@@ -248,57 +243,27 @@ public class SymptomLogActivity extends AppCompatActivity  {
             goToExtraPage();
             return true;
         } else if (id == R.id.miperson) {
-            goToTemperatureStorage();
+            goToHealth();
             return true;
 
-        } else if (id == R.id.miadd) {
-            addProfile();
-            return true;
 
-        }
-        else if (id == R.id.miMedication) {
-            goToMedication();
-            return true;
-        }
-
-        else if (id==R.id.miSymptoms){
-            goToSymptomLogActivity();
-            return true;
-        }
-        else if (id==R.id.miTemperature) {
-            goToTemperatureMeasurementPage();
-            return true;
-        }
-        else if (id==R.id.miGraph) {
-            Graph();
-            return true;
-        }
-        else if (id==R.id.miLogOut) {
-            goToLogin();
-            return true;
         } else {
             return super.onOptionsItemSelected(item);
         }
     }
 
-    private void goToSymptomStoragePage(){
-        Intent intent = new Intent(this, SymptomStoragePage.class);
-        startActivity(intent);
-    }
+
 
     private void goToExtraPage(){
         Intent intent = new Intent(this, ExtraPageActivity.class);
         startActivity(intent);
     }
 
-    private void goToSymptomLogActivity(){
-        Intent intent = new Intent(this,SymptomLogActivity.class);
+    private void goToHealth(){
+        Intent intent = new Intent(this,HealthDataActivity.class);
         startActivity(intent);
     }
-    private void goToTemperatureStorage(){
-        Intent intent = new Intent(this, TemperatureStoragePage.class);
-        startActivity(intent);
-    }
+
     private void goToMedication(){
         Intent intent = new Intent(this, MedicationActivity.class);
         startActivity(intent);

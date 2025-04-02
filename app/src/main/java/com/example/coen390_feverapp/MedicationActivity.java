@@ -36,7 +36,11 @@ public class MedicationActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_medication);
-
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayShowTitleEnabled(false); // Hide the title
+        }
         dbHelper = new DBHelper(this);
 
         medsEditText = findViewById(R.id.medsEditText);
@@ -148,7 +152,50 @@ public class MedicationActivity extends AppCompatActivity {
     public String getMedicationNameText() {
         return medicationNameText;
     }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu from the menu.xml file in the menu directory
+        getMenuInflater().inflate(R.menu.toolbar, menu);
 
+        return true;
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.miperson) {
+            goToHealth();
+            return true;
+
+        }  else if (id == R.id.miMore) {
+            goToExtra();
+            return true;
+        }else if (id == R.id.mihome) {
+                goToHome();
+                return true;
+
+        } else{
+            return super.onOptionsItemSelected(item);
+
+        }
+    }
+
+    private void goToHealth(){
+        Intent intent = new Intent(this, HealthDataActivity.class);
+        startActivity(intent);
+    }
+
+    private void goToHome(){
+        Intent intent = new Intent(this, BaseActivity.class);
+        startActivity(intent);
+    }
+
+
+
+    private void goToExtra(){
+        Intent intent = new Intent(this, ExtraPageActivity.class);
+        startActivity(intent);
+    }
     /*
     private void loadMedicationHistory() {
         SharedPreferences sharedPrefs = getSharedPreferences("user_prefs", MODE_PRIVATE);
@@ -183,13 +230,7 @@ public class MedicationActivity extends AppCompatActivity {
      */
     //toolbar menu items
     /*
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu from the menu.xml file in the menu directory
-        getMenuInflater().inflate(R.menu.toolbar, menu);
 
-        return true;
-    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

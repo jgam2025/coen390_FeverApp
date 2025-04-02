@@ -24,7 +24,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-public class TemperatureStoragePage extends AppCompatActivity {
+/*public class TemperatureStoragePage extends AppCompatActivity {
 
     private TextView textViewLastTemperature;
     private Spinner spinnerMonth, spinnerDay,spinnerYear;
@@ -289,4 +289,4 @@ public class TemperatureStoragePage extends AppCompatActivity {
         graphDialog.show(getSupportFragmentManager(), "GraphDialog");
     }
 
-}
+}*/
