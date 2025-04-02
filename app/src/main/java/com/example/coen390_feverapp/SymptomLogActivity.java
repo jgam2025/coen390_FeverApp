@@ -243,53 +243,34 @@ public class SymptomLogActivity extends AppCompatActivity  {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        if (id == R.id.miMore) {
-            goToExtraPage();
-            return true;
-        } else if (id == R.id.miperson) {
+        if (id == R.id.miperson) {
             goToHealth();
             return true;
-
+        } else if (id == R.id.miMore) {
+            goToExtra();
+            return true;
+        } else if (id == R.id.mihome) {
+            goToHome();
+            return true;
 
         } else {
             return super.onOptionsItemSelected(item);
         }
     }
 
+    private void goToHealth() {
+        Intent intent = new Intent(this, HealthDataActivity.class);
+        startActivity(intent);
+    }
 
+    private void goToHome() {
+        Intent intent = new Intent(this, BaseActivity.class);
+        startActivity(intent);
+    }
 
-    private void goToExtraPage(){
+    private void goToExtra() {
         Intent intent = new Intent(this, ExtraPageActivity.class);
         startActivity(intent);
-    }
-
-    private void goToHealth(){
-        Intent intent = new Intent(this,HealthDataActivity.class);
-        startActivity(intent);
-    }
-
-    private void goToMedication(){
-        Intent intent = new Intent(this, MedicationActivity.class);
-        startActivity(intent);
-    }
-
-    private void goToLogin(){
-        Intent intent = new Intent(this, LoginActivity.class);
-        startActivity(intent);
-    }
-
-    private void goToTemperatureMeasurementPage(){
-        Intent intent = new Intent(this, TemperatureMeasurementPage.class);
-        startActivity(intent);
-    }
-    private void addProfile(){
-        NewProfileFragment newProfile = new NewProfileFragment();
-        newProfile.show(getFragmentManager(), "InsertProfile");
-    }
-
-    private void Graph(){
-        GraphFragment graphDialog = new GraphFragment();
-        graphDialog.show(getSupportFragmentManager(), "GraphDialog");
     }
 
 }
