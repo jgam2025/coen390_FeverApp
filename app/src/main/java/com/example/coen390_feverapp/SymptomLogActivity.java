@@ -94,63 +94,67 @@ public class SymptomLogActivity extends AppCompatActivity  {
             @Override
             public void onClick(View v) {
                 //submit to database
-                String symptoms= "";
-
-                LinearLayout container = findViewById(R.id.linearCheckBoxLayout);
-                for (int i = 0; i < container.getChildCount(); i++) {
-                    View child = container.getChildAt(i);
-                    if (child instanceof CheckBox) {
-                        CheckBox newSymptomCheckbox = (CheckBox) child;
-                        if (newSymptomCheckbox.isChecked()) {
-                            symptoms = symptoms + newSymptomCheckbox.getText().toString() + ", ";
-                        }
-                    }
-                }
-
-                if(!symptoms.isEmpty()){
-                    symptoms = symptoms.substring(0,symptoms.length()-2); // removes last ", " from string for display
-                }
-                Log.d("symptom_check", "symptom string: " + symptoms);
-
-                SharedPreferences sharedPrefs = getSharedPreferences("user_prefs",MODE_PRIVATE);
-                String currentProfile = sharedPrefs.getString("current_profile",null);
-                String currentUser = sharedPrefs.getString("current_user", null);
-                Log.d("current_profile_check", "current profile: " + currentProfile);
-                int userID = dbHelper.getUserID(currentUser);
-                Log.d("current_user_check","current user: " + currentUser + " , id: " + userID);
-                String logTime = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault()).format(new Date());
-                Log.d("time_check", "time: " + logTime);
-
-                if(symptoms.isEmpty()){
-                    Toast.makeText(getApplicationContext(),"No symptoms selected", Toast.LENGTH_LONG).show();
-                } else {
-
-                    boolean inserted = dbHelper.insertSymptoms(currentProfile, symptoms, logTime);
-
-                    if (inserted) {
-                        Toast.makeText(getApplicationContext(), "Symptoms saved", Toast.LENGTH_SHORT).show();
-                    } else {
-                        Toast.makeText(getApplicationContext(), "Error saving symptoms", Toast.LENGTH_SHORT).show();
-                    }
-
-                    for (CheckBox checkBox : checkBoxes) {
-                        if (checkBox.isChecked()) {
-                            checkBox.setChecked(false);
-                        }
-                    }
-
-                    for (int i = 0; i < container.getChildCount(); i++) {
-                        View child = container.getChildAt(i);
-                        if (child instanceof CheckBox) {
-                            ((CheckBox) child).setChecked(false);
-                        }
-                    }
-                }
+                submitSymptoms(checkBoxes);
             }
         });
 
+    }
 
+    private void submitSymptoms(List<CheckBox> checkBoxes){
+        String symptoms= "";
 
+        LinearLayout container = findViewById(R.id.linearCheckBoxLayout);
+        for (int i = 0; i < container.getChildCount(); i++) {
+            View child = container.getChildAt(i);
+            if (child instanceof CheckBox) {
+                CheckBox newSymptomCheckbox = (CheckBox) child;
+                if (newSymptomCheckbox.isChecked()) {
+                    symptoms = symptoms + newSymptomCheckbox.getText().toString() + ", ";
+                }
+            }
+        }
+
+        if(!symptoms.isEmpty()){
+            symptoms = symptoms.substring(0,symptoms.length()-2); // removes last ", " from string for display
+        }
+        Log.d("symptom_check", "symptom string: " + symptoms);
+
+        SharedPreferences sharedPrefs = getSharedPreferences("user_prefs",MODE_PRIVATE);
+        String currentProfile = sharedPrefs.getString("current_profile",null);
+        String currentUser = sharedPrefs.getString("current_user", null);
+        Log.d("current_profile_check", "current profile: " + currentProfile);
+        int userID = dbHelper.getUserID(currentUser);
+        Log.d("current_user_check","current user: " + currentUser + " , id: " + userID);
+        String logTime = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault()).format(new Date());
+        Log.d("time_check", "time: " + logTime);
+
+        if(symptoms.isEmpty()){
+            Toast.makeText(getApplicationContext(),"No symptoms selected", Toast.LENGTH_LONG).show();
+        } else if (currentProfile != "Select profile"){
+
+            boolean inserted = dbHelper.insertSymptoms(currentProfile, symptoms, logTime);
+
+            if (inserted) {
+                Toast.makeText(getApplicationContext(), "Symptoms saved", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(getApplicationContext(), "Error saving symptoms", Toast.LENGTH_SHORT).show();
+            }
+
+            for (CheckBox checkBox : checkBoxes) {
+                if (checkBox.isChecked()) {
+                    checkBox.setChecked(false);
+                }
+            }
+
+            for (int i = 0; i < container.getChildCount(); i++) {
+                View child = container.getChildAt(i);
+                if (child instanceof CheckBox) {
+                    ((CheckBox) child).setChecked(false);
+                }
+            }
+        } else {
+            Toast.makeText(getApplicationContext(), "Please select a profile", Toast.LENGTH_LONG).show();
+        }
     }
 
     private List<CheckBox> initializeCheckBoxes(){

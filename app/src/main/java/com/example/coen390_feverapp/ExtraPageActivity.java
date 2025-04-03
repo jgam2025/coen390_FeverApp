@@ -16,8 +16,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 public class ExtraPageActivity extends AppCompatActivity {
 
-    String[] pageNames = {"Health Resources & Phone Numbers", "Add Profile", "Export Data", "Log Out"};
-
+    String[] pageNames = {"Health Resources & Phone Numbers", "Sensor Calibration"};
 
     protected ListView additionalPageListView;
 
@@ -30,8 +29,7 @@ public class ExtraPageActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayShowTitleEnabled(false);
-
+            getSupportActionBar().setDisplayShowTitleEnabled(false); // Hide the title
         }
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.checkBoxLayout), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
@@ -113,7 +111,14 @@ public class ExtraPageActivity extends AppCompatActivity {
         Intent intent = new Intent(this, MedicationActivity.class);
         startActivity(intent);
     }
-
+    private void Graph(){
+        GraphFragment graphDialog = new GraphFragment();
+        graphDialog.show(getSupportFragmentManager(), "GraphDialog");
+    }
+    private void goSymptomPage(){
+        Intent intent = new Intent(this, SymptomLogActivity.class);
+        startActivity(intent);
+    }
 
     private void setupUI() {
 
@@ -129,14 +134,12 @@ public class ExtraPageActivity extends AppCompatActivity {
             if (selectedPage.equals("Health Resources & Phone Numbers")){
                 Intent intent = new Intent(ExtraPageActivity.this, PhoneNumberActivity.class);
                 startActivity(intent);
-            } else if (selectedPage.equals("Add Profile")) {
-                NewProfileFragment newProfile = new NewProfileFragment();
-                newProfile.show(getFragmentManager(), "InsertProfile");
-            } else if (selectedPage.equals("Log Out")) {
-                Intent intent = new Intent(ExtraPageActivity.this, LoginActivity.class);
-                startActivity(intent);
             }
 
+            if(selectedPage.equals("Sensor Calibration")){
+                Intent intent = new Intent(ExtraPageActivity.this, CalibrationActivity.class);
+                startActivity(intent);
+            }
         });
     }
 
