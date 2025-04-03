@@ -37,6 +37,7 @@ public class SymptomLogActivity extends AppCompatActivity  {
                         nauseaCheckBox, runnyNoseCheckBox, coughCheckBox, fatigueCheckBox;
     protected Button submitButton, newSymptomButton, goToLogButton;
     protected Spinner profileOptionSpinner;
+    String selectedProfile;
     DBHelper dbHelper;
 
     @Override
@@ -44,7 +45,11 @@ public class SymptomLogActivity extends AppCompatActivity  {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_symptom_log);
-
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayShowTitleEnabled(false); // Hide the title
+        }
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.checkBoxLayout), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
@@ -53,18 +58,7 @@ public class SymptomLogActivity extends AppCompatActivity  {
 
         dbHelper = new DBHelper(this);
         setupUI();
-        setUpToolbar();
 
-    }
-
-    private void setUpToolbar() {
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(true);
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        }
-        toolbar.setNavigationOnClickListener(v -> finish());
     }
 
 
@@ -77,7 +71,7 @@ public class SymptomLogActivity extends AppCompatActivity  {
 
         submitButton = findViewById(R.id.submitButton);
         newSymptomButton = findViewById(R.id.newSymptomButton);
-
+        goToLogButton = findViewById(R.id.goToLogButton);
 
         List<CheckBox> checkBoxes = initializeCheckBoxes();
 
@@ -123,7 +117,10 @@ public class SymptomLogActivity extends AppCompatActivity  {
 
                 if(symptoms.isEmpty()){
                     Toast.makeText(getApplicationContext(),"No symptoms selected", Toast.LENGTH_LONG).show();
-                } else {
+                } else if (selectedProfile == "Select profile"){
+                    Toast.makeText(getApplicationContext(), "Please select a profile", Toast.LENGTH_LONG).show();
+                }
+                else {
 
                     boolean inserted = dbHelper.insertSymptoms(currentProfile, symptoms, logTime);
 
@@ -219,7 +216,7 @@ public class SymptomLogActivity extends AppCompatActivity  {
         profileOptionSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String selectedProfile = (String) parent.getItemAtPosition(position);
+                selectedProfile = (String) parent.getItemAtPosition(position);
                 SharedPreferences.Editor editor = sharedPrefs.edit();
                 editor.putString("current_profile", selectedProfile);
                 editor.apply();
@@ -246,36 +243,34 @@ public class SymptomLogActivity extends AppCompatActivity  {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        if (id == R.id.miMore) {
-            goToExtraPage();
-            return true;
-        } else if (id == R.id.miperson) {
+        if (id == R.id.miperson) {
             goToHealth();
             return true;
-
+        } else if (id == R.id.miMore) {
+            goToExtra();
+            return true;
+        } else if (id == R.id.mihome) {
+            goToHome();
+            return true;
 
         } else {
             return super.onOptionsItemSelected(item);
         }
     }
 
+    private void goToHealth() {
+        Intent intent = new Intent(this, HealthDataActivity.class);
+        startActivity(intent);
+    }
 
+    private void goToHome() {
+        Intent intent = new Intent(this, BaseActivity.class);
+        startActivity(intent);
+    }
 
-    private void goToExtraPage(){
+    private void goToExtra() {
         Intent intent = new Intent(this, ExtraPageActivity.class);
         startActivity(intent);
     }
-
-    private void goToHealth(){
-        Intent intent = new Intent(this,HealthDataActivity.class);
-        startActivity(intent);
-    }
-
-    private void goToMedication(){
-        Intent intent = new Intent(this, MedicationActivity.class);
-        startActivity(intent);
-    }
-
-
 
 }
