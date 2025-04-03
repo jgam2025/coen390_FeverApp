@@ -16,7 +16,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 public class ExtraPageActivity extends AppCompatActivity {
 
-    String[] pageNames = {"Health Resources & Phone Numbers", "Sensor Calibration"};
+    String[] pageNames = {"Health Resources & Phone Numbers", "Sensor Calibration","Export Health Data"};
 
     protected ListView additionalPageListView;
 
@@ -52,54 +52,27 @@ public class ExtraPageActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         if (id == R.id.miperson) {
-            goToTemperatureStorage();
+            goToHealth();
             return true;
 
-        }  else if (id == R.id.miGraph) {
-            Graph();
+        }  else if (id == R.id.mihome) {
+            goToHomepage();
             return true;
-        }
 
-        else if (id == R.id.miadd) {
-            addProfile();
-            return true;
-        }
-        else if(id ==R.id.miSymptoms) {
-            goSymptomPage();
-            return true;
-        }else if (id==R.id.miTemperature) {
-            goToTemperatureMeasurementPage();
-            return true;
-        }
-        else if (id==R.id.miLogOut) {
-            goToLogin();
-            return true;
-        } else if(id==R.id.miMedication) {
-            goToMedicationPage();
-            return true;
         } else{
                 return super.onOptionsItemSelected(item);
 
         }
     }
 
-    private void goToExtraPage(){
-        Intent intent = new Intent(this, ExtraPageActivity.class);
+    private void goToHealth(){
+        Intent intent = new Intent(this, HealthDataActivity.class);
         startActivity(intent);
     }
 
-    private void goToTemperatureStorage(){
-        Intent intent = new Intent(this, TemperatureStoragePage.class);
-        startActivity(intent);
-    }
 
-    private void goToLogin(){
-        Intent intent = new Intent(this, LoginActivity.class);
-        startActivity(intent);
-    }
-
-    private void goToTemperatureMeasurementPage(){
-        Intent intent = new Intent(this, TemperatureMeasurementPage.class);
+    private void goToHomepage(){
+        Intent intent = new Intent(this, BaseActivity.class);
         startActivity(intent);
     }
     private void addProfile(){
@@ -138,6 +111,11 @@ public class ExtraPageActivity extends AppCompatActivity {
 
             if(selectedPage.equals("Sensor Calibration")){
                 Intent intent = new Intent(ExtraPageActivity.this, CalibrationActivity.class);
+                startActivity(intent);
+            }
+
+            if (selectedPage.equals("Export Health Data")) {
+                Intent intent = new Intent(ExtraPageActivity.this, ExportDataActivity.class);
                 startActivity(intent);
             }
         });

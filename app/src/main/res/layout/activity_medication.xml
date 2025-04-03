@@ -12,25 +12,31 @@
         android:id="@+id/titleTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="16dp"
         android:gravity="center_horizontal"
-        android:text="Medication"
+        android:text="Medication Tracker"
         android:textColor="@color/red_background"
-        android:textSize="40dp"
+        android:textSize="30dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.035"
+        app:layout_constraintHorizontal_bias="0.571"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        tools:layout_editor_absoluteY="16dp" />
+
+    <View
+        android:id="@+id/divider2"
+        android:layout_width="409dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="12dp"
+        android:background="?android:attr/listDivider"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/titleTextView" />
 
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
+        android:id="@+id/medsToolbar"
         android:layout_width="409dp"
         android:layout_height="wrap_content"
         android:background="?attr/colorPrimary"
         android:minHeight="?attr/actionBarSize"
-        app:titleTextColor="@color/white"
-        android:backgroundTint="@color/toolbar"
         android:theme="?attr/actionBarTheme"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -40,13 +46,12 @@
         android:id="@+id/chooseTextView"
         android:layout_width="374dp"
         android:layout_height="56dp"
-        android:layout_marginTop="116dp"
+        android:layout_marginTop="20dp"
         android:text="Choose from your frequently used medication:"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.513"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/divider2" />
 
     <Spinner
         android:id="@+id/medsSpinner"
@@ -108,28 +113,37 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/medsEditText" />
 
+    <TextView
+        android:id="@+id/profileTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="48dp"
+        android:text="Who are you logging for?"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/doseEditText" />
+
     <Spinner
         android:id="@+id/profilesSpinner"
-        android:layout_width="wrap_content"
+        android:layout_width="258dp"
         android:layout_height="22dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="10dp"
+        android:layout_marginTop="8dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.978"
+        app:layout_constraintHorizontal_bias="0.124"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/profileTextView" />
 
     <Button
         android:id="@+id/submitMedButton"
-        android:layout_width="wrap_content"
+        android:layout_width="101dp"
         android:layout_height="51dp"
-        android:layout_marginBottom="88dp"
-        android:backgroundTint="@color/BUTTON_COLOR"
-        android:text="Submit"
-        android:textSize="24sp"
-        app:layout_constraintBottom_toTopOf="@+id/toolbar"
+        android:text="Submit!"
+        app:layout_constraintBottom_toTopOf="@+id/medsToolbar"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/profilesSpinner" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
