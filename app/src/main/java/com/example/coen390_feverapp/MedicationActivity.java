@@ -86,6 +86,7 @@ public class MedicationActivity extends AppCompatActivity {
         if (selectedProfile == "Select profile"){
             Toast.makeText(this,"Please select a profile", Toast.LENGTH_LONG).show();
         }
+
         return true;
     }
 
@@ -127,7 +128,7 @@ public class MedicationActivity extends AppCompatActivity {
         String currentUser = sharedPrefs.getString("current_user", null);
         List<String> profileList = dbHelper.getProfiles(currentUser);
         if (profileList.isEmpty()) {
-
+            //do nothing...
         }
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, profileList);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
