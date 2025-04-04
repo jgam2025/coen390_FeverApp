@@ -47,7 +47,7 @@ public class TemperatureMeasurementPage extends AppCompatActivity {
         });
         setupUI();
         dbHelper = new DBHelper(this);
-        showUsersOnSpinner();
+        showProfilesOnSpinner();
     }
 
     void setupUI(){
@@ -72,7 +72,7 @@ public class TemperatureMeasurementPage extends AppCompatActivity {
         userSpinner = findViewById(R.id.userSpinner);
     }
 
-    public void showUsersOnSpinner(){
+    public void showProfilesOnSpinner(){
         SharedPreferences sharedPrefs = getSharedPreferences("user_prefs", MODE_PRIVATE);
         String currentUser = sharedPrefs.getString("current_user",null);
         List<String> profileList = dbHelper.getProfiles(currentUser);

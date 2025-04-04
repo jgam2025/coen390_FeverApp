@@ -77,7 +77,7 @@ public class NewProfileFragment extends DialogFragment {
                     Toast.makeText(getContext(), "Profile Saved", Toast.LENGTH_SHORT).show();
 
                     if(temp_activity != null){
-                        temp_activity.showUsersOnSpinner();
+                        temp_activity.showProfilesOnSpinner();
                     }
                     if(symptom_activity != null){
                         symptom_activity.showProfilesOnSpinner();

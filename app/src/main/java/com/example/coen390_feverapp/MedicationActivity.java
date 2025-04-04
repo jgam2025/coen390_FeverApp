@@ -31,7 +31,7 @@ public class MedicationActivity extends AppCompatActivity {
     private Button submitMedButton;
     private Spinner medsSpinner, profilesSpinner;
     private DBHelper dbHelper;
-    private String medicationNameText, selectedProfile;
+    private String medicationNameText, selectedProfile, medicationNameSpinner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,58 +55,71 @@ public class MedicationActivity extends AppCompatActivity {
 
         submitMedButton = findViewById(R.id.submitMedButton);
         submitMedButton.setOnClickListener(v -> {
-            //todo: create separate function for this code to go into because its a lot for oncreate
-            String medicationNameSpinner = (String) medsSpinner.getSelectedItem();
+
+            medicationNameSpinner = (String) medsSpinner.getSelectedItem();
             medicationNameText = medsEditText.getText().toString().trim();
             String medicationDose = doseEditText.getText().toString().trim();
 
-            Log.d("edit_text_check", "medication from edit text: " + medicationNameText);
-            Log.d("spinner_check", "medication from spinner: " + medicationNameSpinner);
-
-            Log.d("profile_check", "profile from spinner: " + selectedProfile);
-            if (!medicationNameText.isEmpty() ^ medicationNameSpinner != "") {
-                Log.d("progress_check", "if condition reached");
-                SharedPreferences sharedPrefs = getSharedPreferences("user_prefs", MODE_PRIVATE);
-                String currentProfile = sharedPrefs.getString("current_profile", "default");
-
-                if (!medicationNameText.isEmpty() && selectedProfile != "Select profile") { // selected medication from edit text
-                    Log.d("edit_text_check", "Edit text not empty");
-                    SaveNewMedsFragment newMedsFragment = new SaveNewMedsFragment();
-                    newMedsFragment.show(getFragmentManager(), "NewMedication");
-                    boolean inserted = dbHelper.insertMedication(currentProfile, medicationNameText, medicationDose);
-                    if (inserted) {
-                        Toast.makeText(this, "Medication saved!", Toast.LENGTH_SHORT).show();
-                    } else {
-                        Toast.makeText(this, "Error saving medication", Toast.LENGTH_SHORT).show();
-                    }
-                    medsEditText.setText("");
-                    doseEditText.setText("");
-                } else if (medicationNameSpinner != null && !medicationNameSpinner.isEmpty()
-                        && selectedProfile != "Select profile") {
-                    Log.d("spinner_check", "spinner item selected: " + selectedProfile);// selected medication from spinner
-                    boolean inserted = dbHelper.insertMedication(currentProfile, medicationNameSpinner, medicationDose);
-                    if (inserted) {
-                        Toast.makeText(this, "Medication saved!", Toast.LENGTH_SHORT).show();
-                    } else {
-                        Toast.makeText(this, "Error saving medication", Toast.LENGTH_SHORT).show();
-                    }
-                    medsEditText.setText("");
-                    doseEditText.setText("");
-                }
-                //all the possible things a user could mess up:
-            } else if (!medicationNameText.isEmpty() && medicationNameSpinner != "") {
-                Toast.makeText(this,
-                        "Please select from the dropdown menu OR enter a medication in the text field",
-                        Toast.LENGTH_LONG).show();
-            } else if (medicationNameSpinner == "" && medicationNameText.isEmpty()) {
-                Toast.makeText(this, "Please select a medication", Toast.LENGTH_LONG).show();
+            if(validateInput(selectedProfile)){
+                submitMeds(selectedProfile,medicationDose);
             }
 
-            if (selectedProfile == "Select profile"){
-                Toast.makeText(this,"Please select a profile", Toast.LENGTH_LONG).show();
-            }
         });
 
+    }
+
+    //validate input --> if validated, submit meds
+    private boolean validateInput(String selectedProfile){
+
+        Log.d("edit_text_check", "medication from edit text: " + medicationNameText);
+        Log.d("spinner_check", "medication from spinner: " + medicationNameSpinner);
+        Log.d("profile_check", "profile from spinner: " + selectedProfile);
+
+        if (!medicationNameText.isEmpty() && medicationNameSpinner != "") {
+            Toast.makeText(this,
+                    "Please select from the dropdown menu OR enter a medication in the text field",
+                    Toast.LENGTH_LONG).show();
+        } else if (medicationNameSpinner == "" && medicationNameText.isEmpty()) {
+            Toast.makeText(this, "Please select a medication", Toast.LENGTH_LONG).show();
+        }
+
+        if (selectedProfile == "Select profile"){
+            Toast.makeText(this,"Please select a profile", Toast.LENGTH_LONG).show();
+        }
+        return true;
+    }
+
+    private void submitMeds(String selectedProfile, String medicationDose){
+        if (!medicationNameText.isEmpty() ^ medicationNameSpinner != "") {
+            Log.d("progress_check", "if condition reached");
+            SharedPreferences sharedPrefs = getSharedPreferences("user_prefs", MODE_PRIVATE);
+            String currentProfile = sharedPrefs.getString("current_profile", "default");
+
+            if (!medicationNameText.isEmpty() && selectedProfile != "Select profile") { // selected medication from edit text
+                Log.d("edit_text_check", "Edit text not empty");
+                SaveNewMedsFragment newMedsFragment = new SaveNewMedsFragment();
+                newMedsFragment.show(getFragmentManager(), "NewMedication");
+                boolean inserted = dbHelper.insertMedication(currentProfile, medicationNameText, medicationDose);
+                if (inserted) {
+                    Toast.makeText(this, "Medication saved!", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(this, "Error saving medication", Toast.LENGTH_SHORT).show();
+                }
+                medsEditText.setText("");
+                doseEditText.setText("");
+            } else if (medicationNameSpinner != ""
+                    && selectedProfile != "Select profile") {
+                Log.d("spinner_check", "spinner item selected: " + selectedProfile);// selected medication from spinner
+                boolean inserted = dbHelper.insertMedication(currentProfile, medicationNameSpinner, medicationDose);
+                if (inserted) {
+                    Toast.makeText(this, "Medication saved!", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(this, "Error saving medication", Toast.LENGTH_SHORT).show();
+                }
+                medsEditText.setText("");
+                doseEditText.setText("");
+            }
+        };
     }
 
     private void showProfilesOnSpinner() {
@@ -141,9 +154,7 @@ public class MedicationActivity extends AppCompatActivity {
         String currentUser = sharedPrefs.getString("current_user", null);
         int userID = dbHelper.getUserID(currentUser);
         List<String> medicationList = dbHelper.getUserAddedMedications(userID);
-        if (medicationList.isEmpty()) {
-            //todo: say that no new medications have been saved
-        }
+
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, medicationList);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         medsSpinner.setAdapter(adapter);
@@ -164,6 +175,8 @@ public class MedicationActivity extends AppCompatActivity {
         return medicationNameText;
     }
 
+
+    //menu
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu from the menu.xml file in the menu directory

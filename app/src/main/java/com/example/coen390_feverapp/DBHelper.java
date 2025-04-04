@@ -8,6 +8,7 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -141,7 +142,6 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     //functions for inserting and retrieving temp data
-
     public boolean insertTemperature(String profileName, String measurementTime, String temperatureValue) {
         SQLiteDatabase myDB = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -187,8 +187,8 @@ public class DBHelper extends SQLiteOpenHelper {
     public List<String> getUserAddedMedications(int userId) {
         List<String> newMeds = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
-        newMeds.add("");
         Cursor cursor = null;
+        newMeds.add("");
         try {
             cursor = db.rawQuery("SELECT medication_name FROM user_added_medications WHERE user_id = ?", new String[]{String.valueOf(userId)});
             if (cursor != null) {
@@ -201,10 +201,33 @@ public class DBHelper extends SQLiteOpenHelper {
             }
             cursor.close();
         } catch (Exception e){
-            Toast.makeText(context, "Get error: " + e.getMessage(), Toast.LENGTH_LONG).show();
+            Toast.makeText(context, "Get error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
             System.out.println("get error: " + e.getMessage());
         }
         return newMeds;
+    }
+
+    @SuppressLint("Range")
+    public boolean medicationInDB(String med, int userId){// this function must be fixed :/
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = null;
+        try {
+            cursor = db.rawQuery("SELECT medication_name FROM user_added_medications WHERE user_id = ?", new String[]{String.valueOf(userId)});
+            if (cursor != null) {
+                if (cursor.moveToFirst()) {
+                    do {
+                        if (med == cursor.getString(cursor.getColumnIndex("medication_name"))) {
+                            Log.d("med_in_db", "medication found: " + cursor.getString(cursor.getColumnIndex("medication_name")));
+                            return true;
+                        }
+                    } while (cursor.moveToNext());
+                }
+            }
+                cursor.close();
+            } catch(Exception e){
+                Toast.makeText(context, "Get error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        return false;
     }
 
     public Cursor getMedicationHistoryByProfile(String profile) {
