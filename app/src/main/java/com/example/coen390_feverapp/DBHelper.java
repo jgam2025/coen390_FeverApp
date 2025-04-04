@@ -95,6 +95,7 @@ public class DBHelper extends SQLiteOpenHelper {
         } else return -1;
     }
 
+    //checks if username already exists in db
     public boolean checkUsername(String username){
         SQLiteDatabase myDB = this.getReadableDatabase();
         Cursor cursor = myDB.rawQuery("SELECT * FROM users WHERE username = ? COLLATE NOCASE", new String[]{username});
@@ -207,27 +208,11 @@ public class DBHelper extends SQLiteOpenHelper {
         return newMeds;
     }
 
-    @SuppressLint("Range")
-    public boolean medicationInDB(String med, int userId){// this function must be fixed :/
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = null;
-        try {
-            cursor = db.rawQuery("SELECT medication_name FROM user_added_medications WHERE user_id = ?", new String[]{String.valueOf(userId)});
-            if (cursor != null) {
-                if (cursor.moveToFirst()) {
-                    do {
-                        if (med == cursor.getString(cursor.getColumnIndex("medication_name"))) {
-                            Log.d("med_in_db", "medication found: " + cursor.getString(cursor.getColumnIndex("medication_name")));
-                            return true;
-                        }
-                    } while (cursor.moveToNext());
-                }
-            }
-                cursor.close();
-            } catch(Exception e){
-                Toast.makeText(context, "Get error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        return false;
+    //check if medication already in db
+    public boolean checkMedication(String medication){
+        SQLiteDatabase myDB = this.getReadableDatabase();
+        Cursor cursor = myDB.rawQuery("SELECT * FROM user_added_medications WHERE medication_name = ? COLLATE NOCASE", new String[]{medication});
+        return cursor.getCount() > 0;
     }
 
     public Cursor getMedicationHistoryByProfile(String profile) {
@@ -315,6 +300,15 @@ public class DBHelper extends SQLiteOpenHelper {
             System.out.println("get error: " + e.getMessage());
         }
         return symptoms;
+    }
+
+    public boolean checkSymptom(String symptom){
+        SQLiteDatabase myDB = this.getReadableDatabase();
+        Cursor cursor = myDB.rawQuery("SELECT * FROM user_added_symptoms WHERE symptom = ? COLLATE NOCASE", new String[]{symptom});
+        Cursor cursor2 = myDB.rawQuery("SELECT * FROM symptoms WHERE symptom_type = ? COLLATE NOCASE", new String[]{symptom});
+        if(cursor.getCount() > 0) return true;
+        else if (cursor2.getCount() > 0) return true;
+        else return false;
     }
 
 }

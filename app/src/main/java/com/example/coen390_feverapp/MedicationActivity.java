@@ -37,7 +37,7 @@ public class MedicationActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_medication);
-        Toolbar toolbar = findViewById(R.id.medsToolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayShowTitleEnabled(false); // Hide the title
@@ -67,6 +67,7 @@ public class MedicationActivity extends AppCompatActivity {
         });
 
     }
+
 
     //validate input --> if validated, submit meds
     private boolean validateInput(String selectedProfile){

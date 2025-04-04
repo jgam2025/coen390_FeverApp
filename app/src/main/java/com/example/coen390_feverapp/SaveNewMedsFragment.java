@@ -47,7 +47,7 @@ public class SaveNewMedsFragment extends DialogFragment {
                 int userID = dbHelper.getUserID(currentUser);
                 String medicationName = medicationActivity.getMedicationNameText();
                 if(medicationActivity != null){
-                    if(!dbHelper.medicationInDB(medicationName,userID)) {
+                    if(!dbHelper.checkMedication(medicationName)) {
                         Log.d("med_db_check", "medication: " + medicationName);
                         boolean inserted = dbHelper.insertNewMedication(medicationName, userID);
                         if (inserted) {
@@ -56,6 +56,8 @@ public class SaveNewMedsFragment extends DialogFragment {
                             Toast.makeText(getContext(), "Error inserting medication", Toast.LENGTH_LONG).show();
                         }
                         medicationActivity.showMedicationsOnSpinner();
+                    } else {
+                        Toast.makeText(getContext(), "Already in list", Toast.LENGTH_SHORT).show();
                     }
                 }
                 //save into db
