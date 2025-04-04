@@ -17,17 +17,20 @@
         \n\nYou have a fever.\n
         Contact a doctor as soon as possible to get the right treatment.\n\n
     </string>
-    <string name="info_text">
-        \nNote: These features will be fully implemented in future sprints.\n
-        Click the dropdown menu to select a user to take the temperature of.\n
-        Click the + icon on the bottom toolbar to add a new user.\n
-        Click the menu icon on the bottom toolbar to see the saved temperatures of the user.\n
-        For more information, please contact Fever App Support: ________ \n
-    </string>
+
     <string name="create_profile">\u00A0Create New Profile\u00A0</string>
     <string name="select_year">Select Month</string>
     <string name="select_month">Select Month</string>
     <string name="select_day">Select Day</string>
     <string name="empty_meds">No medications saved yet!</string>
+
+    <string-array name="date_options">
+        <item>Today</item>
+        <item>Yesterday</item>
+        <item>Last 7 days</item>
+        <item>Last 14 days</item>
+        <item>Last month</item>
+        <item>All time</item>
+    </string-array>
 
 </resources>

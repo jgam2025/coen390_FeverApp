@@ -311,5 +311,8 @@ public class DBHelper extends SQLiteOpenHelper {
         else return false;
     }
 
+    //to retrieve health data by specific date ranges
+
+
 }
 
