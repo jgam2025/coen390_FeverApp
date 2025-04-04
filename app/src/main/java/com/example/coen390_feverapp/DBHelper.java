@@ -55,6 +55,10 @@ public class DBHelper extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL("CREATE TABLE user_added_symptoms (" +
                 "user_id INTEGER NOT NULL, " +
                 "symptom TEXT NOT NULL)"); //new user added symptoms data table
+
+        sqLiteDatabase.execSQL("CREATE TABLE user_added_medications (" +
+                "user_id INTEGER NOT NULL, " +
+                "medication_name TEXT NOT NULL)"); // new user added medications data table
     }
 
     @Override
@@ -64,7 +68,7 @@ public class DBHelper extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS medication");
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS symptoms");
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS user_added_symptoms");
-
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS user_added_medications");
     }
 
     //functions for user creation and validation
@@ -116,6 +120,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public List<String> getProfiles(String user){
         SQLiteDatabase myDB = this.getReadableDatabase();
         List<String> profileList = new ArrayList<>();
+        profileList.add("Select profile");
         Cursor cursor = null;
         int userID = getUserID(user);
         try {
@@ -170,6 +175,38 @@ public class DBHelper extends SQLiteOpenHelper {
         return result != -1;
     }
 
+    public boolean insertNewMedication(String medicationName, int userID){
+        SQLiteDatabase myDB = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("medication_name", medicationName);
+        contentValues.put("user_id", userID);
+        long result = myDB.insert("user_added_medications", null, contentValues);
+        return result != -1;
+    }
+
+    public List<String> getUserAddedMedications(int userId) {
+        List<String> newMeds = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        newMeds.add("");
+        Cursor cursor = null;
+        try {
+            cursor = db.rawQuery("SELECT medication_name FROM user_added_medications WHERE user_id = ?", new String[]{String.valueOf(userId)});
+            if (cursor != null) {
+                if (cursor.moveToFirst()) {
+                    do {
+                        @SuppressLint("Range") String medication = cursor.getString(cursor.getColumnIndex("medication_name"));
+                        newMeds.add(medication);
+                    } while (cursor.moveToNext());
+                }
+            }
+            cursor.close();
+        } catch (Exception e){
+            Toast.makeText(context, "Get error: " + e.getMessage(), Toast.LENGTH_LONG).show();
+            System.out.println("get error: " + e.getMessage());
+        }
+        return newMeds;
+    }
+
     public Cursor getMedicationHistoryByProfile(String profile) {
         SQLiteDatabase myDB = this.getReadableDatabase();
         return myDB.rawQuery("SELECT * FROM medication WHERE profile_name = ? ORDER BY _id DESC", new String[]{profile});
@@ -184,7 +221,6 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
 
-    // Deletes a medication record by its _id.
     public boolean deleteMedication(long id) {
         SQLiteDatabase myDB = this.getWritableDatabase();
         int result = myDB.delete("medication", "_id=?", new String[]{String.valueOf(id)});
@@ -256,6 +292,51 @@ public class DBHelper extends SQLiteOpenHelper {
         }
         return symptoms;
     }
+    public List<String> getAllMedications(String profileName) {
+        List<String> data = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.rawQuery(
+                "SELECT timestamp, name, dose FROM medication WHERE profile_name = ? ORDER BY timestamp ASC",
+                new String[]{profileName}
+        );
+
+        if (cursor.moveToFirst()) {
+            do {
+                String timestamp = cursor.getString(cursor.getColumnIndexOrThrow("timestamp"));
+                String name = cursor.getString(cursor.getColumnIndexOrThrow("name"));
+                String dose = cursor.getString(cursor.getColumnIndexOrThrow("dose"));
+                data.add(timestamp + "," + name + "," + dose);
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        return data;
+    }
+
+    public List<String> getAllTemperatures(String profileName) {
+        List<String> data = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.rawQuery(
+                "SELECT measurement_time, temperature_value FROM temperature WHERE profile_name = ? ORDER BY measurement_time ASC",
+                new String[]{profileName}
+        );
+
+        if (cursor.moveToFirst()) {
+            do {
+                String timestamp = cursor.getString(cursor.getColumnIndexOrThrow("measurement_time"));
+                String temp = cursor.getString(cursor.getColumnIndexOrThrow("temperature_value"));
+                data.add(timestamp + "," + temp);
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        return data;
+    }
+
+
+
 
 }
 
