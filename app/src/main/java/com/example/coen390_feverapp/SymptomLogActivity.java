@@ -273,23 +273,6 @@ public class SymptomLogActivity extends AppCompatActivity  {
         startActivity(intent);
     }
 
-    private void goToLogin(){
-        Intent intent = new Intent(this, LoginActivity.class);
-        startActivity(intent);
-    }
 
-    private void goToTemperatureMeasurementPage(){
-        Intent intent = new Intent(this, TemperatureMeasurementPage.class);
-        startActivity(intent);
-    }
-    private void addProfile(){
-        NewProfileFragment newProfile = new NewProfileFragment();
-        newProfile.show(getFragmentManager(), "InsertProfile");
-    }
-
-    private void Graph(){
-        GraphFragment graphDialog = new GraphFragment();
-        graphDialog.show(getSupportFragmentManager(), "GraphDialog");
-    }
 
 }
