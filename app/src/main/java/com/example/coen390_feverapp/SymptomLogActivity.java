@@ -123,7 +123,7 @@ public class SymptomLogActivity extends AppCompatActivity  {
 
         if(symptoms.isEmpty()){
             Toast.makeText(getApplicationContext(),"No symptoms selected", Toast.LENGTH_LONG).show();
-        } else if (currentProfile != "Select Profile"){
+        } else if (currentProfile != "Select profile"){
 
             boolean inserted = dbHelper.insertSymptoms(currentProfile, symptoms, logTime);
 

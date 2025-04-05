@@ -219,6 +219,7 @@ public class DBHelper extends SQLiteOpenHelper {
         return cursor.getCount() > 0;
     }
 
+    /*
     public Cursor getMedicationHistoryByProfile(String profile, String date) {
         SQLiteDatabase myDB = this.getReadableDatabase();
         if(date==null) {
@@ -233,6 +234,8 @@ public class DBHelper extends SQLiteOpenHelper {
                     new String[]{profile, startDateTime, now});
         }
     }
+
+     */
 
 
     public List<String> getMedicationHistoryList(String profile, String date) {
@@ -249,7 +252,7 @@ public class DBHelper extends SQLiteOpenHelper {
                         do {
                             @SuppressLint("Range") String medicationName = cursor.getString(cursor.getColumnIndex("name"));
                             @SuppressLint("Range") String medicationDose = cursor.getString(cursor.getColumnIndex("dose"));
-                            if(medicationDose != null){
+                            if(medicationDose != ""){
                                 medicationList.add(medicationName + ", " + medicationDose + "mg");
                             } else {
                                 medicationList.add(medicationName);
