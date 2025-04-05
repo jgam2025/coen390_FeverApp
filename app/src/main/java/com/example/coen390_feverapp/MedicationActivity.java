@@ -22,7 +22,10 @@ import androidx.appcompat.widget.Toolbar;
 
 import android.app.AlertDialog;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 
 public class MedicationActivity extends AppCompatActivity {
@@ -90,6 +93,7 @@ public class MedicationActivity extends AppCompatActivity {
     }
 
     private void submitMeds(String selectedProfile, String medicationDose){
+        String logTime = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault()).format(new Date());
         if (!medicationNameText.isEmpty() ^ medicationNameSpinner != "") {
             Log.d("progress_check", "if condition reached");
             SharedPreferences sharedPrefs = getSharedPreferences("user_prefs", MODE_PRIVATE);
@@ -99,9 +103,11 @@ public class MedicationActivity extends AppCompatActivity {
                 Log.d("edit_text_check", "Edit text not empty");
                 SaveNewMedsFragment newMedsFragment = new SaveNewMedsFragment();
                 newMedsFragment.show(getFragmentManager(), "NewMedication");
-                boolean inserted = dbHelper.insertMedication(currentProfile, medicationNameText, medicationDose);
+                boolean inserted = dbHelper.insertMedication(currentProfile, medicationNameText, medicationDose, logTime);
                 if (inserted) {
                     Toast.makeText(this, "Medication saved!", Toast.LENGTH_SHORT).show();
+                    Log.d("med_check", "Medication inserted: " + currentProfile + ", " + medicationNameText + ", " + medicationDose);
+
                 } else {
                     Toast.makeText(this, "Error saving medication", Toast.LENGTH_SHORT).show();
                 }
@@ -110,9 +116,10 @@ public class MedicationActivity extends AppCompatActivity {
             } else if (medicationNameSpinner != ""
                     && selectedProfile != "Select profile") {
                 Log.d("spinner_check", "spinner item selected: " + selectedProfile);// selected medication from spinner
-                boolean inserted = dbHelper.insertMedication(currentProfile, medicationNameSpinner, medicationDose);
+                boolean inserted = dbHelper.insertMedication(currentProfile, medicationNameSpinner, medicationDose, logTime);
                 if (inserted) {
                     Toast.makeText(this, "Medication saved!", Toast.LENGTH_SHORT).show();
+                    Log.d("med_check", "Medication inserted: " + currentProfile + ", " + medicationNameSpinner + ", " + medicationDose);
                 } else {
                     Toast.makeText(this, "Error saving medication", Toast.LENGTH_SHORT).show();
                 }
