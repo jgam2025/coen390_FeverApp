@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,7 +24,11 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class HealthDataActivity extends AppCompatActivity {
 
@@ -57,6 +62,7 @@ public class HealthDataActivity extends AppCompatActivity {
         showProfilesOnSpinner();
 
         weekOfSpinner = findViewById(R.id.weekOfSpinner);
+        showDatesOnSpinner();
 
         trendButton = findViewById(R.id.trendButton);
         trendButton.setOnClickListener(new View.OnClickListener() {
@@ -71,6 +77,22 @@ public class HealthDataActivity extends AppCompatActivity {
         medsListView = findViewById(R.id.medsListView);
         loadMedicationHistory();
         loadSymptomHistory();
+    }
+
+    private void showDatesOnSpinner(){
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.date_options, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        weekOfSpinner.setAdapter(adapter);
+
+        weekOfSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String selectedDate = (String) parent.getItemAtPosition(position);
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) { }
+        });
     }
 
     private void showProfilesOnSpinner(){
@@ -128,6 +150,7 @@ public class HealthDataActivity extends AppCompatActivity {
         });
     }
 
+
     private void loadSymptomHistory(){
         SharedPreferences sharedPrefs = getSharedPreferences("user_prefs", MODE_PRIVATE);
         String currentProfile = sharedPrefs.getString("current_profile", "default");
@@ -138,7 +161,7 @@ public class HealthDataActivity extends AppCompatActivity {
         symptomsListView.setAdapter(adapter);
 
         if(symptomList.isEmpty()){
-
+            //do nothing...
         }
     }
 

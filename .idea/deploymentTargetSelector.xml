@@ -3,7 +3,7 @@
   <component name="deploymentTargetSelector">
     <selectionStates>
         <option name="selectionMode" value="DROPDOWN" />
-        <DropdownSelection timestamp="2025-04-04T18:00:51.353398900Z">
+        <DropdownSelection timestamp="2025-04-05T01:44:47.366591100Z">
           <Target type="DEFAULT_BOOT">
             <handle>
               <DeviceId pluginId="LocalEmulator" identifier="path=C:\Users\charl\.android\avd\Medium_Phone.avd" />
