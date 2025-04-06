@@ -25,10 +25,13 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+
 
 public class HealthDataActivity extends AppCompatActivity {
 
@@ -54,10 +57,14 @@ public class HealthDataActivity extends AppCompatActivity {
             return insets;
         });
         setupUI();
+
     }
 
     private void setupUI(){
         dbHelper = new DBHelper(this);
+
+        insertTestData();
+
         profilesOptionSpinner = findViewById(R.id.profilesOptionSpinner);
         showProfilesOnSpinner();
 
@@ -75,8 +82,7 @@ public class HealthDataActivity extends AppCompatActivity {
 
         symptomsListView = findViewById(R.id.symptomsListView);
         medsListView = findViewById(R.id.medsListView);
-        loadMedicationHistory();
-        loadSymptomHistory();
+
     }
 
     private void showDatesOnSpinner(){
@@ -88,7 +94,9 @@ public class HealthDataActivity extends AppCompatActivity {
         weekOfSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String selectedDate = (String) parent.getItemAtPosition(position);
+                String selectedRange = (String) parent.getItemAtPosition(position);
+                Log.d("selected_range", selectedRange);
+                handleRangeSelection(selectedRange);
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) { }
@@ -120,49 +128,106 @@ public class HealthDataActivity extends AppCompatActivity {
 
     }
 
-    private void loadMedicationHistory() {
-        SharedPreferences sharedPrefs = getSharedPreferences("user_prefs", MODE_PRIVATE);
-        String currentProfile = sharedPrefs.getString("current_profile", "default");
+    private void handleRangeSelection(String selectedRange){
+        Calendar startDate = Calendar.getInstance(); // the date they will be going back to!
 
-        Cursor cursor = dbHelper.getMedicationHistoryByProfile(currentProfile);
-        String[] fromColumns = {"name", "dose", "timestamp"};
-        int[] toViews = {R.id.med_name, R.id.med_dose, R.id.med_timestamp};
+        switch (selectedRange){
+            case "Today":
+                Log.d("case_check", "Today");
+                break;
+            case "Yesterday":
+                startDate.add(Calendar.DATE, -1);
+                Log.d("case_check", "Yesterday");
+                break;
+            case "Last 7 Days":
+                startDate.add(Calendar.DATE, -6);
+                Log.d("case_check", "Last 7 Days");
+                break;
+            case "Last 14 Days":
+                startDate.add(Calendar.DATE, -13);
+                Log.d("case_check", "Last 14 days");
+                break;
+            case "Last Month":
+                startDate.add(Calendar.MONTH, -1);
+                Log.d("case_check", "Last Month");
+                break;
+            case "All Time":
+                startDate=null;
+                Log.d("case_check", "All Time");
+                break;
+            default:
+                startDate=null;
+                break;
+        }
 
-        SimpleCursorAdapter adapter = new SimpleCursorAdapter(
-                this, R.layout.item_medication, cursor, fromColumns, toViews, 0);
-
-        medsListView.setAdapter(adapter);
-
-        medsListView.setOnItemClickListener((parent, view, position, id) -> {
-            new AlertDialog.Builder(this)
-                    .setTitle("Confirmation")
-                    .setMessage("Do you want to delete this medication?")
-                    .setPositiveButton("Yes", (dialog, which) -> {
-                        if (dbHelper.deleteMedication(id)) {
-                            Toast.makeText(HealthDataActivity.this, "Medication deleted!", Toast.LENGTH_SHORT).show();
-                            loadMedicationHistory();
-                        } else {
-                            Toast.makeText(HealthDataActivity.this, "Failed to delete", Toast.LENGTH_SHORT).show();
-                        }
-                    })
-                    .setNegativeButton("No", (dialog, which) -> dialog.dismiss())
-                    .show();
-        });
+        loadSymptomHistory(startDate);
+        loadMedicationHistory(startDate);
     }
 
 
-    private void loadSymptomHistory(){
+    private void loadMedicationHistory(Calendar date) {
+        SharedPreferences sharedPrefs = getSharedPreferences("user_prefs", MODE_PRIVATE);
+        String currentProfile = sharedPrefs.getString("current_profile", "default");
+        String formattedDate;
+        if(date!=null) {
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            formattedDate = simpleDateFormat.format(date.getTime());
+        } else {
+            formattedDate = null;
+        }
+        List<String> medsList = dbHelper.getMedicationHistoryList(currentProfile, formattedDate);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, medsList);
+        medsListView.setAdapter(adapter);
+    }
+
+
+    private void loadSymptomHistory(Calendar date){
+        String formattedDate;
+        if(date!=null) {
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            formattedDate = simpleDateFormat.format(date.getTime());
+        } else {
+            formattedDate = null;
+        }
         SharedPreferences sharedPrefs = getSharedPreferences("user_prefs", MODE_PRIVATE);
         String currentProfile = sharedPrefs.getString("current_profile", "default");
 
-        List<String> symptomList = dbHelper.getSymptomHistory(currentProfile);
+        List<String> symptomList = dbHelper.getSymptomHistory(currentProfile, formattedDate);
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, symptomList);
         symptomsListView.setAdapter(adapter);
+    }
 
-        if(symptomList.isEmpty()){
-            //do nothing...
-        }
+    private void insertTestData(){
+        SharedPreferences sharedPrefs = getSharedPreferences("user_prefs", MODE_PRIVATE);
+        String currentProfile = sharedPrefs.getString("current_profile", "default");
+        String currentUser = sharedPrefs.getString("current_user",null);
+        int userID = dbHelper.getUserID(currentUser);
+
+        //insert medications:
+        dbHelper.insertMedication(currentProfile, "xanax", "20","2025-04-03 12:00:00");
+        dbHelper.insertMedication(currentProfile, "ozempic", "","2025-04-02 12:00:00");
+        dbHelper.insertMedication(currentProfile, "adderall", "","2025-04-01 12:00:00");
+        dbHelper.insertMedication(currentProfile, "ozempic", "","2025-03-29 12:00:00");
+        dbHelper.insertMedication(currentProfile, "zoloft", "20","2025-03-28 12:00:00");
+        dbHelper.insertMedication(currentProfile, "ozempic", "0","2025-03-27 12:00:00");
+        dbHelper.insertMedication(currentProfile, "adderall", "","2025-03-26 12:00:00");
+        dbHelper.insertMedication(currentProfile, "lexapro", "20","2025-03-25 12:00:00");
+        dbHelper.insertMedication(currentProfile, "lexapro", "15","2025-03-24 12:00:00");
+        dbHelper.insertMedication(currentProfile, "ozempic", "20","2025-02-25 12:00:00");
+
+        //insert symptoms:
+        dbHelper.insertSymptoms(currentProfile, "too much swag", "2025-04-03 12:00:00");
+        dbHelper.insertSymptoms(currentProfile, "in a coma", "2025-04-02 12:00:00");
+        dbHelper.insertSymptoms(currentProfile, "in a coma", "2025-04-01 12:00:00");
+        dbHelper.insertSymptoms(currentProfile, "Nausea", "2025-03-29 12:00:00");
+        dbHelper.insertSymptoms(currentProfile, "Headache", "2025-03-28 12:00:00");
+        dbHelper.insertSymptoms(currentProfile, "Cough", "2025-03-27 12:00:00");
+        dbHelper.insertSymptoms(currentProfile, "Cough, Headache", "2025-03-26 12:00:00");
+        dbHelper.insertSymptoms(currentProfile, "swag", "2025-03-27 12:00:00");
+        dbHelper.insertSymptoms(currentProfile, "swag", "2025-02-28 12:00:00");
+        dbHelper.insertSymptoms(currentProfile, "in a coma", "2025-02-27 12:00:00");
+
     }
 
 

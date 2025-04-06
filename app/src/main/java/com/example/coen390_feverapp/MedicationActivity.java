@@ -2,7 +2,6 @@ package com.example.coen390_feverapp;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -12,21 +11,16 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListView;
-import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import android.app.AlertDialog;
-
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import java.util.Objects;
 
 public class MedicationActivity extends AppCompatActivity {
 
@@ -161,7 +155,7 @@ public class MedicationActivity extends AppCompatActivity {
         SharedPreferences sharedPrefs = getSharedPreferences("user_prefs", MODE_PRIVATE);
         String currentUser = sharedPrefs.getString("current_user", null);
         int userID = dbHelper.getUserID(currentUser);
-        List<String> medicationList = dbHelper.getUserAddedMedications(userID);
+        List<String> medicationList = dbHelper.getUserAddedMedicationsList(userID);
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, medicationList);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
