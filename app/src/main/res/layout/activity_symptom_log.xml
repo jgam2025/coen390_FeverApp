@@ -16,7 +16,7 @@
         android:gravity="center_horizontal"
         android:text="Symptoms"
         android:textColor="@color/red_background"
-        android:textSize="30dp"
+        android:textSize="40dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -116,8 +116,9 @@
         android:id="@+id/profileOptionSpinner"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="10dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="4dp"
+        android:scrollbarSize="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -128,7 +129,7 @@
         android:layout_marginTop="472dp"
         android:backgroundTint="@color/BUTTON_COLOR"
         android:text="Add New Symptom"
-        android:textSize="20sp"
+        android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/profileOptionSpinner" />
@@ -137,24 +138,12 @@
         android:id="@+id/submitButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="40dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginStart="140dp"
+        android:layout_marginTop="16dp"
         android:backgroundTint="@color/BUTTON_COLOR"
         android:text="Submit"
-        android:textSize="20sp"
+        android:textSize="24sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/newSymptomButton" />
-
-    <Button
-        android:id="@+id/goToLogButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="40dp"
-        android:backgroundTint="@color/BUTTON_COLOR"
-        android:text="Go To Log"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/newSymptomButton" />
 
     <androidx.appcompat.widget.Toolbar
@@ -163,6 +152,7 @@
         android:layout_height="80dp"
         android:background="?attr/colorPrimary"
         android:backgroundTint="@color/toolbar"
+        app:titleTextColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />

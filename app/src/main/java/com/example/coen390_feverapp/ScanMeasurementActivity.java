@@ -136,7 +136,7 @@ public class ScanMeasurementActivity extends AppCompatActivity {
         imageViewArrowScanPage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(ScanMeasurementActivity.this, TemperatureMeasurementPage.class);
+                Intent intent = new Intent(ScanMeasurementActivity.this, BaseActivity.class);
                 startActivity(intent);
             }
         });

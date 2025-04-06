@@ -34,11 +34,7 @@ public class MedicationActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_medication);
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayShowTitleEnabled(false); // Hide the title
-        }
+
         dbHelper = new DBHelper(this);
 
         medsEditText = findViewById(R.id.medsEditText);
@@ -46,7 +42,7 @@ public class MedicationActivity extends AppCompatActivity {
 
         medsSpinner = findViewById(R.id.medsSpinner);
         showMedicationsOnSpinner();
-
+        setUpToolbar();
         profilesSpinner = findViewById(R.id.profilesSpinner);
         showProfilesOnSpinner();
 
@@ -65,7 +61,15 @@ public class MedicationActivity extends AppCompatActivity {
 
     }
 
-
+    private void setUpToolbar() {
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(true);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+        toolbar.setNavigationOnClickListener(v -> finish());
+    }
     //validate input --> if validated, submit meds
     private boolean validateInput(String selectedProfile){
 
