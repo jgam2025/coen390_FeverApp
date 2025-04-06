@@ -32,7 +32,7 @@
         app:layout_constraintTop_toBottomOf="@+id/titleTextView" />
 
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/medsToolbar"
+        android:id="@+id/toolbar"
         android:layout_width="409dp"
         android:layout_height="wrap_content"
         android:background="?attr/colorPrimary"
@@ -140,7 +140,7 @@
         android:layout_width="101dp"
         android:layout_height="51dp"
         android:text="Submit!"
-        app:layout_constraintBottom_toTopOf="@+id/medsToolbar"
+        app:layout_constraintBottom_toTopOf="@+id/toolbar4"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/profilesSpinner" />
