@@ -45,16 +45,18 @@ public class SaveNewMedsFragment extends DialogFragment {
                 Log.d("current_user_check",currentUser);
                 DBHelper dbHelper = new DBHelper(getActivity().getBaseContext());
                 int userID = dbHelper.getUserID(currentUser);
+                String medicationName = medicationActivity.getMedicationNameText();
                 if(medicationActivity != null){
-                    //todo: check if the medication is already in the medication list
-                    boolean inserted = dbHelper.insertNewMedication(medicationActivity.getMedicationNameText(), userID);
-                    if(inserted){
-                        Toast.makeText(getContext(), "New medication saved!", Toast.LENGTH_LONG).show();
+                    if(!dbHelper.medicationInDB(medicationName,userID)) {
+                        Log.d("med_db_check", "medication: " + medicationName);
+                        boolean inserted = dbHelper.insertNewMedication(medicationName, userID);
+                        if (inserted) {
+                            Toast.makeText(getContext(), "New medication saved!", Toast.LENGTH_LONG).show();
+                        } else {
+                            Toast.makeText(getContext(), "Error inserting medication", Toast.LENGTH_LONG).show();
+                        }
+                        medicationActivity.showMedicationsOnSpinner();
                     }
-                    else{
-                        Toast.makeText(getContext(),"Error inserting medication", Toast.LENGTH_LONG).show();
-                    }
-                    medicationActivity.showMedicationsOnSpinner();
                 }
                 //save into db
                 dismiss();
