@@ -49,7 +49,7 @@ public class SaveNewMedsFragment extends DialogFragment {
                 if(medicationActivity != null){
                     if(!dbHelper.medicationInDB(medicationName,userID)) {
                         Log.d("med_db_check", "medication: " + medicationName);
-                        boolean inserted = dbHelper.insertNewMedication(medicationName, userID);
+                        boolean inserted = dbHelper.insertNewMedicationToList(medicationName, userID);
                         if (inserted) {
                             Toast.makeText(getContext(), "New medication saved!", Toast.LENGTH_LONG).show();
                         } else {
