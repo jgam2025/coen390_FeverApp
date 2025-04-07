@@ -35,13 +35,10 @@ public class PhoneNumberActivity extends AppCompatActivity {
             return insets;
         });
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayShowTitleEnabled(false); // Hide the title
-        }
+
 
         setupUI();
+        setUpToolbar();
     }
 
     @Override
@@ -67,6 +64,16 @@ public class PhoneNumberActivity extends AppCompatActivity {
             return super.onOptionsItemSelected(item);
 
         }
+    }
+
+    private void setUpToolbar() {
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+        toolbar.setNavigationOnClickListener(v -> finish());
     }
 
     private void goToExtraPage(){
