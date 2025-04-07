@@ -16,7 +16,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 public class ExtraPageActivity extends AppCompatActivity {
 
-    String[] pageNames = {"Health Resources & Phone Numbers", "Add New Profile","Export Data" ,"Sensor Calibration", "Log Out", };
+String[] pageNames = {"Health Resources & Phone Numbers", "Add New Profile", "Export Health Data", "Sensor Calibration", "Log Out"};
 
     protected ListView additionalPageListView;
 
@@ -113,21 +113,18 @@ public class ExtraPageActivity extends AppCompatActivity {
         additionalPageListView.setOnItemClickListener((parent, view, position, id) -> {
             String selectedPage = pageNames[position];
 
-            if (selectedPage.equals("Health Resources & Phone Numbers")){
-                Intent intent = new Intent(ExtraPageActivity.this, PhoneNumberActivity.class);
-                startActivity(intent);
+            if (selectedPage.equals("Health Resources & Phone Numbers")) {
+                startActivity(new Intent(this, PhoneNumberActivity.class));
             } else if (selectedPage.equals("Sensor Calibration")) {
-                Intent intent = new Intent(ExtraPageActivity.this, CalibrationActivity.class);
-                startActivity(intent);
-            } else if (selectedPage.equals("Log Out")) {
-                Intent intent = new Intent(ExtraPageActivity.this, LoginActivity.class);
-                startActivity(intent);
+                startActivity(new Intent(this, CalibrationActivity.class));
+            } else if (selectedPage.equals("Export Health Data")) {
+                startActivity(new Intent(this, ExportDataActivity.class));
             } else if (selectedPage.equals("Add New Profile")) {
                 NewProfileFragment newProfile = new NewProfileFragment();
                 newProfile.show(getFragmentManager(), "InsertProfile");
+            } else if (selectedPage.equals("Log Out")) {
+                startActivity(new Intent(this, LoginActivity.class));
             }
-
-
         });
     }
 

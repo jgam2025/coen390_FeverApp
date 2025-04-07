@@ -344,17 +344,14 @@ public class DBHelper extends SQLiteOpenHelper {
         return data;
     }
 
-
-
-
-    public boolean checkSymptom(String symptom){
-        SQLiteDatabase myDB = this.getReadableDatabase();
-        Cursor cursor = myDB.rawQuery("SELECT * FROM user_added_symptoms WHERE symptom = ? COLLATE NOCASE", new String[]{symptom});
-        Cursor cursor2 = myDB.rawQuery("SELECT * FROM symptoms WHERE symptom_type = ? COLLATE NOCASE", new String[]{symptom});
-        if(cursor.getCount() > 0) return true;
-        else if (cursor2.getCount() > 0) return true;
-        else return false;
-    }
+public boolean checkSymptom(String symptom){
+    SQLiteDatabase myDB = this.getReadableDatabase();
+    Cursor cursor = myDB.rawQuery("SELECT * FROM user_added_symptoms WHERE symptom = ? COLLATE NOCASE", new String[]{symptom});
+    Cursor cursor2 = myDB.rawQuery("SELECT * FROM symptoms WHERE symptom_type = ? COLLATE NOCASE", new String[]{symptom});
+    if(cursor.getCount() > 0) return true;
+    else if (cursor2.getCount() > 0) return true;
+    else return false;
+}
 
 }
 

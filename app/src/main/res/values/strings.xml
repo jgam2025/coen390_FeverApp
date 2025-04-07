@@ -24,6 +24,13 @@
     <string name="select_day">Select Day</string>
     <string name="empty_meds">No medications saved yet!</string>
 
+    <string name="title_activity_privacy_security">PrivacySecurityActivity</string>
+
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
 
     <string-array name="date_options">
         <item>Today</item>
@@ -33,6 +40,4 @@
         <item>Last month</item>
         <item>All time</item>
     </string-array>
-    <string name = "first_fragment_label">First Fragment</string>
-    <string name = "second_fragment_label">Second Fragment</string>
 </resources>
