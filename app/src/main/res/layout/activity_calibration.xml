@@ -11,9 +11,32 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
-        android:text="Instruction Text"
+        android:text="1. Boil a pot of clean water until it reaches a steady, rolling boil."
         android:textSize="18sp" />
 
+    <TextView
+        android:id="@+id/textView_instruction2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:text="2. Position your sensor at least 5cm away from the water (do not immerse it) so it can measure the ambient heat."
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/textView_instruction3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:text="3. Wait about 30 to 60 seconds after boiling to allow the sensor, positioned at least 5cm away, to reach thermal equilibrium."
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/textView_instruction4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:text="4. Click on the 'Calibrate Sensor' Button"
+        android:textSize="18sp" />
     <Button
         android:id="@+id/button_measure"
         android:layout_width="wrap_content"
