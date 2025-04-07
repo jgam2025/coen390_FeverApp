@@ -46,7 +46,7 @@ public class SaveNewMedsFragment extends DialogFragment {
                 DBHelper dbHelper = new DBHelper(getActivity().getBaseContext());
                 int userID = dbHelper.getUserID(currentUser);
                 String medicationName = medicationActivity.getMedicationNameText();
-                if(medicationActivity != null){
+                /*if(medicationActivity != null){
                     if(!dbHelper.medicationInDB(medicationName,userID)) {
                         Log.d("med_db_check", "medication: " + medicationName);
                         boolean inserted = dbHelper.insertNewMedication(medicationName, userID);
@@ -57,7 +57,7 @@ public class SaveNewMedsFragment extends DialogFragment {
                         }
                         medicationActivity.showMedicationsOnSpinner();
                     }
-                }
+                }*/
                 //save into db
                 dismiss();
             }

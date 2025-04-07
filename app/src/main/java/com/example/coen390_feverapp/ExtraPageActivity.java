@@ -16,7 +16,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 public class ExtraPageActivity extends AppCompatActivity {
 
-    String[] pageNames = {"Health Resources & Phone Numbers", "Sensor Calibration"};
+    String[] pageNames = {"Health Resources & Phone Numbers", "Add New Profile","Export Data" ,"Sensor Calibration", "Log Out", };
 
     protected ListView additionalPageListView;
 
@@ -52,49 +52,31 @@ public class ExtraPageActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         if (id == R.id.miperson) {
-            goToTemperatureStorage();
+            goToHealth();
             return true;
 
-        }  else if (id == R.id.miGraph) {
-            Graph();
-            return true;
         }
 
-        else if (id == R.id.miadd) {
-            addProfile();
+        else if (id == R.id.mihome) {
+            GoToHome();
             return true;
-        }
-        else if(id ==R.id.miSymptoms) {
-            goSymptomPage();
-            return true;
-        }else if (id==R.id.miTemperature) {
-            goToTemperatureMeasurementPage();
-            return true;
-        }
-        else if (id==R.id.miLogOut) {
-            goToLogin();
-            return true;
-        } else if(id==R.id.miMedication) {
-            goToMedicationPage();
-            return true;
+
+
         } else{
                 return super.onOptionsItemSelected(item);
 
         }
     }
 
-    private void goToExtraPage(){
-        Intent intent = new Intent(this, ExtraPageActivity.class);
+    private void GoToHome(){
+        Intent intent = new Intent(this, BaseActivity.class);
         startActivity(intent);
     }
 
-    private void goToTemperatureStorage(){
-        Intent intent = new Intent(this, TemperatureStoragePage.class);
-        startActivity(intent);
-    }
 
-    private void goToLogin(){
-        Intent intent = new Intent(this, LoginActivity.class);
+
+    private void goToHealth(){
+        Intent intent = new Intent(this, HealthDataActivity.class);
         startActivity(intent);
     }
 
@@ -134,12 +116,18 @@ public class ExtraPageActivity extends AppCompatActivity {
             if (selectedPage.equals("Health Resources & Phone Numbers")){
                 Intent intent = new Intent(ExtraPageActivity.this, PhoneNumberActivity.class);
                 startActivity(intent);
-            }
-
-            if(selectedPage.equals("Sensor Calibration")){
+            } else if (selectedPage.equals("Sensor Calibration")) {
                 Intent intent = new Intent(ExtraPageActivity.this, CalibrationActivity.class);
                 startActivity(intent);
+            } else if (selectedPage.equals("Log Out")) {
+                Intent intent = new Intent(ExtraPageActivity.this, LoginActivity.class);
+                startActivity(intent);
+            } else if (selectedPage.equals("Add New Profile")) {
+                NewProfileFragment newProfile = new NewProfileFragment();
+                newProfile.show(getFragmentManager(), "InsertProfile");
             }
+
+
         });
     }
 
