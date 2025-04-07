@@ -71,12 +71,10 @@ public class ExportDataActivity extends AppCompatActivity {
                     new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
                     1);
         }
-
         // Export all
         btnExportAll.setOnClickListener(v -> exportAllTemperatureData());
 
     }
-
     private void exportAllTemperatureData() {
         DBHelper dbHelper = new DBHelper(this);
         List<String> temps = dbHelper.getAllTemperatures(currentProfile);
@@ -86,12 +84,8 @@ public class ExportDataActivity extends AppCompatActivity {
             Toast.makeText(this, "No data to export", Toast.LENGTH_SHORT).show();
             return;
         }
-
         writeExportToFile(currentProfile + "_export.csv", temps, meds, currentProfile);
-
     }
-
-
 
     private void writeExportToFile(String filename, List<String> temps, List<String> meds, String profileLabel) {
 
@@ -136,7 +130,5 @@ public class ExportDataActivity extends AppCompatActivity {
             Toast.makeText(this, "Export failed: " + e.getMessage(), Toast.LENGTH_LONG).show();
         }
     }
-
-
 
 }

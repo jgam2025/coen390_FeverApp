@@ -5,20 +5,22 @@
     android:id="@+id/checkBoxLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#921D35"
+    android:background="#FFFFFF"
     tools:context=".LogoPageActivity">
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="350dp"
-        android:layout_height="350dp"
+        android:layout_width="587dp"
+        android:layout_height="821dp"
         android:layout_marginStart="5dp"
         android:layout_marginTop="165dp"
         android:layout_marginEnd="6dp"
         android:layout_marginBottom="166dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@mipmap/feverapplogo_foreground" />
+        app:layout_constraintVertical_bias="0.428"
+        app:srcCompat="@drawable/eaver2" />
 </androidx.constraintlayout.widget.ConstraintLayout>
