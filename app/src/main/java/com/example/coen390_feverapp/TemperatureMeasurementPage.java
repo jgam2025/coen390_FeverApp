@@ -47,7 +47,7 @@ public class TemperatureMeasurementPage extends AppCompatActivity {
         });
         setupUI();
         dbHelper = new DBHelper(this);
-        showUsersOnSpinner();
+        showProfilesOnSpinner();
     }
 
     void setupUI(){
@@ -72,7 +72,7 @@ public class TemperatureMeasurementPage extends AppCompatActivity {
         userSpinner = findViewById(R.id.userSpinner);
     }
 
-    public void showUsersOnSpinner(){
+    public void showProfilesOnSpinner(){
         SharedPreferences sharedPrefs = getSharedPreferences("user_prefs", MODE_PRIVATE);
         String currentUser = sharedPrefs.getString("current_user",null);
         List<String> profileList = dbHelper.getProfiles(currentUser);
@@ -117,49 +117,9 @@ public class TemperatureMeasurementPage extends AppCompatActivity {
 
         return true;
     }
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        if (id == R.id.miperson) {
-            goToTemperatureStoragePage();
-            return true;
-        } else if (id == R.id.miMore) {
-            goToExtraPage();
-            return true;
-        } else if (id == R.id.miadd) {
-            addProfile();
-            return true;
-        } else if(id == R.id.miMedication){
-            goToMedicationPage();
-            return true;
-        } else if(id ==R.id.miLogOut) {
-            goToLoginPage();
-            return true;
-
-        }else if (id==R.id.miSymptoms){
-            goToSymptomLogActivity();
-            return true;
-        }
-        else if(id ==R.id.miTemperature) {
-            goToTemperatureStoragePage();
-            return true;
-
-        }else if (id==R.id.miGraph){
-            Graph();
-            return true;
-
-        }else {
-            return super.onOptionsItemSelected(item);
-        }
-    }
 
     private void goToScanMeasurementPage(){
         Intent intent = new Intent(this, ScanMeasurementActivity.class);
-        startActivity(intent);
-    }
-    private void goToTemperatureStoragePage(){
-        Intent intent = new Intent(this, TemperatureStoragePage.class);
         startActivity(intent);
     }
 

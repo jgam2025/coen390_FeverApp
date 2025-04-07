@@ -28,6 +28,6 @@ public class LogoPageActivity extends AppCompatActivity {
             Intent intent = new Intent(LogoPageActivity.this, LoginActivity.class);
             startActivity(intent);
             finish(); // Close splash activity so the user can't go back to it
-        }, 2000);
+        }, 1500);
     }
 }

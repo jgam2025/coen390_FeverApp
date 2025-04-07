@@ -21,7 +21,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 import java.util.List;
 
-public class SymptomStoragePage extends AppCompatActivity {
+/*public class SymptomStoragePage extends AppCompatActivity {
 
     protected TextView textTextView;
     protected Spinner profileSelectSpinner;
@@ -186,4 +186,4 @@ public class SymptomStoragePage extends AppCompatActivity {
         graphDialog.show(getSupportFragmentManager(), "GraphDialog");
     }
 
-}
+}*/

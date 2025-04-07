@@ -55,37 +55,15 @@ public class PhoneNumberActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         if (id == R.id.miperson) {
-            goToTemperatureStorage();
+
             return true;
         }
-        else if (id == R.id.miGraph) {
-            Graph();
-            return true;
-        }
-        else if (id == R.id.miadd) {
-            addProfile();
-            return true;
-        }
-        else if (id==R.id.miTemperature) {
-            goToTemperatureMeasurementPage();
-            return true;
-        }
-        else if (id==R.id.miLogOut) {
-            goToLogin();
-            return true;
-        }
-        else if(id==R.id.miMedication) {
-            goToMedicationPage();
-            return true;
-        }
+
         else if (id == R.id.miMore) {
             goToExtraPage();
             return true;
         }
-        else if (id==R.id.miSymptoms){
-            goToSymptomLogActivity();
-            return true;
-        }else{
+        else{
             return super.onOptionsItemSelected(item);
 
         }
@@ -96,10 +74,7 @@ public class PhoneNumberActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private void goToTemperatureStorage(){
-        Intent intent = new Intent(this, TemperatureStoragePage.class);
-        startActivity(intent);
-    }
+
 
     private void goToLogin(){
         Intent intent = new Intent(this, LoginActivity.class);

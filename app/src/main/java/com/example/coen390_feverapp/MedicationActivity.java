@@ -2,71 +2,189 @@ package com.example.coen390_feverapp;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.Cursor;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListView;
-import android.widget.SimpleCursorAdapter;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import android.app.AlertDialog;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 
 public class MedicationActivity extends AppCompatActivity {
-    private EditText etMedicationName, etMedicationDose;
-    private Button btnSaveMedication;
-    private ListView listViewMedication;
+
+    private EditText medsEditText, doseEditText;
+    private Button submitMedButton;
+    private Spinner medsSpinner, profilesSpinner;
     private DBHelper dbHelper;
+    private String medicationNameText, selectedProfile, medicationNameSpinner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_medication);
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayShowTitleEnabled(false); // Hide the title
-        }
 
         dbHelper = new DBHelper(this);
 
-        etMedicationName = findViewById(R.id.et_medication_name);
-        etMedicationDose = findViewById(R.id.et_medication_dose);
-        btnSaveMedication = findViewById(R.id.btn_save_medication);
-        listViewMedication = findViewById(R.id.list_medication);
+        medsEditText = findViewById(R.id.medsEditText);
+        doseEditText = findViewById(R.id.doseEditText);
 
-        btnSaveMedication.setOnClickListener(v -> {
-            String name = etMedicationName.getText().toString().trim();
-            String dose = etMedicationDose.getText().toString().trim();
+        medsSpinner = findViewById(R.id.medsSpinner);
+        showMedicationsOnSpinner();
 
-            if (!name.isEmpty()) {
-                // Retrieve current profile from SharedPreferences
-                SharedPreferences sharedPrefs = getSharedPreferences("user_prefs", MODE_PRIVATE);
-                String currentProfile = sharedPrefs.getString("current_profile", "default");
+        profilesSpinner = findViewById(R.id.profilesSpinner);
+        showProfilesOnSpinner();
 
-                // Insert medication with the profile name
-                boolean inserted = dbHelper.insertMedication(currentProfile, name, dose);
-                if(inserted){
+        submitMedButton = findViewById(R.id.submitMedButton);
+        submitMedButton.setOnClickListener(v -> {
+
+            medicationNameSpinner = (String) medsSpinner.getSelectedItem();
+            medicationNameText = medsEditText.getText().toString().trim();
+            String medicationDose = doseEditText.getText().toString().trim();
+
+            if(validateInput(selectedProfile)){
+                submitMeds(selectedProfile,medicationDose);
+            }
+
+        });
+        setUpToolbar();
+
+    }
+    private void setUpToolbar() {
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+        toolbar.setNavigationOnClickListener(v -> finish());
+    }
+
+
+    //validate input --> if validated, submit meds
+    private boolean validateInput(String selectedProfile){
+
+        Log.d("edit_text_check", "medication from edit text: " + medicationNameText);
+        Log.d("spinner_check", "medication from spinner: " + medicationNameSpinner);
+        Log.d("profile_check", "profile from spinner: " + selectedProfile);
+
+        if (!medicationNameText.isEmpty() && medicationNameSpinner != "") {
+            Toast.makeText(this,
+                    "Please select from the dropdown menu OR enter a medication in the text field",
+                    Toast.LENGTH_LONG).show();
+        } else if (medicationNameSpinner == "" && medicationNameText.isEmpty()) {
+            Toast.makeText(this, "Please select a medication", Toast.LENGTH_LONG).show();
+        }
+
+        if (selectedProfile == "Select profile"){
+            Toast.makeText(this,"Please select a profile", Toast.LENGTH_LONG).show();
+        }
+        return true;
+    }
+
+    private void submitMeds(String selectedProfile, String medicationDose){
+        String logTime = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault()).format(new Date());
+        if (!medicationNameText.isEmpty() ^ medicationNameSpinner != "") {
+            Log.d("progress_check", "if condition reached");
+            SharedPreferences sharedPrefs = getSharedPreferences("user_prefs", MODE_PRIVATE);
+            String currentProfile = sharedPrefs.getString("current_profile", "default");
+
+            if (!medicationNameText.isEmpty() && selectedProfile != "Select profile") { // selected medication from edit text
+                Log.d("edit_text_check", "Edit text not empty");
+                SaveNewMedsFragment newMedsFragment = new SaveNewMedsFragment();
+                newMedsFragment.show(getFragmentManager(), "NewMedication");
+                boolean inserted = dbHelper.insertMedication(currentProfile, medicationNameText, medicationDose, logTime);
+                if (inserted) {
                     Toast.makeText(this, "Medication saved!", Toast.LENGTH_SHORT).show();
+                    Log.d("med_check", "Medication inserted: " + currentProfile + ", " + medicationNameText + ", " + medicationDose);
+
                 } else {
                     Toast.makeText(this, "Error saving medication", Toast.LENGTH_SHORT).show();
                 }
-                etMedicationName.setText("");
-                etMedicationDose.setText("");
-                loadMedicationHistory();
-            } else {
-                Toast.makeText(this, "Please enter a medication name", Toast.LENGTH_SHORT).show();
+                medsEditText.setText("");
+                doseEditText.setText("");
+            } else if (medicationNameSpinner != ""
+                    && selectedProfile != "Select profile") {
+                Log.d("spinner_check", "spinner item selected: " + selectedProfile);// selected medication from spinner
+                boolean inserted = dbHelper.insertMedication(currentProfile, medicationNameSpinner, medicationDose, logTime);
+                if (inserted) {
+                    Toast.makeText(this, "Medication saved!", Toast.LENGTH_SHORT).show();
+                    Log.d("med_check", "Medication inserted: " + currentProfile + ", " + medicationNameSpinner + ", " + medicationDose);
+                } else {
+                    Toast.makeText(this, "Error saving medication", Toast.LENGTH_SHORT).show();
+                }
+                medsEditText.setText("");
+                doseEditText.setText("");
+            }
+        };
+    }
+
+    private void showProfilesOnSpinner() {
+        SharedPreferences sharedPrefs = getSharedPreferences("user_prefs", MODE_PRIVATE);
+        String currentUser = sharedPrefs.getString("current_user", null);
+        List<String> profileList = dbHelper.getProfiles(currentUser);
+        if (profileList.isEmpty()) {
+
+        }
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, profileList);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        profilesSpinner.setAdapter(adapter);
+
+        profilesSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                selectedProfile = (String) parent.getItemAtPosition(position);
+                SharedPreferences.Editor editor = sharedPrefs.edit();
+                editor.putString("current_profile", selectedProfile);
+                editor.apply();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
             }
         });
 
-        loadMedicationHistory();
     }
 
+    public void showMedicationsOnSpinner() {
+        SharedPreferences sharedPrefs = getSharedPreferences("user_prefs", MODE_PRIVATE);
+        String currentUser = sharedPrefs.getString("current_user", null);
+        int userID = dbHelper.getUserID(currentUser);
+        List<String> medicationList = dbHelper.getUserAddedMedications(userID);
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, medicationList);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        medsSpinner.setAdapter(adapter);
+
+        medsSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+    }
+
+    public String getMedicationNameText() {
+        return medicationNameText;
+    }
+
+
+    //menu
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu from the menu.xml file in the menu directory
@@ -80,102 +198,38 @@ public class MedicationActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         if (id == R.id.miperson) {
-            goToTemperatureStoragePage();
+            goToHealth();
             return true;
+
         } else if (id == R.id.miMore) {
-            goToExtraPage();
+            goToExtra();
             return true;
-        } else if (id == R.id.miadd) {
-            addProfile();
+        } else if (id == R.id.mihome) {
+            goToHome();
             return true;
 
-        } else if(id ==R.id.miLogOut) {
-            goToLoginPage();
-            return true;
-        }else if(id ==R.id.miSymptoms) {
-            goSymptomPage();
-            return true;
-        }
-        else if (id==R.id.miGraph){
-            Graph();
-            return true;}
-        else if(id ==R.id.miTemperature) {
-            goToTemperatureMeasurementPage();
-            return true;
-        }
-        else {
+        } else {
             return super.onOptionsItemSelected(item);
+
         }
     }
 
-
-    private void loadMedicationHistory() {
-        SharedPreferences sharedPrefs = getSharedPreferences("user_prefs", MODE_PRIVATE);
-        String currentProfile = sharedPrefs.getString("current_profile", "default");
-
-        Cursor cursor = dbHelper.getMedicationHistoryByProfile(currentProfile);
-        String[] fromColumns = {"name", "dose", "timestamp"};
-        int[] toViews = {R.id.med_name, R.id.med_dose, R.id.med_timestamp};
-
-        SimpleCursorAdapter adapter = new SimpleCursorAdapter(
-                this, R.layout.item_medication, cursor, fromColumns, toViews, 0);
-
-        listViewMedication.setAdapter(adapter);
-
-        listViewMedication.setOnItemClickListener((parent, view, position, id) -> {
-            new AlertDialog.Builder(this)
-                    .setTitle("Confirmation")
-                    .setMessage("Do you want to delete this medication?")
-                    .setPositiveButton("Yes", (dialog, which) -> {
-                        if (dbHelper.deleteMedication(id)) {
-                            Toast.makeText(MedicationActivity.this, "Medication deleted!", Toast.LENGTH_SHORT).show();
-                            loadMedicationHistory();
-                        } else {
-                            Toast.makeText(MedicationActivity.this, "Failed to delete", Toast.LENGTH_SHORT).show();
-                        }
-                    })
-                    .setNegativeButton("No", (dialog, which) -> dialog.dismiss())
-                    .show();
-        });
+    private void goToHealth() {
+        Intent intent = new Intent(this, HealthDataActivity.class);
+        startActivity(intent);
     }
 
+    private void goToHome() {
+        Intent intent = new Intent(this, BaseActivity.class);
+        startActivity(intent);
+    }
 
-    private void goToExtraPage(){
+    private void goToExtra() {
         Intent intent = new Intent(this, ExtraPageActivity.class);
         startActivity(intent);
     }
 
-    private void goToLoginPage(){
-        Intent intent = new Intent(this, LoginActivity.class);
-        startActivity(intent);
-    }
-
-    private void goToTemperatureMeasurementPage(){
-        Intent intent = new Intent(this, TemperatureMeasurementPage.class);
-        startActivity(intent);
-    }
-    private void addProfile(){
-        NewProfileFragment newProfile = new NewProfileFragment();
-        newProfile.show(getFragmentManager(), "InsertProfile");
-    }
-
-    private void goToTemperatureStoragePage(){
-        Intent intent = new Intent(this, TemperatureStoragePage.class);
-        startActivity(intent);
-    }
-
-    private void Graph(){
-        GraphFragment graphDialog = new GraphFragment();
-        graphDialog.show(getSupportFragmentManager(), "GraphDialog");
-    }
-
-    private void goSymptomPage(){
-        Intent intent = new Intent(this, SymptomLogActivity.class);
-        startActivity(intent);
-    }
-
-
-
-
 
 }
+
+

@@ -59,6 +59,9 @@ public class NewSymptomFragment extends DialogFragment {
                 String symptom = newSymptomEditText.getText().toString();
                 if(symptom.isEmpty()){
                     Toast.makeText(getContext(), "Please enter a symptom", Toast.LENGTH_LONG).show();
+                    //todo: if symptom already in db
+                } else if (dbHelper.checkSymptom(symptom)){
+                    Toast.makeText(getContext(), "Symptom already in list", Toast.LENGTH_SHORT).show();
                 } else {
                     //create checkbox
                     CheckBox newSymptomCheckbox = new CheckBox(getContext());
@@ -90,10 +93,9 @@ public class NewSymptomFragment extends DialogFragment {
                     int user = dbHelper.getUserID(currentUser);
                     dbHelper.insertNewSymptom(symptom, user);
 
-                    Toast.makeText(getContext(),"New symptom saved to list", Toast.LENGTH_SHORT).show();
-
-                    dismiss();
+                    Toast.makeText(getContext(), "New symptom saved to list", Toast.LENGTH_SHORT).show();
                 }
+                dismiss();
             }
         });
 

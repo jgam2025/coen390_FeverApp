@@ -48,7 +48,7 @@ public class LoginActivity extends AppCompatActivity {
                     editor.putString("current_user",username);
                     editor.apply();
 
-                    Intent intent = new Intent(LoginActivity.this, TemperatureMeasurementPage.class);
+                    Intent intent = new Intent(LoginActivity.this, BaseActivity.class);
                     startActivity(intent);
                 }
                 else{

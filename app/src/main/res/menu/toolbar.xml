@@ -2,53 +2,24 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-
   <item
-      android:id="@+id/miTemperature"
-      android:icon="@drawable/ic_thermometer"
+      android:id="@+id/mihome"
+      android:icon ="@drawable/ic_home"
       app:showAsAction="always" />
+
 
   <item
       android:id="@+id/miperson"
       android:icon ="@drawable/ic_person"
       app:showAsAction="always" />
 
-
-  <item
-      android:id="@+id/miGraph"
-      android:icon ="@drawable/ic_graph"
-      app:showAsAction="always" />
-
-
-  <item
-      android:id="@+id/miadd"
-      android:icon ="@drawable/ic_add"
-      app:showAsAction="always" />
-
-  <item
-      android:id="@+id/miMedication"
-      android:icon="@drawable/baseline_medication_24"
-      app:showAsAction="always" />
-
-
-  <item
-      android:id="@+id/miSymptoms"
-      android:icon="@mipmap/symptomicon_foreground"
-      android:title="symptoms"
-      app:showAsAction="always" />
-
-
-
-
+  
   <item
         android:id="@+id/miMore"
         android:icon ="@drawable/ic_more"
         app:showAsAction="always" />
 
-  <item
-      android:id="@+id/miLogOut"
-      android:icon ="@drawable/ic_logout"
-      app:showAsAction="always" />
+
 
 
 

@@ -44,11 +44,7 @@ public class SymptomLogActivity extends AppCompatActivity  {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_symptom_log);
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayShowTitleEnabled(false); // Hide the title
-        }
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.checkBoxLayout), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
@@ -57,7 +53,18 @@ public class SymptomLogActivity extends AppCompatActivity  {
 
         dbHelper = new DBHelper(this);
         setupUI();
+        setUpToolbar();
 
+    }
+
+    private void setUpToolbar() {
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(true);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+        toolbar.setNavigationOnClickListener(v -> finish());
     }
 
 
@@ -66,11 +73,11 @@ public class SymptomLogActivity extends AppCompatActivity  {
         selectTextView = findViewById(R.id.selectTextView);
 
         profileOptionSpinner = findViewById(R.id.profileOptionSpinner);
-        showUsersOnSpinner();
+        showProfilesOnSpinner();
 
         submitButton = findViewById(R.id.submitButton);
         newSymptomButton = findViewById(R.id.newSymptomButton);
-        goToLogButton = findViewById(R.id.goToLogButton);
+
 
         List<CheckBox> checkBoxes = initializeCheckBoxes();
 
@@ -111,7 +118,7 @@ public class SymptomLogActivity extends AppCompatActivity  {
                 Log.d("current_profile_check", "current profile: " + currentProfile);
                 int userID = dbHelper.getUserID(currentUser);
                 Log.d("current_user_check","current user: " + currentUser + " , id: " + userID);
-                String logTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date());
+                String logTime = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault()).format(new Date());
                 Log.d("time_check", "time: " + logTime);
 
                 if(symptoms.isEmpty()){
@@ -142,12 +149,7 @@ public class SymptomLogActivity extends AppCompatActivity  {
             }
         });
 
-        goToLogButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                goToSymptomStoragePage();
-            }
-        });
+
 
     }
 
@@ -203,7 +205,7 @@ public class SymptomLogActivity extends AppCompatActivity  {
         return checkBoxes;
     }
 
-    public void showUsersOnSpinner(){
+    public void showProfilesOnSpinner(){
         SharedPreferences sharedPrefs = getSharedPreferences("user_prefs", MODE_PRIVATE);
         String currentUser = sharedPrefs.getString("current_user",null);
         List<String> profileList = dbHelper.getProfiles(currentUser);
@@ -248,57 +250,27 @@ public class SymptomLogActivity extends AppCompatActivity  {
             goToExtraPage();
             return true;
         } else if (id == R.id.miperson) {
-            goToTemperatureStorage();
+            goToHealth();
             return true;
 
-        } else if (id == R.id.miadd) {
-            addProfile();
-            return true;
 
-        }
-        else if (id == R.id.miMedication) {
-            goToMedication();
-            return true;
-        }
-
-        else if (id==R.id.miSymptoms){
-            goToSymptomLogActivity();
-            return true;
-        }
-        else if (id==R.id.miTemperature) {
-            goToTemperatureMeasurementPage();
-            return true;
-        }
-        else if (id==R.id.miGraph) {
-            Graph();
-            return true;
-        }
-        else if (id==R.id.miLogOut) {
-            goToLogin();
-            return true;
         } else {
             return super.onOptionsItemSelected(item);
         }
     }
 
-    private void goToSymptomStoragePage(){
-        Intent intent = new Intent(this, SymptomStoragePage.class);
-        startActivity(intent);
-    }
+
 
     private void goToExtraPage(){
         Intent intent = new Intent(this, ExtraPageActivity.class);
         startActivity(intent);
     }
 
-    private void goToSymptomLogActivity(){
-        Intent intent = new Intent(this,SymptomLogActivity.class);
+    private void goToHealth(){
+        Intent intent = new Intent(this,HealthDataActivity.class);
         startActivity(intent);
     }
-    private void goToTemperatureStorage(){
-        Intent intent = new Intent(this, TemperatureStoragePage.class);
-        startActivity(intent);
-    }
+
     private void goToMedication(){
         Intent intent = new Intent(this, MedicationActivity.class);
         startActivity(intent);
