@@ -161,7 +161,7 @@ public class MedicationActivity extends AppCompatActivity {
         SharedPreferences sharedPrefs = getSharedPreferences("user_prefs", MODE_PRIVATE);
         String currentUser = sharedPrefs.getString("current_user", null);
         int userID = dbHelper.getUserID(currentUser);
-        List<String> medicationList = dbHelper.getUserAddedMedicationsList(userID);
+        List<String> medicationList = dbHelper.getUserAddedMedications(userID);
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, medicationList);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);

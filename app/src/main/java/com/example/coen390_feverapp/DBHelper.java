@@ -166,12 +166,13 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     //functions for inserting and retreiving medications
-    public boolean insertMedication(String profile, String name, String dose) {
+    public boolean insertMedication(String profile, String name, String dose, String timestamp) {
         SQLiteDatabase myDB = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
         cv.put("profile_name", profile);
         cv.put("name", name);
         cv.put("dose", dose);
+        cv.put("timestamp", timestamp);
         long result = myDB.insert("medication", null, cv);
         return result != -1;
     }

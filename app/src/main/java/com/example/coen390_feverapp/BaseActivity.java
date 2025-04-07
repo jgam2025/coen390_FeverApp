@@ -45,8 +45,7 @@ public class BaseActivity extends AppCompatActivity {
         String date = new SimpleDateFormat("M dd, yyyy", Locale.getDefault()).format(new Date());
         //todo: put month into words
 
-        dateTextView = findViewById(R.id.dateTextView);
-        dateTextView.setText("Today's date: " + date);
+
 
         qTextView = findViewById(R.id.qTextView);
 
@@ -58,13 +57,7 @@ public class BaseActivity extends AppCompatActivity {
             }
         });
 
-        histButton = findViewById(R.id.histButton);
-        histButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                goToHistory();
-            }
-        });
+
 
         medButton = findViewById(R.id.medButton);
         medButton.setOnClickListener(new View.OnClickListener() {
