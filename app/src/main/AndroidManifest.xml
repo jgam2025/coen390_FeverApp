@@ -33,18 +33,22 @@
             android:theme="@style/Base.Theme.Coen390_FeverApp" />
         <activity
             android:name=".CalibrationActivity"
+            android:label="Calibration"
             android:exported="false" />
         <activity
             android:name=".BaseActivity"
+            android:label="Home"
             android:exported="false" />
         <activity
             android:name=".PhoneNumberActivity"
+            android:label="Ressources"
             android:exported="false" />
         <activity
             android:name=".SymptomStoragePage"
             android:exported="false" />
         <activity
             android:name=".MedicationActivity"
+            android:label="Medication Log"
             android:exported="false"
             android:theme="@style/Base.Theme.Coen390_FeverApp2" />
         <activity
@@ -52,6 +56,7 @@
             android:exported="false" />
         <activity
             android:name=".SymptomLogActivity"
+            android:label="Symptoms Log"
             android:exported="false" />
         <activity
             android:name=".TemperatureStoragePage"
