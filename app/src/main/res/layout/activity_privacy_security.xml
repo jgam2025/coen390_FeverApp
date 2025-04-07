@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#980314"
+    android:background="#FFFFFF"
     tools:context=".PrivacySecurityActivity">
 
     <ScrollView
@@ -25,7 +25,7 @@
                 android:layout_height="wrap_content"
                 android:text="PRIVACY /SECURITY"
                 android:textSize="24sp"
-                android:textColor="#FFFFFF"
+                android:textColor="#980314"
                 android:textStyle="bold"
                 android:layout_marginBottom="24dp"
                 android:fontFamily="sans-serif-medium" />
@@ -36,12 +36,12 @@
                 android:layout_height="wrap_content"
                 android:text="• Your data is stored locally on your device.\n\n• Your password is secured and never shared.\n\n• The recorded temperatures are only visible to you.\n\n• Our team respects your privacy."
                 android:textSize="17sp"
-                android:textColor="#FDFDFD"
+                android:textColor="#980314"
                 android:lineSpacingExtra="10dp"
                 android:layout_marginBottom="48dp"
                 android:fontFamily="sans-serif-light" />
 
-            <!-- Bouton -->
+
             <Button
                 android:id="@+id/btnPrivacyOK"
                 android:layout_width="wrap_content"
@@ -49,9 +49,9 @@
                 android:text="COME BACK"
                 android:textSize="16sp"
                 android:textStyle="bold"
-                android:textColor="#980314"
+                android:textColor="#FFFFFF"
                 android:fontFamily="sans-serif-medium"
-                android:backgroundTint="#FFFFFF"
+                android:backgroundTint="#980314"
                 android:paddingLeft="32dp"
                 android:paddingRight="32dp"
                 android:paddingTop="8dp"
