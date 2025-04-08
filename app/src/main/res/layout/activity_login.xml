@@ -65,7 +65,7 @@
     <Button
         android:id="@+id/btnlogin"
         android:layout_width="184dp"
-        android:layout_height="53dp"
+        android:layout_height="59dp"
         android:layout_marginTop="20dp"
         android:backgroundTint="#980314"
         android:text="LOGIN"
@@ -77,7 +77,7 @@
 
     <Button
         android:id="@+id/btnSignup"
-        android:layout_width="188dp"
+        android:layout_width="184dp"
         android:layout_height="59dp"
         android:layout_marginTop="20dp"
         android:backgroundTint="#980314"
