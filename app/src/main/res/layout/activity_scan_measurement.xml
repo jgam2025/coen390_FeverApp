@@ -43,7 +43,7 @@
         android:layout_width="wrap_content"
         android:layout_height="56dp"
         android:layout_marginTop="100dp"
-        android:background="@drawable/temperature_layout_bg"
+        android:background="#FFFFF"
         android:gravity="center"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
@@ -157,7 +157,7 @@
             android:layout_height="match_parent"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
-            android:background="@color/BUTTON_COLOR"
+            android:background="@color/white"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
@@ -182,7 +182,7 @@
             android:layout_height="wrap_content"
             android:clickable="true"
             android:contentDescription="Close Dialog"
-            app:backgroundTint="@color/BUTTON_COLOR"
+            app:backgroundTint="#980314"
             app:borderWidth="24dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -197,7 +197,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginBottom="16dp"
-        android:visibility="gone"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -209,7 +209,7 @@
             android:layout_height="match_parent"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
-            android:background="@color/BUTTON_COLOR"
+            android:background="#980314"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
@@ -233,7 +233,7 @@
             android:layout_height="wrap_content"
             android:clickable="true"
             android:contentDescription="Close Dialog"
-            app:backgroundTint="@color/BUTTON_COLOR"
+            app:backgroundTint="#980314"
             app:borderWidth="24dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
