@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/checkBoxLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#FFFFFF"
@@ -12,36 +12,46 @@
         android:id="@+id/titleTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="24dp"
         android:text="Medication"
         android:textColor="#980314"
-        android:textSize="28sp"
+        android:textSize="32sp"
         android:textStyle="bold"
-        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginTop="24dp"
-        android:layout_marginStart="24dp" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Spinner
         android:id="@+id/profilesSpinner"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="24dp"
-        android:layout_marginEnd="24dp" />
+        android:layout_marginEnd="24dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <View
+        android:id="@+id/divider2"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="16dp"
+        android:background="#DDDDDD"
+        app:layout_constraintTop_toBottomOf="@+id/titleTextView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <TextView
         android:id="@+id/chooseTextView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Choose your medication"
+        android:layout_marginTop="32dp"
+        android:text="Choose from your frequently used medication:"
         android:textColor="#980314"
         android:textSize="18sp"
-        android:textStyle="medium"
-        app:layout_constraintTop_toBottomOf="@id/titleTextView"
+        android:fontFamily="sans-serif-medium"
+        app:layout_constraintTop_toBottomOf="@+id/divider2"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="32dp"
         android:layout_marginStart="24dp"
         android:layout_marginEnd="24dp" />
 
@@ -49,8 +59,8 @@
         android:id="@+id/medsSpinner"
         android:layout_width="0dp"
         android:layout_height="56dp"
-        android:layout_marginTop="12dp"
-        app:layout_constraintTop_toBottomOf="@id/chooseTextView"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@+id/chooseTextView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginStart="24dp"
@@ -60,30 +70,30 @@
         android:id="@+id/newMedTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
         android:text="Desired medication not in the list?"
         android:textColor="#980314"
         android:textSize="18sp"
-        android:textStyle="medium"
-        app:layout_constraintTop_toBottomOf="@id/medsSpinner"
+        android:fontFamily="sans-serif-medium"
+        app:layout_constraintTop_toBottomOf="@+id/medsSpinner"
         app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginTop="32dp"
         android:layout_marginStart="24dp" />
 
     <EditText
         android:id="@+id/medsEditText"
         android:layout_width="0dp"
         android:layout_height="56dp"
-        android:hint="Enter new medication"
-        android:backgroundTint="#F8D9DC"
+        android:layout_marginTop="8dp"
+        android:hint="Enter new medication..."
         android:background="#F8D9DC"
+        android:backgroundTint="#F8D9DC"
         android:textColor="#980314"
         android:textColorHint="#980314"
-        android:padding="16dp"
         android:textSize="16sp"
-        app:layout_constraintTop_toBottomOf="@id/newMedTextView"
+        android:padding="16dp"
+        app:layout_constraintTop_toBottomOf="@+id/newMedTextView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="8dp"
         android:layout_marginStart="24dp"
         android:layout_marginEnd="24dp" />
 
@@ -91,30 +101,31 @@
         android:id="@+id/doseTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
         android:text="How much was taken? (optional)"
         android:textColor="#980314"
         android:textSize="18sp"
-        app:layout_constraintTop_toBottomOf="@id/medsEditText"
+        android:fontFamily="sans-serif-medium"
+        app:layout_constraintTop_toBottomOf="@+id/medsEditText"
         app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginTop="32dp"
         android:layout_marginStart="24dp" />
 
     <EditText
         android:id="@+id/doseEditText"
         android:layout_width="0dp"
         android:layout_height="56dp"
+        android:layout_marginTop="8dp"
         android:hint="Dosage (mg)"
-        android:backgroundTint="#F8D9DC"
+        android:inputType="number"
         android:background="#F8D9DC"
+        android:backgroundTint="#F8D9DC"
         android:textColor="#980314"
         android:textColorHint="#980314"
-        android:padding="16dp"
         android:textSize="16sp"
-        android:inputType="number"
-        app:layout_constraintTop_toBottomOf="@id/doseTextView"
+        android:padding="16dp"
+        app:layout_constraintTop_toBottomOf="@+id/doseTextView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="8dp"
         android:layout_marginStart="24dp"
         android:layout_marginEnd="24dp" />
 
@@ -127,10 +138,23 @@
         android:backgroundTint="#980314"
         android:textSize="18sp"
         android:textStyle="bold"
-        app:layout_constraintTop_toBottomOf="@id/doseEditText"
+        app:layout_constraintBottom_toTopOf="@+id/toolbar"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginStart="64dp"
         android:layout_marginEnd="64dp"
-        android:layout_marginTop="40dp" />
+        android:layout_marginBottom="32dp" />
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="#980314"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:titleTextColor="@android:color/white"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 </androidx.constraintlayout.widget.ConstraintLayout>
