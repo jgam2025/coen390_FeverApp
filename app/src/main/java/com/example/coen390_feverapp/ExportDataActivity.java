@@ -20,6 +20,8 @@ import java.util.Locale;
 import java.text.SimpleDateFormat;
 import android.content.Context;
 import android.app.DatePickerDialog;
+import android.widget.ImageView;
+
 
 
 
@@ -48,6 +50,9 @@ public class ExportDataActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_export_data);
+        ImageView backArrow = findViewById(R.id.backArrow);
+        backArrow.setOnClickListener(v -> onBackPressed());
+
 
         // User info SharedPreferences
         SharedPreferences prefs = getSharedPreferences("user_prefs", MODE_PRIVATE);
@@ -65,6 +70,7 @@ public class ExportDataActivity extends AppCompatActivity {
         btnExportAll = findViewById(R.id.btnExportAll);
         etStartDate = findViewById(R.id.etStartDate);
         etEndDate = findViewById(R.id.etEndDate);
+
 
 
 
@@ -101,6 +107,8 @@ public class ExportDataActivity extends AppCompatActivity {
      //   btnExportAll.setOnClickListener(v -> exportAllTemperatureData());
 
     }
+
+
     public List<String> getTemperatureHistoryList(String profile, String startDate, String endDate) {
         DBHelper dbHelper = new DBHelper(this);
         SQLiteDatabase db = dbHelper.getReadableDatabase();
