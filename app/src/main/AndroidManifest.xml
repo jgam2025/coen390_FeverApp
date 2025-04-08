@@ -36,7 +36,7 @@
             android:exported="false" />
         <activity
             android:name=".HealthDataActivity"
-            android:label="false" />
+            android:label="Health History" />
         <activity
             android:name=".BaseActivity"
             android:label="Home Page"

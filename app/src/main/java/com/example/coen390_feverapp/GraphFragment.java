@@ -118,9 +118,7 @@ public class GraphFragment extends DialogFragment {
         }
 
         cursor.close();
-
-        //TextView avgText = view.findViewById(R.id.averageTemperatureText);
-        //displayAverageTemperature(entries, avgText);
+        
         if (!entries.isEmpty()) {
             plotGraph(entries, dateTimeLabels);
         }

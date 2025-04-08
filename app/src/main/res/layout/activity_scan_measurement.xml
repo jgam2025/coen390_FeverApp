@@ -10,7 +10,7 @@
 
 
     <ImageView
-        android:id="@+id/imageViewArrowScanPage"
+        android:id="@+id/imageViewArrowScanPage2"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_marginStart="23dp"

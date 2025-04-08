@@ -10,7 +10,6 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -103,7 +102,7 @@ public class ScanMeasurementActivity extends AppCompatActivity {
         closeInstructionDialogButton = findViewById(R.id.closeScanDialogButton);
         feverAlertDialogLayout = findViewById(R.id.feverAlertDialog);
         closeAlertDialogButton = findViewById(R.id.closeFeverAlertDialogButton);
-        imageViewArrowScanPage = findViewById(R.id.imageViewArrowScanPage);
+        imageViewArrowScanPage = findViewById(R.id.imageViewArrowScanPage2);
 
 
         measurementProgressBar.setProgress(0);
