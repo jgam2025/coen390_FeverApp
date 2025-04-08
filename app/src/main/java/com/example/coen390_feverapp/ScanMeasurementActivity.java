@@ -155,7 +155,6 @@ public class ScanMeasurementActivity extends AppCompatActivity {
         }
         for (BluetoothDevice bondedDevice : bluetoothAdapter.getBondedDevices()) {
             if (bondedDevice.getName().equals(DEVICE_NAME)) {
-                android.util.Log.d("DEBUG", "Paired device: " + bondedDevice.getName());
                 device = bondedDevice;
                 break;
             }

@@ -21,6 +21,10 @@ import java.text.SimpleDateFormat;
 import android.content.Context;
 import android.app.DatePickerDialog;
 import android.widget.ImageView;
+import android.graphics.pdf.PdfDocument;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+
 
 
 
@@ -142,8 +146,19 @@ public class ExportDataActivity extends AppCompatActivity {
 
 
     private void writeExportToFile(String filename, List<String> temps, List<String> meds, List<String> symptoms, String profileLabel)
-    {
 
+    {
+        PdfDocument pdfDocument = new PdfDocument();
+        Paint paint = new Paint();
+        int pageWidth = 595; // A4 width in points
+        int pageHeight = 842; // A4 height
+        int y = 50;
+
+        PdfDocument.PageInfo pageInfo = new PdfDocument.PageInfo.Builder(pageWidth, pageHeight, 1).create();
+        PdfDocument.Page page = pdfDocument.startPage(pageInfo);
+        Canvas canvas = page.getCanvas();
+
+        // Header - User info
         String firstName = sharedPreferences.getString("first_name", "");
         String lastName = sharedPreferences.getString("last_name", "");
         String birthDate = sharedPreferences.getString("birth_date", "");
@@ -151,44 +166,50 @@ public class ExportDataActivity extends AppCompatActivity {
         String address = sharedPreferences.getString("address", "");
         String doctor = sharedPreferences.getString("doctor", "");
 
-        StringBuilder data = new StringBuilder();
-        data.append("---- Health Information ----\n");
-        data.append("Name: ").append(firstName).append(" ").append(lastName).append("\n");
-        data.append("Date of Birth: ").append(birthDate).append("\n");
-        data.append("Health Card #: ").append(healthCard).append("\n");
-        data.append("Address: ").append(address).append("\n");
-        data.append("Family Doctor: ").append(doctor).append("\n\n");
+        paint.setTextSize(14);
+        canvas.drawText("---- Health Information ----", 30, y, paint); y += 20;
+        canvas.drawText("Name: " + firstName + " " + lastName, 30, y, paint); y += 20;
+        canvas.drawText("Date of Birth: " + birthDate, 30, y, paint); y += 20;
+        canvas.drawText("Health Card #: " + healthCard, 30, y, paint); y += 20;
+        canvas.drawText("Address: " + address, 30, y, paint); y += 20;
+        canvas.drawText("Family Doctor: " + doctor, 30, y, paint); y += 30;
 
-        data.append("---- Temperature Records: ").append(" ----\n");
-        data.append("Timestamp,Temperature\n");
+        // Temperature data
+        canvas.drawText("---- Temperature Records ----", 30, y, paint); y += 20;
         for (String temp : temps) {
-            data.append(temp).append("\n");
+            if (y > pageHeight - 40) break; // prevent overflow
+            canvas.drawText(temp, 30, y, paint); y += 20;
         }
 
-        data.append("\n---- Medication Records for: ").append(" ----\n");
-        data.append("Date,Medication,Dose\n");
+        y += 20;
+        canvas.drawText("---- Medication Records ----", 30, y, paint); y += 20;
         for (String med : meds) {
-            data.append(med).append("\n");
-        }
-        data.append("\n---- Symptom Records ----\n");
-        data.append("Date & Time, Symptoms\n");
-        for (String symptom : symptoms) {
-            data.append(symptom).append("\n");
+            if (y > pageHeight - 40) break;
+            canvas.drawText(med, 30, y, paint); y += 20;
         }
 
+        y += 20;
+        canvas.drawText("---- Symptom Records ----", 30, y, paint); y += 20;
+        for (String sym : symptoms) {
+            if (y > pageHeight - 40) break;
+            canvas.drawText(sym, 30, y, paint); y += 20;
+        }
+
+        pdfDocument.finishPage(page);
 
         try {
-            File dir = android.os.Environment.getExternalStoragePublicDirectory(android.os.Environment.DIRECTORY_DOWNLOADS);
-
-            File file = new File(dir, filename);
+            File dir = getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS);
+            if (!dir.exists()) dir.mkdirs();
+            File file = new File(dir, filename.replace(".csv", ".pdf"));
 
             FileOutputStream fos = new FileOutputStream(file);
-            fos.write(data.toString().getBytes());
+            pdfDocument.writeTo(fos);
             fos.close();
+            pdfDocument.close();
 
-            Toast.makeText(this, "Exported to:\n" + file.getAbsolutePath(), Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Exported to PDF:\n" + file.getAbsolutePath(), Toast.LENGTH_LONG).show();
         } catch (Exception e) {
-            Toast.makeText(this, "Export failed: " + e.getMessage(), Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Export PDF failed: " + e.getMessage(), Toast.LENGTH_LONG).show();
         }
     }
 
@@ -218,7 +239,7 @@ public class ExportDataActivity extends AppCompatActivity {
             return;
         }
 
-        String filename = currentProfile + "_export_" + startDate + ".csv";
+        String filename = currentProfile + "_export_" + startDate + ".pdf";
         writeExportToFile(filename, temps, meds, symptoms, currentProfile);
     }
 
