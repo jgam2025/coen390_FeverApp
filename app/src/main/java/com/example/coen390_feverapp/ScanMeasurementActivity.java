@@ -302,7 +302,7 @@ public class ScanMeasurementActivity extends AppCompatActivity {
 
         // Close Bluetooth connection and redirect to TemperatureMeasurementPage
         closeBluetoothConnection();
-        Intent intent = new Intent(ScanMeasurementActivity.this, TemperatureMeasurementPage.class);
+        Intent intent = new Intent(ScanMeasurementActivity.this, BaseActivity.class);
         startActivity(intent);
         finish();
     }

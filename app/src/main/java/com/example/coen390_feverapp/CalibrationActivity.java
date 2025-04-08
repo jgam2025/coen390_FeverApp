@@ -8,6 +8,7 @@ import android.bluetooth.BluetoothSocket;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -44,7 +45,7 @@ public class CalibrationActivity extends AppCompatActivity {
     private Button measureButton;
     private TextView measuredTempTextView;
     private TextView offsetTextView;
-    protected ImageView imageViewArrowScanPage2;
+    //protected ImageView imageViewArrowScanPage2;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -63,7 +64,7 @@ public class CalibrationActivity extends AppCompatActivity {
         measureButton = findViewById(R.id.button_measure);
         measuredTempTextView = findViewById(R.id.textView_measuredTemp);
         offsetTextView = findViewById(R.id.textView_offset);
-        imageViewArrowScanPage2 = findViewById(R.id.imageViewArrowScanPage2);
+        //imageViewArrowScanPage2 = findViewById(R.id.imageViewArrowScanPage2);
 
 
         bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
@@ -79,13 +80,7 @@ public class CalibrationActivity extends AppCompatActivity {
 
         // Set up button to initiate calibration
         measureButton.setOnClickListener(v -> calibrateSensor());
-        imageViewArrowScanPage2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(CalibrationActivity.this, ExtraPageActivity.class);
-                startActivity(intent);
-            }
-        });
+
     }
     private void setUpToolbar() {
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -99,10 +94,18 @@ public class CalibrationActivity extends AppCompatActivity {
 
     private boolean connectToESP32() {
         BluetoothDevice device = null;
+        // Check for the BLUETOOTH_CONNECT permission
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.BLUETOOTH_CONNECT}, 1);
+            // Request permission from the UI thread
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                runOnUiThread(() -> ActivityCompat.requestPermissions(
+                        CalibrationActivity.this,
+                        new String[]{Manifest.permission.BLUETOOTH_CONNECT},
+                        1));
+            }
             return false;
         }
+        // Find the bonded device named "ESP32"
         for (BluetoothDevice bondedDevice : bluetoothAdapter.getBondedDevices()) {
             if (bondedDevice.getName().equals(DEVICE_NAME)) {
                 device = bondedDevice;
@@ -110,18 +113,32 @@ public class CalibrationActivity extends AppCompatActivity {
             }
         }
         if (device == null) {
-            Toast.makeText(this, "ESP32 not paired", Toast.LENGTH_SHORT).show();
+            runOnUiThread(() -> Toast.makeText(CalibrationActivity.this, "ESP32 not paired", Toast.LENGTH_SHORT).show());
             return false;
         }
         try {
             socket = device.createRfcommSocketToServiceRecord(SERIAL_UUID);
             socket.connect();
             inputStream = socket.getInputStream();
-            Toast.makeText(this, "Connected Successfully", Toast.LENGTH_SHORT).show();
+            runOnUiThread(() -> Toast.makeText(CalibrationActivity.this, "Connected Successfully", Toast.LENGTH_SHORT).show());
             return true;
         } catch (IOException e) {
-            Toast.makeText(this, "Failed to connect", Toast.LENGTH_SHORT).show();
+            runOnUiThread(() -> Toast.makeText(CalibrationActivity.this, "Failed to connect", Toast.LENGTH_SHORT).show());
             return false;
+        }
+    }
+
+    // Handle the permission request result:
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == 1) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // Permission granted – try connecting again on a new thread
+                new Thread(() -> connectToESP32()).start();
+            } else {
+                Toast.makeText(this, "Bluetooth permission is required.", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
