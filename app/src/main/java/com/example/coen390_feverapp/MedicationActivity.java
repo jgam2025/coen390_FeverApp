@@ -13,10 +13,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -60,7 +58,7 @@ public class MedicationActivity extends AppCompatActivity {
         });
 
     }
-
+     //back button
     private void setUpToolbar() {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -73,13 +71,13 @@ public class MedicationActivity extends AppCompatActivity {
     //validate input --> if validated, submit meds
     private boolean validateInput(String selectedProfile){
 
-        Log.d("edit_text_check", "medication from edit text: " + medicationNameText);
-        Log.d("spinner_check", "medication from spinner: " + medicationNameSpinner);
-        Log.d("profile_check", "profile from spinner: " + selectedProfile);
+        Log.d("edit text check", "medication from edit text: " + medicationNameText);
+        Log.d("spinner check", "medication from spinner: " + medicationNameSpinner);
+        Log.d("profile check", "profile from spinner: " + selectedProfile);
 
         if (!medicationNameText.isEmpty() && medicationNameSpinner != "") {
             Toast.makeText(this,
-                    "Please select from the dropdown menu OR enter a medication in the text field",
+                    "select a medication  or enter a medication ",
                     Toast.LENGTH_LONG).show();
         } else if (medicationNameSpinner == "" && medicationNameText.isEmpty()) {
             Toast.makeText(this, "Please select a medication", Toast.LENGTH_LONG).show();
@@ -103,6 +101,7 @@ public class MedicationActivity extends AppCompatActivity {
                 Log.d("edit_text_check", "Edit text not empty");
                 SaveNewMedsFragment newMedsFragment = new SaveNewMedsFragment();
                 newMedsFragment.show(getFragmentManager(), "NewMedication");
+
                 boolean inserted = dbHelper.insertMedication(currentProfile, medicationNameText, medicationDose, logTime);
                 if (inserted) {
                     Toast.makeText(this, "Medication saved!", Toast.LENGTH_SHORT).show();
@@ -123,12 +122,14 @@ public class MedicationActivity extends AppCompatActivity {
                 } else {
                     Toast.makeText(this, "Error saving medication", Toast.LENGTH_SHORT).show();
                 }
+                // Clear fields
                 medsEditText.setText("");
                 doseEditText.setText("");
             }
         };
     }
 
+    // profiles spinner based on current user
     private void showProfilesOnSpinner() {
         SharedPreferences sharedPrefs = getSharedPreferences("user_prefs", MODE_PRIVATE);
         String currentUser = sharedPrefs.getString("current_user", null);
@@ -155,7 +156,7 @@ public class MedicationActivity extends AppCompatActivity {
         });
 
     }
-
+ //show  medications spinner with previously added medications
     public void showMedicationsOnSpinner() {
         SharedPreferences sharedPrefs = getSharedPreferences("user_prefs", MODE_PRIVATE);
         String currentUser = sharedPrefs.getString("current_user", null);
@@ -191,7 +192,7 @@ public class MedicationActivity extends AppCompatActivity {
 
         return true;
     }
-
+    //toolbar menu item selection
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();

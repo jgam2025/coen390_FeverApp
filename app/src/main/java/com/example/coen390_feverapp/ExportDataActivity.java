@@ -59,7 +59,6 @@ public class ExportDataActivity extends AppCompatActivity {
         currentProfile = prefs.getString("current_profile", "default");
         sharedPreferences = getSharedPreferences("user_info_" + currentProfile, MODE_PRIVATE);
 
-        // Connect views
         etFirstName = findViewById(R.id.etFirstName);
         etLastName = findViewById(R.id.etLastName);
         etBirthDate = findViewById(R.id.etBirthDate);
@@ -152,7 +151,7 @@ public class ExportDataActivity extends AppCompatActivity {
 
     private void writeExportToFile(String filename, List<String> temps, List<String> meds, List<String> symptoms, String profileLabel)
     {
-
+       //user datas must stay after logout or change pages as preferences
         String firstName = sharedPreferences.getString("first_name", "");
         String lastName = sharedPreferences.getString("last_name", "");
         String birthDate = sharedPreferences.getString("birth_date", "");
@@ -161,6 +160,8 @@ public class ExportDataActivity extends AppCompatActivity {
         String doctor = sharedPreferences.getString("doctor", "");
 
         StringBuilder data = new StringBuilder();
+
+        //if not enter keep empty and downloads
         data.append("---- Health Information ----\n");
         data.append("Name: ").append(firstName).append(" ").append(lastName).append("\n");
         data.append("Date of Birth: ").append(birthDate).append("\n");
@@ -187,6 +188,7 @@ public class ExportDataActivity extends AppCompatActivity {
 
 
         try {
+            //directly on phone device downloads
             File dir = android.os.Environment.getExternalStoragePublicDirectory(android.os.Environment.DIRECTORY_DOWNLOADS);
 
             File file = new File(dir, filename);
@@ -211,7 +213,7 @@ public class ExportDataActivity extends AppCompatActivity {
         }
 
         if (endDate.isEmpty()) {
-            endDate = null;
+            endDate = null;//assume "today" date if end date is not selected
         } else {
             endDate += " 23:59";
         }
@@ -226,11 +228,13 @@ public class ExportDataActivity extends AppCompatActivity {
             Toast.makeText(this, "No data in that range", Toast.LENGTH_SHORT).show();
             return;
         }
-
+         //assume user download excel so exportation work
         String filename = currentProfile + "_export_" + startDate + ".csv";
         writeExportToFile(filename, temps, meds, symptoms, currentProfile);
     }
 
+
+    //choose your interval dates with calendar
     private void showDatePickerDialog(EditText target) {
         Calendar calendar = Calendar.getInstance();
         int year = calendar.get(Calendar.YEAR);

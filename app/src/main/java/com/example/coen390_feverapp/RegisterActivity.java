@@ -44,6 +44,7 @@ public class RegisterActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        //hide password
         cbShowPassword.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked) {
                 etPwd.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
@@ -76,7 +77,7 @@ public class RegisterActivity extends AppCompatActivity {
                        boolean registeredSuccess=dbHelper.insertData(user,pwd);
                        if(registeredSuccess){
                            Toast.makeText(RegisterActivity.this, "User Registered Successfully",Toast.LENGTH_LONG).show();
-                           SharedPreferences sharedPrefs = getSharedPreferences("user_prefs", MODE_PRIVATE);
+                           SharedPreferences sharedPrefs = getSharedPreferences("user_prefs", MODE_PRIVATE);//save this registration
                            SharedPreferences.Editor editor = sharedPrefs.edit();
                            editor.putString("current_user",user);
                            editor.apply();

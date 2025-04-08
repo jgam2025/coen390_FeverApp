@@ -72,7 +72,7 @@ public class DBHelper extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS user_added_medications");
     }
 
-    //*********************functions for user creation and validation*********************
+
     public boolean insertData(String username, String password){
         SQLiteDatabase myDB = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -140,7 +140,7 @@ public class DBHelper extends SQLiteOpenHelper {
         return profileList;
     }
 
-    //*********************functions for inserting temperature data*********************
+
     public boolean insertTemperature(String profileName, String measurementTime, String temperatureValue) {
         SQLiteDatabase myDB = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -163,28 +163,28 @@ public class DBHelper extends SQLiteOpenHelper {
         );
     }
 
-    public Cursor getAllMeasurementsByProfile(String profile, String startDate, String endDate) {
-        SQLiteDatabase db = this.getReadableDatabase();
-        if(startDate == null) {
-            return db.rawQuery(
-                    "SELECT * FROM temperature WHERE profile_name = ? ORDER BY measurement_time ASC",
-                    new String[]{profile}
-            );
-        } else {
-            if (endDate == null){
-                Calendar calendar = Calendar.getInstance();
-                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
-                String now = simpleDateFormat.format(calendar.getTime());
-                return db.rawQuery("SELECT * FROM temperature WHERE profile_name = ? " +
-                        "AND measurement_time BETWEEN ? AND ? ORDER BY measurement_time DESC", new String[]{profile, startDate, now});
-            } else if (endDate != null) {
-                return db.rawQuery("SELECT * FROM temperature WHERE profile_name = ? AND measurement_time BETWEEN ? AND ? ORDER BY measurement_time DESC",
-                        new String[]{profile,startDate,endDate}
-                );
-            }
-        }
-        return null;
-    }
+//    public Cursor getAllMeasurementsByProfile(String profile, String startDate, String endDate) {
+//        SQLiteDatabase db = this.getReadableDatabase();
+//        if(startDate == null) {
+//            return db.rawQuery(
+//                    "SELECT * FROM temperature WHERE profile_name = ? ORDER BY measurement_time ASC",
+//                    new String[]{profile}
+//            );
+//        } else {
+//            if (endDate == null){
+//                Calendar calendar = Calendar.getInstance();
+//                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
+//                String now = simpleDateFormat.format(calendar.getTime());
+//                return db.rawQuery("SELECT * FROM temperature WHERE profile_name = ? " +
+//                        "AND measurement_time BETWEEN ? AND ? ORDER BY measurement_time DESC", new String[]{profile, startDate, now});
+//            } else if (endDate != null) {
+//                return db.rawQuery("SELECT * FROM temperature WHERE profile_name = ? AND measurement_time BETWEEN ? AND ? ORDER BY measurement_time DESC",
+//                        new String[]{profile,startDate,endDate}
+//                );
+//            }
+//        }
+//        return null;
+//    }
 
     /*
     public Cursor getTemperatureMeasurementEntries(String profile, String startDate, String endDate){
@@ -208,8 +208,7 @@ public class DBHelper extends SQLiteOpenHelper {
     }
      */
 
-
-    //*********************functions for inserting and retrieving medications*********************
+    //dose in mg
     public boolean insertMedication(String profile, String name, String dose, String timestamp) {
         SQLiteDatabase myDB = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
@@ -270,7 +269,7 @@ public class DBHelper extends SQLiteOpenHelper {
             try {
                 cursor = myDB.rawQuery("SELECT * FROM medication WHERE profile_name = ? ORDER BY timestamp DESC", new String[]{profile});
                 if (cursor != null) {
-                    Log.d("profile_check", "profile: " + profile);
+                    Log.d("profile_check", "profile: " + profile);//profile name= medication for this profile
                     if (cursor.moveToFirst()) {
                         Log.d("check", "cursor moved to first a");
                         do {
@@ -362,7 +361,6 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
 
-    //*********************functions for inserting and retrieving symptoms from checkboxes*********************
     public boolean insertSymptoms(String profile, String symptoms, String timestamp){
         SQLiteDatabase myDB = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();

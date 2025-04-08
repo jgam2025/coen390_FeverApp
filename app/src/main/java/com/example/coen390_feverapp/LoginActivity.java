@@ -9,13 +9,8 @@ import android.widget.EditText;
 import android.widget.Toast;
 import android.text.InputType;
 import android.widget.CheckBox;
-
-
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
+
 
 public class LoginActivity extends AppCompatActivity {
     Button btnlogin;
@@ -40,14 +35,16 @@ public class LoginActivity extends AppCompatActivity {
         btnlogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // Check credentials
                 boolean isLoggedId = dbHelper.checkUser(etUsername.getText().toString(),etPwd.getText().toString());
                 if(isLoggedId){
+                    // save current user in SharedPreferences
                     String username = etUsername.getText().toString();
                     SharedPreferences sharedPrefs = getSharedPreferences("user_prefs", MODE_PRIVATE);
                     SharedPreferences.Editor editor = sharedPrefs.edit();
                     editor.putString("current_user",username);
                     editor.apply();
-
+                    // Navigate to BaseActivity
                     Intent intent = new Intent(LoginActivity.this, BaseActivity.class);
                     startActivity(intent);
                 }
@@ -56,6 +53,7 @@ public class LoginActivity extends AppCompatActivity {
                 }
             }
         });
+        // Show-hide password
         cbShowPassword.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked) {
                 etPwd.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
@@ -64,6 +62,7 @@ public class LoginActivity extends AppCompatActivity {
             }
             etPwd.setSelection(etPwd.length());
         });
+        // Privacy & Security button
         Button btnPrivacy = findViewById(R.id.btnPrivacy);
         btnPrivacy.setOnClickListener(v -> {
             Intent intent = new Intent(LoginActivity.this, PrivacySecurityActivity.class);
@@ -71,7 +70,7 @@ public class LoginActivity extends AppCompatActivity {
         });
 
 
-
+       //register a account
         btnSignup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
