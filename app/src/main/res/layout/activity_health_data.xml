@@ -55,63 +55,63 @@
         android:id="@+id/symptomsHistTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
         android:text="Symptoms:"
         android:textColor="#980314"
         android:textSize="18sp"
         android:textStyle="bold"
-        app:layout_constraintTop_toBottomOf="@+id/weekOfSpinner"
         app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginTop="24dp" />
+        app:layout_constraintTop_toBottomOf="@+id/weekOfSpinner" />
 
     <ListView
         android:id="@+id/symptomsListView"
-        android:layout_width="0dp"
-        android:layout_height="120dp"
+        android:layout_width="376dp"
+        android:layout_height="188dp"
+        android:layout_marginTop="8dp"
         android:divider="#CCCCCC"
         android:dividerHeight="1dp"
-        app:layout_constraintTop_toBottomOf="@+id/symptomsHistTextView"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="8dp" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/symptomsHistTextView" />
 
     <TextView
         android:id="@+id/medsHistTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
         android:text="Medications taken:"
         android:textColor="#980314"
         android:textSize="18sp"
         android:textStyle="bold"
-        app:layout_constraintTop_toBottomOf="@+id/symptomsListView"
         app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginTop="24dp" />
+        app:layout_constraintTop_toBottomOf="@+id/symptomsListView" />
 
     <ListView
         android:id="@+id/medsListView"
-        android:layout_width="0dp"
-        android:layout_height="120dp"
+        android:layout_width="379dp"
+        android:layout_height="188dp"
+        android:layout_marginTop="8dp"
         android:divider="#CCCCCC"
         android:dividerHeight="1dp"
-        app:layout_constraintTop_toBottomOf="@+id/medsHistTextView"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="8dp" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/medsHistTextView" />
 
     <Button
         android:id="@+id/trendButton"
         android:layout_width="0dp"
         android:layout_height="48dp"
+        android:layout_marginStart="64dp"
+        android:layout_marginEnd="64dp"
+        android:layout_marginBottom="8dp"
+        android:backgroundTint="#980314"
         android:text="Temperature Trend"
         android:textColor="#FFFFFF"
-        android:backgroundTint="#980314"
-        android:textStyle="bold"
         android:textSize="16sp"
-        app:layout_constraintTop_toBottomOf="@+id/medsListView"
+        android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/toolbar"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="24dp"
-        android:layout_marginStart="64dp"
-        android:layout_marginEnd="64dp" />
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

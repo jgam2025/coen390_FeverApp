@@ -14,9 +14,10 @@
         android:id="@+id/homeTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="56dp"
-        android:textColor="@color/red_background"
+        android:layout_marginTop="20dp"
+        android:textColor="#980314"
         android:textSize="40dp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.494"
         app:layout_constraintStart_toStartOf="parent"
@@ -33,59 +34,55 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <TextView
-        android:id="@+id/qTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="What would you like to do?"
-        android:textSize="20sp"
-        android:textColor="#444444"
-        app:layout_constraintTop_toBottomOf="@id/divider"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="32dp" />
-
     <Button
         android:id="@+id/tempButton"
         android:layout_width="0dp"
         android:layout_height="52dp"
-        android:text="Take your temperature"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="36dp"
+        android:layout_marginEnd="20dp"
+        android:backgroundTint="#980314"
+        android:text="Measure Temperature"
+        android:textColor="#FFFFFF"
         android:textSize="16sp"
         android:textStyle="bold"
-        android:textColor="#FFFFFF"
-        android:backgroundTint="#980314"
-        android:layout_marginTop="24dp"
-        app:layout_constraintTop_toBottomOf="@+id/qTextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/imageView5" />
 
     <Button
         android:id="@+id/symptomButton"
         android:layout_width="0dp"
         android:layout_height="52dp"
-        android:text="Log your symptoms"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
+        android:backgroundTint="#980314"
+        android:text="Log Symptoms"
+        android:textColor="#FFFFFF"
         android:textSize="16sp"
         android:textStyle="bold"
-        android:textColor="#FFFFFF"
-        android:backgroundTint="#980314"
-        android:layout_marginTop="16dp"
-        app:layout_constraintTop_toBottomOf="@+id/tempButton"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/tempButton" />
 
     <Button
         android:id="@+id/medButton"
         android:layout_width="0dp"
         android:layout_height="52dp"
-        android:text="Log your medication"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
+        android:backgroundTint="#980314"
+        android:text="Log Medication"
+        android:textColor="#FFFFFF"
         android:textSize="16sp"
         android:textStyle="bold"
-        android:textColor="#FFFFFF"
-        android:backgroundTint="#980314"
-        android:layout_marginTop="16dp"
-        app:layout_constraintTop_toBottomOf="@+id/symptomButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/symptomButton" />
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
@@ -97,5 +94,15 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
+
+    <ImageView
+        android:id="@+id/imageView5"
+        android:layout_width="267dp"
+        android:layout_height="271dp"
+        android:layout_marginTop="36dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/divider"
+        app:srcCompat="@drawable/eaver2" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

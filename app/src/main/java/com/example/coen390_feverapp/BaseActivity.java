@@ -91,7 +91,6 @@ public class BaseActivity extends AppCompatActivity {
 
 
 
-        qTextView = findViewById(R.id.qTextView);
 
         tempButton = findViewById(R.id.tempButton);
         tempButton.setOnClickListener(new View.OnClickListener() {

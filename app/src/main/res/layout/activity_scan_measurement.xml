@@ -5,7 +5,7 @@
     android:id="@+id/checkBoxLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/fever_app_background"
+    android:background="@color/white"
     tools:context=".ScanMeasurementActivity">
 
 
@@ -17,7 +17,8 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="355dp"
         android:layout_marginBottom="675dp"
-        android:backgroundTint="#ED7F7F"
+        android:backgroundTint="#980314"
+        android:tint="#980314"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -26,13 +27,13 @@
 
     <Spinner
         android:id="@+id/scaleSpinner"
-        android:layout_width="wrap_content"
-        android:layout_height="55dp"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
-        android:background="@color/BUTTON_COLOR"
-        android:backgroundTint="@color/BUTTON_COLOR"
-        android:popupBackground="@color/BUTTON_COLOR"
+        android:background="@color/white"
+        android:backgroundTint="@color/white"
+        android:popupBackground="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -52,11 +53,11 @@
         <TextView
             android:id="@+id/textViewTemperature"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:gravity="center"
             android:includeFontPadding="false"
             android:text=" Press Start "
-            android:textColor="@color/red_background"
+            android:textColor="#980314"
             android:textSize="48sp"
             android:textStyle="bold" />
     </LinearLayout>
@@ -91,7 +92,7 @@
             android:id="@+id/buttonStart"
             android:layout_width="110dp"
             android:layout_height="110dp"
-            android:backgroundTint="#ED7F7F"
+            android:backgroundTint="#980314"
             android:gravity="center"
             android:includeFontPadding="false"
             android:insetTop="0dp"
@@ -116,7 +117,7 @@
                 android:layout_width="110dp"
                 android:layout_height="110dp"
                 android:layout_weight="1"
-                android:backgroundTint="#ED7F7F"
+                android:backgroundTint="#980314"
                 android:includeFontPadding="false"
                 android:insetTop="0dp"
                 android:insetBottom="0dp"
@@ -129,7 +130,7 @@
                 android:layout_height="110dp"
                 android:layout_marginStart="24dp"
                 android:layout_weight="1"
-                android:backgroundTint="#ED7F7F"
+                android:backgroundTint="#980314"
                 android:includeFontPadding="false"
                 android:insetTop="0dp"
                 android:insetBottom="0dp"
