@@ -1,12 +1,17 @@
 package com.example.coen390_feverapp;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 import android.Manifest;
 import android.content.pm.PackageManager;
+
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import android.os.Environment;
@@ -54,9 +59,9 @@ public class ExportDataActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_export_data);
-        ImageView backArrow = findViewById(R.id.backArrow);
-        backArrow.setOnClickListener(v -> onBackPressed());
-
+        //
+        //backArrow.setOnClickListener(v -> onBackPressed());
+        setUpToolbar();
 
         // User info SharedPreferences
         SharedPreferences prefs = getSharedPreferences("user_prefs", MODE_PRIVATE);
@@ -110,6 +115,16 @@ public class ExportDataActivity extends AppCompatActivity {
         // Export all
      //   btnExportAll.setOnClickListener(v -> exportAllTemperatureData());
 
+    }
+
+    private void setUpToolbar() {
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(true);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+        toolbar.setNavigationOnClickListener(v -> finish());
     }
 
 
@@ -259,6 +274,50 @@ public class ExportDataActivity extends AppCompatActivity {
         );
 
         datePickerDialog.show();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu from the menu.xml file in the menu directory
+        getMenuInflater().inflate(R.menu.toolbar, menu);
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.miperson) {
+            goToHealth();
+            return true;
+
+        } else if (id == R.id.miMore) {
+            goToExtra();
+            return true;
+        } else if (id == R.id.mihome) {
+            goToHome();
+            return true;
+
+        } else {
+            return super.onOptionsItemSelected(item);
+
+        }
+    }
+
+    private void goToHealth() {
+        Intent intent = new Intent(this, HealthDataActivity.class);
+        startActivity(intent);
+    }
+
+    private void goToHome() {
+        Intent intent = new Intent(this, BaseActivity.class);
+        startActivity(intent);
+    }
+
+    private void goToExtra() {
+        Intent intent = new Intent(this, ExtraPageActivity.class);
+        startActivity(intent);
     }
 
 

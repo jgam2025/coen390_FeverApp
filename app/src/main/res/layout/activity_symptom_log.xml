@@ -15,8 +15,9 @@
         android:layout_marginTop="15dp"
         android:gravity="center_horizontal"
         android:text="Symptoms"
-        android:textColor="@color/red_background"
+        android:textColor="#980314"
         android:textSize="40dp"
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

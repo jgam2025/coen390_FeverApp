@@ -7,9 +7,11 @@ import android.bluetooth.BluetoothSocket;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -102,7 +104,7 @@ public class ScanMeasurementActivity extends AppCompatActivity {
         closeInstructionDialogButton = findViewById(R.id.closeScanDialogButton);
         feverAlertDialogLayout = findViewById(R.id.feverAlertDialog);
         closeAlertDialogButton = findViewById(R.id.closeFeverAlertDialogButton);
-        imageViewArrowScanPage = findViewById(R.id.imageViewArrowScanPage2);
+        imageViewArrowScanPage = findViewById(R.id.imageViewArrowScanPage);
 
 
         measurementProgressBar.setProgress(0);
@@ -149,10 +151,18 @@ public class ScanMeasurementActivity extends AppCompatActivity {
     // Attempt to connect to the ESP32 on a background thread
     private boolean connectToESP32() {
         BluetoothDevice device = null;
+        // Check for the BLUETOOTH_CONNECT permission
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.BLUETOOTH_CONNECT}, 1);
+            // Request permission from the UI thread
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                runOnUiThread(() -> ActivityCompat.requestPermissions(
+                        ScanMeasurementActivity.this,
+                        new String[]{Manifest.permission.BLUETOOTH_CONNECT},
+                        1));
+            }
             return false;
         }
+        // Find the bonded device named "ESP32"
         for (BluetoothDevice bondedDevice : bluetoothAdapter.getBondedDevices()) {
             if (bondedDevice.getName().equals(DEVICE_NAME)) {
                 device = bondedDevice;
@@ -172,6 +182,20 @@ public class ScanMeasurementActivity extends AppCompatActivity {
         } catch (IOException e) {
             runOnUiThread(() -> Toast.makeText(ScanMeasurementActivity.this, "Failed to connect", Toast.LENGTH_SHORT).show());
             return false;
+        }
+    }
+
+    // Handle the permission request result:
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == 1) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // Permission granted – try connecting again on a new thread
+                new Thread(() -> connectToESP32()).start();
+            } else {
+                Toast.makeText(this, "Bluetooth permission is required.", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
@@ -259,7 +283,7 @@ public class ScanMeasurementActivity extends AppCompatActivity {
     private void saveMeasurement() {
         String measurementValue = temperatureTextView.getText().toString().trim();
 
-        String measurementTime = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault()).format(new Date());
+        String measurementTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date());
 
         // Retrieve current profile name from SharedPreferences.
         // (Ensure that you save the profile name there when the user selects it in TemperatureMeasurementPage.)
