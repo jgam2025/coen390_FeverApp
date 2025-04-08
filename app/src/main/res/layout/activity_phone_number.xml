@@ -11,8 +11,8 @@
         android:id="@+id/toolbar"
         android:layout_width="409dp"
         android:layout_height="wrap_content"
-        android:background="?attr/colorPrimary"
-        android:backgroundTint="@color/red_background"
+        android:background="#980314"
+        android:backgroundTint="#980314"
         android:minHeight="?attr/actionBarSize"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -40,7 +40,7 @@
             android:layout_marginTop="15dp"
             android:gravity="center_horizontal"
             android:text="Useful Phone Numbers"
-            android:textColor="@color/red_background"
+            android:textColor="#980314"
             android:textSize="30dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -53,7 +53,7 @@
             android:layout_marginTop="71dp"
             android:gravity="center_horizontal"
             android:text="Useful Resources"
-            android:textColor="@color/red_background"
+            android:textColor="#980314"
             android:textSize="30dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView12" />
