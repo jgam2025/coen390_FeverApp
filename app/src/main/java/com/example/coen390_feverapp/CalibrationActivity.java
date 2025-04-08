@@ -9,6 +9,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -17,6 +19,7 @@ import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -54,7 +57,7 @@ public class CalibrationActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-
+        setUpToolbar();
         // Initialize UI elements
 
         measureButton = findViewById(R.id.button_measure);
@@ -83,6 +86,15 @@ public class CalibrationActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
+    private void setUpToolbar() {
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(true);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+        toolbar.setNavigationOnClickListener(v -> finish());
     }
 
     private boolean connectToESP32() {
@@ -171,4 +183,48 @@ public class CalibrationActivity extends AppCompatActivity {
             }
         }
     }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu from the menu.xml file in the menu directory
+        getMenuInflater().inflate(R.menu.toolbar, menu);
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.miperson) {
+            goToHealth();
+            return true;
+
+        } else if (id == R.id.miMore) {
+            goToExtra();
+            return true;
+        } else if (id == R.id.mihome) {
+            goToHome();
+            return true;
+
+        } else {
+            return super.onOptionsItemSelected(item);
+
+        }
+    }
+
+    private void goToHealth() {
+        Intent intent = new Intent(this, HealthDataActivity.class);
+        startActivity(intent);
+    }
+
+    private void goToHome() {
+        Intent intent = new Intent(this, BaseActivity.class);
+        startActivity(intent);
+    }
+
+    private void goToExtra() {
+        Intent intent = new Intent(this, ExtraPageActivity.class);
+        startActivity(intent);
+    }
+
 }

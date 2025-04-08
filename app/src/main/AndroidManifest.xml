@@ -25,6 +25,7 @@
         <activity
             android:name=".ExportDataActivity"
             android:exported="false"
+            android:label=" Export Data"
             android:theme="@style/Base.Theme.Coen390_FeverApp" />
         <activity
             android:name=".PrivacySecurityActivity"
@@ -32,7 +33,7 @@
             android:theme="@style/Base.Theme.Coen390_FeverApp" />
         <activity
             android:name=".CalibrationActivity"
-            android:label="Calibration"
+            android:label="Sensor Calibration"
             android:exported="false" />
         <activity
             android:name=".HealthDataActivity"
