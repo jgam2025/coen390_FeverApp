@@ -1,70 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/frameLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/fever_app_background"
+    android:background="#FFFFFF"
     tools:context=".NewProfileFragment">
 
-    <EditText
-        android:id="@+id/nameEditText"
-        android:layout_width="wrap_content"
-        android:layout_height="62dp"
-        android:layout_marginTop="25dp"
-        android:background="#FFB8B8"
-        android:backgroundTint="#FFB8B8"
-        android:ems="10"
-        android:hint=" Enter Profile Name"
-        android:inputType="text"
-        android:textColorHint="#E74F4F"
-        android:textSize="20sp"
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/closeButton"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:src="@android:drawable/ic_menu_close_clear_cancel"
+        app:backgroundTint="#F8D9DC"
+        app:tint="#980314"
+        app:fabSize="mini"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/createTextView" />
+        android:layout_margin="16dp"
+        app:useCompatPadding="true" />
 
     <TextView
         android:id="@+id/createTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="80dp"
-        android:text="@string/create_profile"
-        android:textColor="@color/white"
-        android:textColorHint="@color/black"
-        android:textSize="30sp"
+        android:text="Create Profile"
+        android:textColor="#980314"
+        android:textSize="26sp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.492"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="120dp" />
+
+    <EditText
+        android:id="@+id/nameEditText"
+        android:layout_width="0dp"
+        android:layout_height="56dp"
+        android:hint="Enter Profile Name"
+        android:background="#F8D9DC"
+        android:backgroundTint="#F8D9DC"
+        android:textColor="#980314"
+        android:textColorHint="#980314"
+        android:textSize="16sp"
+        android:padding="16dp"
+        android:inputType="text"
+        app:layout_constraintTop_toBottomOf="@id/createTextView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="24dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp" />
 
     <Button
         android:id="@+id/saveButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="25dp"
-        android:backgroundTint="@color/BUTTON_COLOR"
-        android:text="SAVE"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.491"
+        android:layout_width="0dp"
+        android:layout_height="52dp"
+        android:text="Save"
+        android:textSize="18sp"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"
+        android:backgroundTint="#980314"
+        app:layout_constraintTop_toBottomOf="@id/nameEditText"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/nameEditText" />
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/closeButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:clickable="true"
-        android:padding="0dp"
-        android:scaleType="center"
-        android:src="@android:drawable/ic_menu_close_clear_cancel"
-        app:backgroundTint="#ED7F7F"
-        app:fabCustomSize="40dp"
-        app:fabSize="mini"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:useCompatPadding="true" />
+        android:layout_marginTop="32dp"
+        android:layout_marginStart="64dp"
+        android:layout_marginEnd="64dp" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
