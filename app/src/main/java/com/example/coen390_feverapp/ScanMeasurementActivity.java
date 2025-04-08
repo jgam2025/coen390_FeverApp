@@ -10,6 +10,7 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -102,7 +103,7 @@ public class ScanMeasurementActivity extends AppCompatActivity {
         closeInstructionDialogButton = findViewById(R.id.closeScanDialogButton);
         feverAlertDialogLayout = findViewById(R.id.feverAlertDialog);
         closeAlertDialogButton = findViewById(R.id.closeFeverAlertDialogButton);
-        imageViewArrowScanPage = findViewById(R.id.imageViewArrowScanPage2);
+        //imageViewArrowScanPage = findViewById(R.id.imageViewArrowScanPage);
 
 
         measurementProgressBar.setProgress(0);
@@ -259,7 +260,7 @@ public class ScanMeasurementActivity extends AppCompatActivity {
     private void saveMeasurement() {
         String measurementValue = temperatureTextView.getText().toString().trim();
 
-        String measurementTime = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault()).format(new Date());
+        String measurementTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date());
 
         // Retrieve current profile name from SharedPreferences.
         // (Ensure that you save the profile name there when the user selects it in TemperatureMeasurementPage.)
