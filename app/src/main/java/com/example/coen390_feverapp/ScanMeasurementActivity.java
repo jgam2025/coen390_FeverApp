@@ -45,7 +45,7 @@ import android.widget.AdapterView;
 
 public class ScanMeasurementActivity extends AppCompatActivity {
 
-    private static final boolean TEST_MODE = false;
+    private static final boolean TEST_MODE = true;
 
     private static final String DEVICE_NAME = "ESP32";
     private static final UUID SERIAL_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
@@ -60,6 +60,7 @@ public class ScanMeasurementActivity extends AppCompatActivity {
     protected ConstraintLayout instructionDialogLayout, feverAlertDialogLayout;
     protected FloatingActionButton closeInstructionDialogButton, closeAlertDialogButton;
     protected ImageView imageViewArrowScanPage;
+    private String selectedProfile;
 
     protected volatile boolean measurementCanceled = false;
     // Calibration offset loaded from SharedPreferences (default = 0.0)
@@ -266,9 +267,7 @@ public class ScanMeasurementActivity extends AppCompatActivity {
                     temperatureTextView.setText(" " + display);
                     measurementProgressBar.setProgress(progress);
                     saveButton.setText(progress + "%");
-                    if (progress >= 100) {
-                        displayFeverAlert(display);
-                    }
+                    //displayFeverAlert(display);
                 });
 
                 try {
@@ -305,7 +304,7 @@ public class ScanMeasurementActivity extends AppCompatActivity {
         SharedPreferences sharedPrefs = getSharedPreferences("user_prefs", MODE_PRIVATE);
         String currentProfile = sharedPrefs.getString("current_profile", "default");
 
-        if(currentProfile != "Select profile") {
+        if(selectedProfile != "Select profile") {
             // Save the measurement to the temperature table using the profile name
             DBHelper dbHelper = new DBHelper(this);
             boolean inserted = dbHelper.insertTemperature(currentProfile, measurementTime, measurementValue);
@@ -315,7 +314,7 @@ public class ScanMeasurementActivity extends AppCompatActivity {
             } else {
                 Toast.makeText(ScanMeasurementActivity.this, "Error saving temperature", Toast.LENGTH_SHORT).show();
             }
-        } else if (currentProfile == "Select profile"){
+        } else if (selectedProfile == "Select profile"){
             Toast.makeText(ScanMeasurementActivity.this,"Please select a profile", Toast.LENGTH_LONG).show();
         }
             // Close Bluetooth connection and redirect to TemperatureMeasurementPage
@@ -419,7 +418,7 @@ public class ScanMeasurementActivity extends AppCompatActivity {
         selectProfileSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String selectedProfile = (String) parent.getItemAtPosition(position);
+                selectedProfile = (String) parent.getItemAtPosition(position);
                 SharedPreferences.Editor editor = sharedPrefs.edit();
                 editor.putString("current_profile", selectedProfile);
                 editor.apply();
