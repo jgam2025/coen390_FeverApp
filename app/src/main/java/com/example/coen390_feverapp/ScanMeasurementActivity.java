@@ -262,7 +262,7 @@ public class ScanMeasurementActivity extends AppCompatActivity {
     private void saveMeasurement() {
         String measurementValue = temperatureTextView2.getText().toString().trim();
 
-        String measurementTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date());
+        String measurementTime = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault()).format(new Date());
 
         // Retrieve current profile name from SharedPreferences.
         // (Ensure that you save the profile name there when the user selects it in TemperatureMeasurementPage.)

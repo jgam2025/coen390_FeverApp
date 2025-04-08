@@ -12,6 +12,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -55,7 +56,7 @@ public class HealthDataActivity extends AppCompatActivity {
     private void setupUI(){
         dbHelper = new DBHelper(this);
 
-        //insertTestData();
+        insertTestData();
 
         weekOfSpinner = findViewById(R.id.weekOfSpinner);
         showDatesOnSpinner();
@@ -68,8 +69,12 @@ public class HealthDataActivity extends AppCompatActivity {
         trendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                GraphFragment graphDialog = new GraphFragment();
-                graphDialog.show(getSupportFragmentManager(), "GraphDialog");
+                if(selectedProfile == "Select profile"){
+                    Toast.makeText(getApplicationContext(), "Please select a profile", Toast.LENGTH_LONG).show();
+                } else {
+                    GraphFragment graphDialog = new GraphFragment();
+                    graphDialog.show(getSupportFragmentManager(), "GraphDialog");
+                }
             }
         });
 
@@ -190,6 +195,13 @@ public class HealthDataActivity extends AppCompatActivity {
             medsListView.setAdapter(adapter);
             symptomsListView.setAdapter(adapter);
         }
+        //save into sharedpreferences so that the chart can access the data as well
+        SharedPreferences sharedPrefs = getSharedPreferences("user_prefs", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPrefs.edit();
+        editor.putString("start_date", formattedStartDate);
+        editor.apply();
+        editor.putString("end_date", formattedEndDate);
+        editor.apply();
     }
 
     private void loadMedicationHistory(String startDate, String endDate) {
@@ -234,6 +246,15 @@ public class HealthDataActivity extends AppCompatActivity {
         dbHelper.insertSymptoms(currentProfile, "test symptoms", "2025-03-09 12:00:00");
         dbHelper.insertSymptoms(currentProfile, "test symptoms", "2025-02-20 12:00:00");
 
+        //insert some temperatures
+        dbHelper.insertTemperature(currentProfile, "2025-04-07 15:00:00","30");
+        dbHelper.insertTemperature(currentProfile, "2025-04-07 12:00:00","25");
+        dbHelper.insertTemperature(currentProfile, "2025-04-07 10:00:00","30");
+        dbHelper.insertTemperature(currentProfile, "2025-04-07 07:00:00","25");
+        dbHelper.insertTemperature(currentProfile, "2025-04-02 15:00:00","30");
+        dbHelper.insertTemperature(currentProfile, "2025-04-01 12:00:00","25");
+        dbHelper.insertTemperature(currentProfile, "2025-03-29 15:00:00","30");
+        dbHelper.insertTemperature(currentProfile, "2025-03-20 12:00:00","25");
     }
 
 
