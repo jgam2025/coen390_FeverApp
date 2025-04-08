@@ -34,30 +34,30 @@
                 android:id="@+id/tvPrivacyContent"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="• Your data is stored locally on your device.\n\n• Your password is secured and never shared.\n\n• The recorded temperatures are only visible to you.\n\n• Our team respects your privacy."
-                android:textSize="17sp"
-                android:textColor="#980314"
-                android:lineSpacingExtra="10dp"
                 android:layout_marginBottom="48dp"
-                android:fontFamily="sans-serif-light" />
+                android:fontFamily="sans-serif-light"
+                android:lineSpacingExtra="10dp"
+                android:text="• Your data is stored locally on your device.\n\n• Your password is secured and never shared.\n\n• The recorded temperatures are only visible to you.\n\n• Our team respects your privacy."
+                android:textColor="#0B0A0A"
+                android:textSize="17sp" />
 
 
             <Button
                 android:id="@+id/btnPrivacyOK"
                 android:layout_width="wrap_content"
                 android:layout_height="48dp"
-                android:text="COME BACK"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                android:textColor="#FFFFFF"
-                android:fontFamily="sans-serif-medium"
-                android:backgroundTint="#980314"
-                android:paddingLeft="32dp"
-                android:paddingRight="32dp"
-                android:paddingTop="8dp"
-                android:paddingBottom="8dp"
                 android:layout_marginBottom="24dp"
-                android:elevation="4dp" />
+                android:backgroundTint="#980314"
+                android:elevation="4dp"
+                android:fontFamily="sans-serif-medium"
+                android:paddingLeft="32dp"
+                android:paddingTop="8dp"
+                android:paddingRight="32dp"
+                android:paddingBottom="8dp"
+                android:text="Return"
+                android:textColor="#FFFFFF"
+                android:textSize="16sp"
+                android:textStyle="bold" />
         </LinearLayout>
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>
