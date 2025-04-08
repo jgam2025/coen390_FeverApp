@@ -118,7 +118,7 @@ String[] pageNames = {"Health Resources & Phone Numbers", "Add New Profile", "Ex
             } else if (selectedPage.equals("Sensor Calibration")) {
                 startActivity(new Intent(this, CalibrationActivity.class));
             } else if (selectedPage.equals("Export Health Data")) {
-                startActivity(new Intent(this, ExportDataActivity.class));
+               // startActivity(new Intent(this, ExportDataActivity.class));
             } else if (selectedPage.equals("Add New Profile")) {
                 NewProfileFragment newProfile = new NewProfileFragment();
                 newProfile.show(getFragmentManager(), "InsertProfile");

@@ -3,9 +3,7 @@ package com.example.coen390_feverapp;
 import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.database.Cursor;
-import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
@@ -13,9 +11,11 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
-import java.sql.Array;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 public class DBHelper extends SQLiteOpenHelper {
     public static final String DBName ="register.db";
@@ -45,13 +45,13 @@ public class DBHelper extends SQLiteOpenHelper {
                 "profile_name TEXT NOT NULL, " +
                 "name TEXT NOT NULL, " +
                 "dose TEXT, " +
-                "timestamp DATETIME DEFAULT CURRENT_TIMESTAMP)"); //medication data table
+                "timestamp TEXT NOT NULL)"); //medication data table
 
         sqLiteDatabase.execSQL("CREATE TABLE symptoms (" +
                 "user_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "profile_name TEXT NOT NULL, " +
                 "symptom_type TEXT, " +
-                "timestamp DATETIME DEFAULT CURRENT_TIMESTAMP)"); //symptoms data table
+                "timestamp TEXT NOT NULL)"); //symptoms data table
 
         sqLiteDatabase.execSQL("CREATE TABLE user_added_symptoms (" +
                 "user_id INTEGER NOT NULL, " +
@@ -72,7 +72,7 @@ public class DBHelper extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS user_added_medications");
     }
 
-    //functions for user creation and validation
+    //*********************functions for user creation and validation*********************
     public boolean insertData(String username, String password){
         SQLiteDatabase myDB = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -95,7 +95,6 @@ public class DBHelper extends SQLiteOpenHelper {
         } else return -1;
     }
 
-    //checks if username already exists in db
     public boolean checkUsername(String username){
         SQLiteDatabase myDB = this.getReadableDatabase();
         Cursor cursor = myDB.rawQuery("SELECT * FROM users WHERE username = ? COLLATE NOCASE", new String[]{username});
@@ -108,7 +107,7 @@ public class DBHelper extends SQLiteOpenHelper {
         return cursor.getCount() > 0;
     }
 
-    //functions for inserting and retrieving profiles
+    //*********************functions for inserting and retrieving profiles*********************
     public boolean insertProfile(Profile profile){
         SQLiteDatabase myDB = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -142,7 +141,7 @@ public class DBHelper extends SQLiteOpenHelper {
         return profileList;
     }
 
-    //functions for inserting and retrieving temp data
+    //*********************functions for inserting temperature data*********************
     public boolean insertTemperature(String profileName, String measurementTime, String temperatureValue) {
         SQLiteDatabase myDB = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -165,7 +164,16 @@ public class DBHelper extends SQLiteOpenHelper {
         );
     }
 
-    //functions for inserting and retreiving medications
+    public Cursor getAllMeasurementsByProfile(String profile) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        return db.rawQuery(
+                "SELECT * FROM temperature WHERE profile_name = ? ORDER BY measurement_time ASC",
+                new String[]{profile}
+        );
+    }
+
+
+    //*********************functions for inserting and retrieving medications*********************
     public boolean insertMedication(String profile, String name, String dose, String timestamp) {
         SQLiteDatabase myDB = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
@@ -177,7 +185,7 @@ public class DBHelper extends SQLiteOpenHelper {
         return result != -1;
     }
 
-    public boolean insertNewMedication(String medicationName, int userID){
+    public boolean insertNewMedicationToList(String medicationName, int userID){
         SQLiteDatabase myDB = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put("medication_name", medicationName);
@@ -186,7 +194,7 @@ public class DBHelper extends SQLiteOpenHelper {
         return result != -1;
     }
 
-    public List<String> getUserAddedMedications(int userId) {
+    public List<String> getUserAddedMedicationsList(int userId) {
         List<String> newMeds = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = null;
@@ -216,20 +224,101 @@ public class DBHelper extends SQLiteOpenHelper {
         return cursor.getCount() > 0;
     }
 
-    public Cursor getMedicationHistoryByProfile(String profile) {
+
+    public List<String> getMedicationHistoryList(String profile, String startDate, String endDate) {
         SQLiteDatabase myDB = this.getReadableDatabase();
-        return myDB.rawQuery("SELECT * FROM medication WHERE profile_name = ? ORDER BY _id DESC", new String[]{profile});
+        List<String> medicationList = new ArrayList<>();
+        Cursor cursor = null;
+        if(startDate==null) {
+            Log.d("null_date", "date is null");
+            try {
+                cursor = myDB.rawQuery("SELECT * FROM medication WHERE profile_name = ? ORDER BY timestamp DESC", new String[]{profile});
+                if (cursor != null) {
+                    Log.d("profile_check", "profile: " + profile);
+                    if (cursor.moveToFirst()) {
+                        Log.d("check", "cursor moved to first a");
+                        do {
+                            @SuppressLint("Range") String medicationName = cursor.getString(cursor.getColumnIndex("name"));
+                            @SuppressLint("Range") String medicationDose = cursor.getString(cursor.getColumnIndex("dose"));
+                            @SuppressLint("Range") String time = cursor.getString(cursor.getColumnIndex("timestamp"));
+                            if (medicationDose != "") {
+                                medicationList.add("Date & Time: " + time + "\n" + medicationName + ", " + medicationDose + "mg");
+                            } else {
+                                medicationList.add("Date & Time: " + time + "\n" + medicationName);
+                            }
+                        } while (cursor.moveToNext());
+                    }
+                    cursor.close();
+                }
+            } catch (Exception e) {
+                Toast.makeText(context, "Get error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                System.out.println("get error: " + e.getMessage());
+            }
+        } else {
+            if(endDate == null){ // means it wasn't yesterday
+                Calendar calendar = Calendar.getInstance();
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
+                String now = simpleDateFormat.format(calendar.getTime());
+                Log.d("range", "between " + startDate + " & " + now);
+
+                try {
+                    cursor = myDB.rawQuery("SELECT _id, name, dose, timestamp FROM medication WHERE profile_name = ? AND timestamp BETWEEN ? AND ? ORDER BY timestamp DESC",
+                            new String[]{profile, startDate, now});
+                    if (cursor != null) {
+                        Log.d("profile_check","profile: " + profile);
+                        if (cursor.moveToFirst()) {
+                            Log.d("check","cursor moved to first b");
+                            do {
+                                @SuppressLint("Range") String medicationName = cursor.getString(cursor.getColumnIndex("name"));
+                                @SuppressLint("Range") String medicationDose = cursor.getString(cursor.getColumnIndex("dose"));
+                                @SuppressLint("Range") String time = cursor.getString(cursor.getColumnIndex("timestamp"));
+                                if (medicationDose != null && !medicationDose.isEmpty())  {
+                                    medicationList.add("Date & Time: " + time + "\n" + medicationName + ", " + medicationDose + "mg");
+                                } else {
+                                    medicationList.add("Date & Time: " + time + "\n" + medicationName);
+                                }
+                            } while (cursor.moveToNext());
+                        }
+                        cursor.close();
+                    }
+                } catch (Exception e) {
+                    Toast.makeText(context, "Get error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    System.out.println("get error: " + e.getMessage());
+                }
+            } else if (endDate != null){ // yesterdayyyy
+                Log.d("range", "between " + startDate + " & " + endDate);
+                try {
+                    cursor = myDB.rawQuery("SELECT _id, name, dose, timestamp FROM medication WHERE profile_name = ? AND timestamp BETWEEN ? AND ? ORDER BY timestamp DESC",
+                            new String[]{profile, startDate, endDate});
+                    if (cursor != null) {
+                        Log.d("profile_check","profile: " + profile);
+                        if (cursor.moveToFirst()) {
+                            Log.d("check","cursor moved to first b");
+                            do {
+                                @SuppressLint("Range") String medicationName = cursor.getString(cursor.getColumnIndex("name"));
+                                @SuppressLint("Range") String medicationDose = cursor.getString(cursor.getColumnIndex("dose"));
+                                @SuppressLint("Range") String time = cursor.getString(cursor.getColumnIndex("timestamp"));
+                                if (medicationDose != null && !medicationDose.isEmpty())  {
+                                    medicationList.add("Date & Time: " + time + "\n" + medicationName + ", " + medicationDose + "mg");
+                                } else {
+                                    medicationList.add(medicationName);
+                                }
+                            } while (cursor.moveToNext());
+                        }
+                        cursor.close();
+                    }
+                } catch (Exception e) {
+                    Toast.makeText(context, "Get error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    System.out.println("get error: " + e.getMessage());
+                }
+            }
+        }
+
+        return medicationList;
     }
 
-    public Cursor getAllMeasurementsByProfile(String profile) {
-        SQLiteDatabase db = this.getReadableDatabase();
-        return db.rawQuery(
-                "SELECT * FROM temperature WHERE profile_name = ? ORDER BY measurement_time ASC",
-                new String[]{profile}
-        );
-    }
 
-
+    // Deletes a medication record by its _id.
     public boolean deleteMedication(long id) {
         SQLiteDatabase myDB = this.getWritableDatabase();
         int result = myDB.delete("medication", "_id=?", new String[]{String.valueOf(id)});
@@ -237,7 +326,7 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
 
-    //functions for inserting and retrieving symptoms from checkboxes
+    //*********************functions for inserting and retrieving symptoms from checkboxes*********************
     public boolean insertSymptoms(String profile, String symptoms, String timestamp){
         SQLiteDatabase myDB = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -248,29 +337,83 @@ public class DBHelper extends SQLiteOpenHelper {
         return result != -1;
     }
 
-    public List<String> getSymptomHistory(String profile){
+    public List<String> getSymptomHistory(String profile, String startDate, String endDate){
         SQLiteDatabase myDB = this.getReadableDatabase();
         List<String> symptomsList = new ArrayList<>();
         Cursor cursor = null;
-        try {
-            cursor = myDB.rawQuery("SELECT symptom_type, timestamp FROM symptoms WHERE profile_name = ? ORDER BY user_id DESC", new String[]{profile});
-            if(cursor!=null){
-                if (cursor.moveToFirst()) {
-                    do{
-                        @SuppressLint("Range") String symptomsString = cursor.getString(cursor.getColumnIndex("symptom_type"));
-                        @SuppressLint("Range") String time = cursor.getString(cursor.getColumnIndex("timestamp"));
-                        symptomsList.add("Date & Time: " + time + "\nSymptoms: " + symptomsString);
-                    } while (cursor.moveToNext());
-                } cursor.close();
+        if(startDate==null) {
+            Log.d("null_date", "date is null");
+            try {
+                cursor = myDB.rawQuery("SELECT symptom_type, timestamp FROM symptoms WHERE profile_name = ? ORDER BY timestamp DESC", new String[]{profile});
+                if (cursor != null) {
+                    if (cursor.moveToFirst()) {
+                        //Log.d("check","cursor moved to first a");
+                        do {
+                            @SuppressLint("Range") String symptomsString = cursor.getString(cursor.getColumnIndex("symptom_type"));
+                            @SuppressLint("Range") String time = cursor.getString(cursor.getColumnIndex("timestamp"));
+                            symptomsList.add("Date & Time: " + time + "\nSymptoms: " + symptomsString);
+                        } while (cursor.moveToNext());
+                    }
+                    cursor.close();
+                }
+            } catch (Exception e) {
+                Toast.makeText(context, "Get error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                System.out.println("get error: " + e.getMessage());
             }
-        } catch (Exception e){
-            Toast.makeText(context, "Get error: " + e.getMessage(), Toast.LENGTH_LONG).show();
-            System.out.println("get error: " + e.getMessage());
+        } else { // date is not null -> select symptoms from desired range
+            if(endDate == null){ // not yesterday
+                Calendar calendar = Calendar.getInstance();
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
+                String now = simpleDateFormat.format(calendar.getTime());
+                Log.d("range", "between " + startDate + " & " + now);
+
+                try {
+                    cursor = myDB.rawQuery(
+                            "SELECT symptom_type, timestamp FROM symptoms WHERE profile_name = ? AND timestamp BETWEEN ? AND ? ORDER BY timestamp DESC",
+                            new String[]{profile, startDate, now});
+
+                    if (cursor != null) {
+                        if (cursor.moveToFirst()) {
+                            //Log.d("check","cursor moved to first b");
+                            do {
+                                @SuppressLint("Range") String symptomsString = cursor.getString(cursor.getColumnIndex("symptom_type"));
+                                @SuppressLint("Range") String time = cursor.getString(cursor.getColumnIndex("timestamp"));
+                                symptomsList.add("Date & Time: " + time + "\nSymptoms: " + symptomsString);
+                            } while (cursor.moveToNext());
+                        }
+                        cursor.close();
+                    }
+                } catch (Exception e) {
+                    Toast.makeText(context, "Get error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            } else if (endDate != null){ //its yesterYAY
+                Log.d("range", "between " + startDate + " & " + endDate);
+                try {
+                    cursor = myDB.rawQuery(
+                            "SELECT symptom_type, timestamp FROM symptoms WHERE profile_name = ? AND timestamp BETWEEN ? AND ? ORDER BY timestamp DESC",
+                            new String[]{profile, startDate, endDate});
+
+                    if (cursor != null) {
+                        if (cursor.moveToFirst()) {
+                            //Log.d("check","cursor moved to first b");
+                            do {
+                                @SuppressLint("Range") String symptomsString = cursor.getString(cursor.getColumnIndex("symptom_type"));
+                                @SuppressLint("Range") String time = cursor.getString(cursor.getColumnIndex("timestamp"));
+                                symptomsList.add("Date & Time: " + time + "\nSymptoms: " + symptomsString);
+                            } while (cursor.moveToNext());
+                        }
+                        cursor.close();
+                    }
+                } catch (Exception e) {
+                    Toast.makeText(context, "Get error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
         }
         return symptomsList;
     }
 
-    //functions for inserting and retrieving user-added symptoms
+    //*********************functions for inserting and retrieving user-added symptoms*********************
     public boolean insertNewSymptom(String symptom, int userID){
         SQLiteDatabase myDB = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -301,57 +444,16 @@ public class DBHelper extends SQLiteOpenHelper {
         }
         return symptoms;
     }
-    public List<String> getAllMedications(String profileName) {
-        List<String> data = new ArrayList<>();
-        SQLiteDatabase db = this.getReadableDatabase();
 
-        Cursor cursor = db.rawQuery(
-                "SELECT timestamp, name, dose FROM medication WHERE profile_name = ? ORDER BY timestamp ASC",
-                new String[]{profileName}
-        );
-
-        if (cursor.moveToFirst()) {
-            do {
-                String timestamp = cursor.getString(cursor.getColumnIndexOrThrow("timestamp"));
-                String name = cursor.getString(cursor.getColumnIndexOrThrow("name"));
-                String dose = cursor.getString(cursor.getColumnIndexOrThrow("dose"));
-                data.add(timestamp + "," + name + "," + dose);
-            } while (cursor.moveToNext());
-        }
-
-        cursor.close();
-        return data;
+    public boolean checkSymptom(String symptom){
+        SQLiteDatabase myDB = this.getReadableDatabase();
+        Cursor cursor = myDB.rawQuery("SELECT * FROM user_added_symptoms WHERE symptom = ? COLLATE NOCASE", new String[]{symptom});
+        Cursor cursor2 = myDB.rawQuery("SELECT * FROM symptoms WHERE symptom_type = ? COLLATE NOCASE", new String[]{symptom});
+        if(cursor.getCount() > 0) return true;
+        else if (cursor2.getCount() > 0) return true;
+        else return false;
     }
 
-    public List<String> getAllTemperatures(String profileName) {
-        List<String> data = new ArrayList<>();
-        SQLiteDatabase db = this.getReadableDatabase();
-
-        Cursor cursor = db.rawQuery(
-                "SELECT measurement_time, temperature_value FROM temperature WHERE profile_name = ? ORDER BY measurement_time ASC",
-                new String[]{profileName}
-        );
-
-        if (cursor.moveToFirst()) {
-            do {
-                String timestamp = cursor.getString(cursor.getColumnIndexOrThrow("measurement_time"));
-                String temp = cursor.getString(cursor.getColumnIndexOrThrow("temperature_value"));
-                data.add(timestamp + "," + temp);
-            } while (cursor.moveToNext());
-        }
-
-        cursor.close();
-        return data;
-    }
-
-public boolean checkSymptom(String symptom){
-    SQLiteDatabase myDB = this.getReadableDatabase();
-    Cursor cursor = myDB.rawQuery("SELECT * FROM user_added_symptoms WHERE symptom = ? COLLATE NOCASE", new String[]{symptom});
-    Cursor cursor2 = myDB.rawQuery("SELECT * FROM symptoms WHERE symptom_type = ? COLLATE NOCASE", new String[]{symptom});
-    if(cursor.getCount() > 0) return true;
-    else if (cursor2.getCount() > 0) return true;
-    else return false;
-}
 
 }
 

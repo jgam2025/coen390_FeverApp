@@ -42,7 +42,7 @@ public class MedicationActivity extends AppCompatActivity {
 
         medsSpinner = findViewById(R.id.medsSpinner);
         showMedicationsOnSpinner();
-
+        setUpToolbar();
         profilesSpinner = findViewById(R.id.profilesSpinner);
         showProfilesOnSpinner();
 
@@ -58,9 +58,9 @@ public class MedicationActivity extends AppCompatActivity {
             }
 
         });
-        setUpToolbar();
 
     }
+
     private void setUpToolbar() {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -70,8 +70,6 @@ public class MedicationActivity extends AppCompatActivity {
         }
         toolbar.setNavigationOnClickListener(v -> finish());
     }
-
-
     //validate input --> if validated, submit meds
     private boolean validateInput(String selectedProfile){
 
@@ -90,6 +88,7 @@ public class MedicationActivity extends AppCompatActivity {
         if (selectedProfile == "Select profile"){
             Toast.makeText(this,"Please select a profile", Toast.LENGTH_LONG).show();
         }
+
         return true;
     }
 
@@ -135,7 +134,7 @@ public class MedicationActivity extends AppCompatActivity {
         String currentUser = sharedPrefs.getString("current_user", null);
         List<String> profileList = dbHelper.getProfiles(currentUser);
         if (profileList.isEmpty()) {
-
+            //do nothing...
         }
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, profileList);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -161,7 +160,7 @@ public class MedicationActivity extends AppCompatActivity {
         SharedPreferences sharedPrefs = getSharedPreferences("user_prefs", MODE_PRIVATE);
         String currentUser = sharedPrefs.getString("current_user", null);
         int userID = dbHelper.getUserID(currentUser);
-        List<String> medicationList = dbHelper.getUserAddedMedications(userID);
+        List<String> medicationList = dbHelper.getUserAddedMedicationsList(userID);
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, medicationList);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);

@@ -72,9 +72,10 @@ public class ExportDataActivity extends AppCompatActivity {
                     1);
         }
         // Export all
-        btnExportAll.setOnClickListener(v -> exportAllTemperatureData());
+     //   btnExportAll.setOnClickListener(v -> exportAllTemperatureData());
 
     }
+    /*
     private void exportAllTemperatureData() {
         DBHelper dbHelper = new DBHelper(this);
         List<String> temps = dbHelper.getAllTemperatures(currentProfile);
@@ -86,6 +87,8 @@ public class ExportDataActivity extends AppCompatActivity {
         }
         writeExportToFile(currentProfile + "_export.csv", temps, meds, currentProfile);
     }
+
+     */
 
     private void writeExportToFile(String filename, List<String> temps, List<String> meds, String profileLabel) {
 
