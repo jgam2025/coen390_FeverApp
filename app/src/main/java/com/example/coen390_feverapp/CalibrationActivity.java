@@ -5,11 +5,13 @@ import android.annotation.SuppressLint;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -39,6 +41,7 @@ public class CalibrationActivity extends AppCompatActivity {
     private Button measureButton;
     private TextView measuredTempTextView;
     private TextView offsetTextView;
+    protected ImageView imageViewArrowScanPage2;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -53,13 +56,12 @@ public class CalibrationActivity extends AppCompatActivity {
         });
 
         // Initialize UI elements
-        instructionTextView = findViewById(R.id.textView_instruction);
+
         measureButton = findViewById(R.id.button_measure);
         measuredTempTextView = findViewById(R.id.textView_measuredTemp);
         offsetTextView = findViewById(R.id.textView_offset);
+        imageViewArrowScanPage2 = findViewById(R.id.imageViewArrowScanPage2);
 
-        // Set instruction text for the user
-        instructionTextView.setText("Place your sensor near boiling water (100°C) and press the button below to calibrate.");
 
         bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         if (bluetoothAdapter == null) {
@@ -74,6 +76,13 @@ public class CalibrationActivity extends AppCompatActivity {
 
         // Set up button to initiate calibration
         measureButton.setOnClickListener(v -> calibrateSensor());
+        imageViewArrowScanPage2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(CalibrationActivity.this, ExtraPageActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     private boolean connectToESP32() {

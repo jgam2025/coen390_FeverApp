@@ -229,32 +229,32 @@ public class HealthDataActivity extends AppCompatActivity {
         String currentProfile = sharedPrefs.getString("current_profile", "default");
 
         //insert some medications
-        dbHelper.insertMedication(currentProfile, "test med", "20","2025-04-06 12:00:00");
-        dbHelper.insertMedication(currentProfile, "test med", "20","2025-04-05 12:00:00");
-        dbHelper.insertMedication(currentProfile, "test med", "","2025-04-04 12:00:00");
-        dbHelper.insertMedication(currentProfile, "test med", "","2025-03-30 12:00:00");
-        dbHelper.insertMedication(currentProfile, "test med", "20","2025-03-24 12:00:00");
-        dbHelper.insertMedication(currentProfile, "test med", "20","2025-03-09 12:00:00");
-        dbHelper.insertMedication(currentProfile, "test med", "20","2025-02-20 12:00:00");
+        dbHelper.insertMedication(currentProfile, "Advil", "200","2025-04-06 12:00:00");
+        dbHelper.insertMedication(currentProfile, "Advil", "200","2025-04-05 12:00:00");
+        dbHelper.insertMedication(currentProfile, "Tylenol", "","2025-04-04 12:00:00");
+        dbHelper.insertMedication(currentProfile, "Advil", "","2025-03-30 12:00:00");
+        dbHelper.insertMedication(currentProfile, "Tylenol", "","2025-03-24 12:00:00");
+        dbHelper.insertMedication(currentProfile, "Neocitran", "","2025-03-09 12:00:00");
+        dbHelper.insertMedication(currentProfile, "Ibuprofen", "200","2025-02-20 12:00:00");
 
         //insert some symptoms
-        dbHelper.insertSymptoms(currentProfile, "test symptoms", "2025-04-06 12:00:00");
-        dbHelper.insertSymptoms(currentProfile, "test symptoms", "2025-04-05 12:00:00");
-        dbHelper.insertSymptoms(currentProfile, "test symptoms", "2025-04-04 12:00:00");
-        dbHelper.insertSymptoms(currentProfile, "test symptoms", "2025-03-30 12:00:00");
-        dbHelper.insertSymptoms(currentProfile, "test symptoms", "2025-03-24 12:00:00");
-        dbHelper.insertSymptoms(currentProfile, "test symptoms", "2025-03-09 12:00:00");
-        dbHelper.insertSymptoms(currentProfile, "test symptoms", "2025-02-20 12:00:00");
+        dbHelper.insertSymptoms(currentProfile, "Fatigue", "2025-04-06 12:00:00");
+        dbHelper.insertSymptoms(currentProfile, "Nausea, Headache, Fatigue", "2025-04-05 12:00:00");
+        dbHelper.insertSymptoms(currentProfile, "Nausea, Headache", "2025-04-04 12:00:00");
+        dbHelper.insertSymptoms(currentProfile, "Muscle Aches", "2025-03-30 12:00:00");
+        dbHelper.insertSymptoms(currentProfile, "Cough, Chills", "2025-03-24 12:00:00");
+        dbHelper.insertSymptoms(currentProfile, "Chills", "2025-03-09 12:00:00");
+        dbHelper.insertSymptoms(currentProfile, "Cough", "2025-02-20 12:00:00");
 
         //insert some temperatures
-        dbHelper.insertTemperature(currentProfile, "2025-04-07 15:00:00","30");
-        dbHelper.insertTemperature(currentProfile, "2025-04-07 12:00:00","25");
-        dbHelper.insertTemperature(currentProfile, "2025-04-07 10:00:00","30");
-        dbHelper.insertTemperature(currentProfile, "2025-04-07 07:00:00","25");
-        dbHelper.insertTemperature(currentProfile, "2025-04-02 15:00:00","30");
-        dbHelper.insertTemperature(currentProfile, "2025-04-01 12:00:00","25");
-        dbHelper.insertTemperature(currentProfile, "2025-03-29 15:00:00","30");
-        dbHelper.insertTemperature(currentProfile, "2025-03-20 12:00:00","25");
+        dbHelper.insertTemperature(currentProfile, "2025-04-07 15:00:00","37");
+        dbHelper.insertTemperature(currentProfile, "2025-04-07 12:00:00","40");
+        dbHelper.insertTemperature(currentProfile, "2025-04-07 10:00:00","38");
+        dbHelper.insertTemperature(currentProfile, "2025-04-07 07:00:00","37");
+        dbHelper.insertTemperature(currentProfile, "2025-04-02 15:00:00","37");
+        dbHelper.insertTemperature(currentProfile, "2025-04-01 12:00:00","38");
+        dbHelper.insertTemperature(currentProfile, "2025-03-29 15:00:00","37");
+        dbHelper.insertTemperature(currentProfile, "2025-03-20 12:00:00","37");
     }
 
 

@@ -1,61 +1,106 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="16dp">
 
+    <ImageView
+        android:id="@+id/imageViewArrowScanPage2"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:backgroundTint="#980314"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/baseline_arrow_back_ios_new_24"
+        android:tint="#980314" />
+
+    <TextView
+        android:id="@+id/textView_calibration"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="50dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="16dp"
+        android:text="Sensor Calibration"
+        android:textColor="#980314"
+        android:textSize="35dp"
+        android:textStyle="bold" />
+
     <TextView
         android:id="@+id/textView_instruction"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
         android:layout_marginBottom="16dp"
         android:text="1. Boil a pot of clean water until it reaches a steady, rolling boil."
+        android:textColor="@color/black"
         android:textSize="18sp" />
 
     <TextView
         android:id="@+id/textView_instruction2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
         android:layout_marginBottom="16dp"
         android:text="2. Position your sensor at least 5cm away from the water (do not immerse it) so it can measure the ambient heat."
+        android:textColor="@color/black"
         android:textSize="18sp" />
 
     <TextView
         android:id="@+id/textView_instruction3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
         android:layout_marginBottom="16dp"
         android:text="3. Wait about 30 to 60 seconds after boiling to allow the sensor, positioned at least 5cm away, to reach thermal equilibrium."
+        android:textColor="@color/black"
         android:textSize="18sp" />
 
     <TextView
         android:id="@+id/textView_instruction4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
         android:layout_marginBottom="16dp"
-        android:text="4. Click on the 'Calibrate Sensor' Button"
+        android:text="4. Click on the 'Calibrate Sensor' Button to take the measurement of your boiling water."
+        android:textColor="@color/black"
         android:textSize="18sp" />
+
     <Button
         android:id="@+id/button_measure"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Measure Boiling Water Temperature" />
+        android:layout_width="215dp"
+        android:layout_height="59dp"
+        android:layout_gravity="center"
+        android:backgroundTint="#980314"
+        android:text="Calibrate Sensor"
+        android:textSize="20dp"
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/textView_measuredTemp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
         android:layout_marginTop="16dp"
-        android:text="Measured Temp: "
-        android:textSize="16sp" />
+        android:text="Measured Temperature: "
+        android:textColor="@color/black"
+        android:textSize="18sp" />
 
     <TextView
         android:id="@+id/textView_offset"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
         android:layout_marginTop="16dp"
         android:text="Calibration Offset: "
-        android:textSize="16sp" />
+        android:textColor="@color/black"
+        android:textSize="18sp" />
+
+
 </LinearLayout>
+

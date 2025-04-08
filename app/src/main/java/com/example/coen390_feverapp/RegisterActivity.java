@@ -34,7 +34,7 @@ public class RegisterActivity extends AppCompatActivity {
         cbShowPassword = findViewById(R.id.cbShowPassword);
         btnRegister=findViewById(R.id.button1);
         dbHelper= new DBHelper(this);
-        imageViewArrow=findViewById(R.id.imageViewArrowScanPage);
+        imageViewArrow=findViewById(R.id.imageViewArrowScanPage2);
 
 
         imageViewArrow.setOnClickListener(new View.OnClickListener() {
