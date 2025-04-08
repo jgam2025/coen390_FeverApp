@@ -243,7 +243,7 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <Spinner
-        android:id="@+id/spinner2"
+        android:id="@+id/selectProfileSpinner"
         android:layout_width="222dp"
         android:layout_height="27dp"
         android:layout_marginTop="7dp"

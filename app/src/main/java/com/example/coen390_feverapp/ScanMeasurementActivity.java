@@ -35,6 +35,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
 import android.widget.Spinner;
@@ -63,7 +64,7 @@ public class ScanMeasurementActivity extends AppCompatActivity {
     protected volatile boolean measurementCanceled = false;
     // Calibration offset loaded from SharedPreferences (default = 0.0)
     private double calibrationOffset = 0.0;
-    private Spinner scaleSpinner;
+    private Spinner scaleSpinner, selectProfileSpinner;
     private String temperatureScaleText;
 
 
@@ -120,6 +121,9 @@ public class ScanMeasurementActivity extends AppCompatActivity {
         saveButton.setOnClickListener(v -> saveMeasurement());
         closeInstructionDialogButton.setOnClickListener(v -> instructionDialogLayout.setVisibility(android.view.View.GONE));
         closeAlertDialogButton.setOnClickListener(v -> feverAlertDialogLayout.setVisibility(android.view.View.GONE));
+
+        selectProfileSpinner = findViewById(R.id.selectProfileSpinner);
+        showProfilesOnSpinner();
 
         scaleSpinner = findViewById(R.id.scaleSpinner);
         String[] scales = {"°C", "°F"};
@@ -301,21 +305,24 @@ public class ScanMeasurementActivity extends AppCompatActivity {
         SharedPreferences sharedPrefs = getSharedPreferences("user_prefs", MODE_PRIVATE);
         String currentProfile = sharedPrefs.getString("current_profile", "default");
 
-        // Save the measurement to the temperature table using the profile name
-        DBHelper dbHelper = new DBHelper(this);
-        boolean inserted = dbHelper.insertTemperature(currentProfile, measurementTime, measurementValue);
+        if(currentProfile != "Select profile") {
+            // Save the measurement to the temperature table using the profile name
+            DBHelper dbHelper = new DBHelper(this);
+            boolean inserted = dbHelper.insertTemperature(currentProfile, measurementTime, measurementValue);
 
-        if (inserted) {
-            Toast.makeText(ScanMeasurementActivity.this, "Temperature has been saved", Toast.LENGTH_SHORT).show();
-        } else {
-            Toast.makeText(ScanMeasurementActivity.this, "Error saving temperature", Toast.LENGTH_SHORT).show();
+            if (inserted) {
+                Toast.makeText(ScanMeasurementActivity.this, "Temperature has been saved", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(ScanMeasurementActivity.this, "Error saving temperature", Toast.LENGTH_SHORT).show();
+            }
+        } else if (currentProfile == "Select profile"){
+            Toast.makeText(ScanMeasurementActivity.this,"Please select a profile", Toast.LENGTH_LONG).show();
         }
-
-        // Close Bluetooth connection and redirect to TemperatureMeasurementPage
-        closeBluetoothConnection();
-        Intent intent = new Intent(ScanMeasurementActivity.this, BaseActivity.class);
-        startActivity(intent);
-        finish();
+            // Close Bluetooth connection and redirect to TemperatureMeasurementPage
+            closeBluetoothConnection();
+            Intent intent = new Intent(ScanMeasurementActivity.this, BaseActivity.class);
+            startActivity(intent);
+            finish();
     }
 
     @SuppressLint("ResourceAsColor")
@@ -397,6 +404,30 @@ public class ScanMeasurementActivity extends AppCompatActivity {
         }
         socket = null;
         inputStream = null;
+    }
+
+    private void showProfilesOnSpinner(){
+        DBHelper dbHelper = new DBHelper(this);
+        SharedPreferences sharedPrefs = getSharedPreferences("user_prefs", MODE_PRIVATE);
+        String currentUser = sharedPrefs.getString("current_user",null);
+        List<String> profileList = dbHelper.getProfiles(currentUser);
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,android.R.layout.simple_spinner_item,profileList);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        selectProfileSpinner.setAdapter(adapter);
+
+        selectProfileSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String selectedProfile = (String) parent.getItemAtPosition(position);
+                SharedPreferences.Editor editor = sharedPrefs.edit();
+                editor.putString("current_profile", selectedProfile);
+                editor.apply();
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) { }
+        });
+
     }
 
 }
