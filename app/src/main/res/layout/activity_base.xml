@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="24dp"
+    android:background="#FFFFFF"
     tools:context=".BaseActivity">
 
     <TextView
@@ -20,80 +23,79 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:text="Welcome placeholder" />
 
-    <TextView
-        android:id="@+id/qTextView"
-
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="116dp"
-        android:layout_marginBottom="60dp"
-        android:text="What would you like to do?"
-        android:textSize="30dp"
-        app:layout_constraintBottom_toTopOf="@+id/tempButton"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/homeTextView" />
-
     <View
         android:id="@+id/divider"
-        android:layout_width="420dp"
+        android:layout_width="0dp"
         android:layout_height="1dp"
-        android:layout_marginTop="56dp"
-        android:background="?android:attr/listDivider"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.555"
+        android:background="#CCCCCC"
+        android:layout_marginTop="12dp"
+        app:layout_constraintTop_toBottomOf="@id/homeTextView"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/homeTextView" />
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <TextView
+        android:id="@+id/qTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="What would you like to do?"
+        android:textSize="20sp"
+        android:textColor="#444444"
+        app:layout_constraintTop_toBottomOf="@id/divider"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="32dp" />
 
     <Button
         android:id="@+id/tempButton"
-        android:layout_width="300dp"
-        android:layout_height="75dp"
-        android:layout_marginTop="60dp"
-        android:backgroundTint="@color/red_background"
+        android:layout_width="0dp"
+        android:layout_height="52dp"
         android:text="Take your temperature"
-        android:textSize="24sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.495"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:textColor="#FFFFFF"
+        android:backgroundTint="#980314"
+        android:layout_marginTop="24dp"
+        app:layout_constraintTop_toBottomOf="@+id/qTextView"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/qTextView" />
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <Button
         android:id="@+id/symptomButton"
-        android:layout_width="300dp"
-        android:layout_height="75dp"
-        android:layout_marginTop="36dp"
-        android:backgroundTint="@color/red_background"
+        android:layout_width="0dp"
+        android:layout_height="52dp"
         android:text="Log your symptoms"
-        android:textSize="24sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.522"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:textColor="#FFFFFF"
+        android:backgroundTint="#980314"
+        android:layout_marginTop="16dp"
+        app:layout_constraintTop_toBottomOf="@+id/tempButton"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tempButton" />
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <Button
         android:id="@+id/medButton"
-        android:layout_width="300dp"
-        android:layout_height="75dp"
-        android:layout_marginTop="36dp"
-        android:backgroundTint="@color/red_background"
+        android:layout_width="0dp"
+        android:layout_height="52dp"
         android:text="Log your medication"
-        android:textSize="24sp"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:textColor="#FFFFFF"
+        android:backgroundTint="#980314"
+        android:layout_marginTop="16dp"
+        app:layout_constraintTop_toBottomOf="@+id/symptomButton"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/symptomButton" />
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
-        android:layout_width="409dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/red_background"
-        android:minHeight="?attr/actionBarSize"
-        android:textAlignment="center"
-        android:theme="?attr/actionBarTheme"
+        android:background="#980314"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:titleTextColor="@android:color/white"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:titleTextColor="@color/white" />
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
