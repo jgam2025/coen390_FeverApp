@@ -5,26 +5,24 @@
     android:id="@+id/checkBoxLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="@color/fever_app_background"
     tools:context=".ScanMeasurementActivity">
 
 
     <ImageView
-        android:id="@+id/imageViewArrowScanPage2"
+        android:id="@+id/imageViewArrowScanPage"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_marginStart="23dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="355dp"
         android:layout_marginBottom="675dp"
-        android:backgroundTint="#980314"
+        android:backgroundTint="#ED7F7F"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/baseline_arrow_back_ios_new_24"
-        android:tint="#980314" />
-
+        app:srcCompat="@drawable/baseline_arrow_back_ios_new_24" />
 
     <Spinner
         android:id="@+id/scaleSpinner"
@@ -32,9 +30,9 @@
         android:layout_height="55dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
-        android:background="#980314"
-        android:backgroundTint="#980314"
-        android:popupBackground="#980314"
+        android:background="@color/BUTTON_COLOR"
+        android:backgroundTint="@color/BUTTON_COLOR"
+        android:popupBackground="@color/BUTTON_COLOR"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -44,7 +42,7 @@
         android:layout_width="wrap_content"
         android:layout_height="56dp"
         android:layout_marginTop="100dp"
-        android:background="#FFFFFF"
+        android:background="@drawable/temperature_layout_bg"
         android:gravity="center"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
@@ -58,7 +56,7 @@
             android:gravity="center"
             android:includeFontPadding="false"
             android:text=" Press Start "
-            android:textColor="#980314"
+            android:textColor="@color/red_background"
             android:textSize="48sp"
             android:textStyle="bold" />
     </LinearLayout>
@@ -72,8 +70,7 @@
         android:indeterminate="false"
         android:max="100"
         android:progress="50"
-        android:visibility="gone"
-        android:progressTint="#980314"
+        android:progressTint="#ED7F7F"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -94,7 +91,7 @@
             android:id="@+id/buttonStart"
             android:layout_width="110dp"
             android:layout_height="110dp"
-            android:backgroundTint="#980314"
+            android:backgroundTint="#ED7F7F"
             android:gravity="center"
             android:includeFontPadding="false"
             android:insetTop="0dp"
@@ -119,7 +116,7 @@
                 android:layout_width="110dp"
                 android:layout_height="110dp"
                 android:layout_weight="1"
-                android:backgroundTint="#980314"
+                android:backgroundTint="#ED7F7F"
                 android:includeFontPadding="false"
                 android:insetTop="0dp"
                 android:insetBottom="0dp"
@@ -132,7 +129,7 @@
                 android:layout_height="110dp"
                 android:layout_marginStart="24dp"
                 android:layout_weight="1"
-                android:backgroundTint="#980314"
+                android:backgroundTint="#ED7F7F"
                 android:includeFontPadding="false"
                 android:insetTop="0dp"
                 android:insetBottom="0dp"
@@ -159,7 +156,7 @@
             android:layout_height="match_parent"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
-            android:background="#980314"
+            android:background="@color/BUTTON_COLOR"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
@@ -184,7 +181,7 @@
             android:layout_height="wrap_content"
             android:clickable="true"
             android:contentDescription="Close Dialog"
-            app:backgroundTint="#980314"
+            app:backgroundTint="@color/BUTTON_COLOR"
             app:borderWidth="24dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -211,7 +208,7 @@
             android:layout_height="match_parent"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
-            android:background="#980314"
+            android:background="@color/BUTTON_COLOR"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
@@ -235,7 +232,7 @@
             android:layout_height="wrap_content"
             android:clickable="true"
             android:contentDescription="Close Dialog"
-            app:backgroundTint="#980314"
+            app:backgroundTint="@color/BUTTON_COLOR"
             app:borderWidth="24dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"

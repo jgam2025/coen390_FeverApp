@@ -103,7 +103,7 @@ public class ScanMeasurementActivity extends AppCompatActivity {
         closeInstructionDialogButton = findViewById(R.id.closeScanDialogButton);
         feverAlertDialogLayout = findViewById(R.id.feverAlertDialog);
         closeAlertDialogButton = findViewById(R.id.closeFeverAlertDialogButton);
-        //imageViewArrowScanPage = findViewById(R.id.imageViewArrowScanPage);
+        imageViewArrowScanPage = findViewById(R.id.imageViewArrowScanPage);
 
 
         measurementProgressBar.setProgress(0);
