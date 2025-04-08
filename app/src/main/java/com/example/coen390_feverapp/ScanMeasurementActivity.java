@@ -1,6 +1,7 @@
 package com.example.coen390_feverapp;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
@@ -19,6 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
@@ -41,6 +43,8 @@ import android.widget.AdapterView;
 
 
 public class ScanMeasurementActivity extends AppCompatActivity {
+
+    private static final boolean TEST_MODE = true;
 
     private static final String DEVICE_NAME = "ESP32";
     private static final UUID SERIAL_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
@@ -150,6 +154,10 @@ public class ScanMeasurementActivity extends AppCompatActivity {
 
     // Attempt to connect to the ESP32 on a background thread
     private boolean connectToESP32() {
+        if (TEST_MODE) {
+            runOnUiThread(() -> Toast.makeText(this, "In Test Mode, connection simulated", Toast.LENGTH_SHORT).show());
+            return true;
+        }
         BluetoothDevice device = null;
         // Check for the BLUETOOTH_CONNECT permission
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED) {
@@ -307,9 +315,55 @@ public class ScanMeasurementActivity extends AppCompatActivity {
         finish();
     }
 
+    @SuppressLint("ResourceAsColor")
+    private void displayFeverAlert(String temp){
+        // Parse value + unit
+        String[] parts = temp.split(" ");
+        double value = Double.parseDouble(parts[0]);
+        boolean isF = temp.contains("°F");
 
+        // Convert to °C if needed
+        double celsius = isF ? (value - 32) * 5/9 : value;
+
+        // Determine category + colour
+        String category = null;
+        int colorRes;
+        if (celsius < 37.5) {
+            category = " No Fever ";
+            colorRes = android.R.color.transparent;
+        } else if (celsius < 38.0) {
+            category = " Mild Fever ";
+            colorRes = R.color.mild_fever_bg;
+        } else if (celsius < 39.0) {
+            category = " Fever ";
+            colorRes = R.color.fever_bg;
+        } else if (celsius >= 39){
+            category = " High Fever ";
+            colorRes = R.color.high_fever_bg;
+        } else {
+            colorRes = R.color.white;
+        }
+        if(category != null && colorRes != R.color.white) {
+            //alert dialog
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Fever Alert!");
+            builder.setMessage("You have: " + category);
+            builder.setPositiveButton("OK", null);
+
+            AlertDialog dialog = builder.create();
+            dialog.setOnShowListener(dialog1 -> {
+                dialog.getWindow().setBackgroundDrawableResource(colorRes);
+            });
+        }
+
+    }
 
     private String readTemperature() {
+        if (TEST_MODE) {
+
+            double test = 36.0 + Math.random() * 3.5;
+            return String.format(Locale.getDefault(), "%.2f", test);
+        }
         if (socket == null || !socket.isConnected()) {
             return null;
         }
