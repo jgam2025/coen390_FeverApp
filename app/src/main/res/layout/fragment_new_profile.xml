@@ -26,7 +26,7 @@
         android:id="@+id/createTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="70dp"
+        android:layout_marginTop="90dp"
         android:text="Create Profile"
         android:textColor="#980314"
         android:textSize="35sp"
