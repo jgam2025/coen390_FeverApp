@@ -43,9 +43,6 @@ public class GraphFragment extends DialogFragment {
 
 
 
-
-
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -72,10 +69,13 @@ public class GraphFragment extends DialogFragment {
                 .getString("current_profile", "default");
         Log.d("GRAPH_DEBUG", "Current Profile: " + currentProfile);
 
+        String startDate = requireActivity().getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
+                .getString("start_date", "default");
+        String endDate = requireActivity().getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
+                .getString("end_date", "default");
 
-        // Retrieve all temperature data
-        Cursor cursor = dbHelper.getAllMeasurementsByProfile(currentProfile);
-// Get all data
+        // Retrieve all temperature data - ordered by range
+        Cursor cursor = dbHelper.getAllMeasurementsByProfile(currentProfile, startDate, endDate);
 
         if (cursor == null) {
             Log.d("GRAPH_DEBUG", "Cursor is null!");
@@ -98,24 +98,27 @@ public class GraphFragment extends DialogFragment {
                 dateTimeLabels.add(measurementTime);
                 index++;
             } while (cursor.moveToNext());
-            cursor.close();
+           // cursor.close();
         }
 
 
-        /*if (cursor != null && cursor.moveToFirst()) {
+        if (cursor != null && cursor.moveToFirst()) {
             do {
                 @SuppressLint("Range") float temperature = cursor.getFloat(cursor.getColumnIndex("temperature_value"));
                 @SuppressLint("Range") String measurementTime = cursor.getString(cursor.getColumnIndex("measurement_time"));
 
-                Log.d("GRAPH_DEBUG", "Reading: " + measurementTime + " - " + temperature); // 👈 DEBUG
+                Log.d("GRAPH_DEBUG", "Reading: " + measurementTime + " - " + temperature);
 
                 // Store temperature values and corresponding date-time labels
                 entries.add(new Entry(index, temperature));
                 dateTimeLabels.add(measurementTime); // Full date-time for X-axis labels
                 index++;
             } while (cursor.moveToNext());
-            cursor.close();
-        }*/
+           // cursor.close();
+        }
+
+        cursor.close();
+
         TextView avgText = view.findViewById(R.id.averageTemperatureText);
         displayAverageTemperature(entries, avgText);
         if (!entries.isEmpty()) {
