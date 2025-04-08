@@ -48,6 +48,7 @@ public class ScanMeasurementActivity extends AppCompatActivity {
     private InputStream inputStream;
 
     protected TextView temperatureTextView;
+    protected TextView temperatureTextView2;
     protected ProgressBar measurementProgressBar;
     protected LinearLayout cancelAndSaveButtonLayout;
     protected Button startButton, cancelButton, saveButton;
@@ -94,6 +95,7 @@ public class ScanMeasurementActivity extends AppCompatActivity {
 
     private void setupUI() {
         temperatureTextView = findViewById(R.id.textViewTemperature);
+        temperatureTextView2 = findViewById(R.id.textViewTemperature2);
         startButton = findViewById(R.id.buttonStart);
         measurementProgressBar = findViewById(R.id.measurementProgressBar);
         cancelAndSaveButtonLayout = findViewById(R.id.linearLayoutCancelAndSave);
@@ -228,7 +230,7 @@ public class ScanMeasurementActivity extends AppCompatActivity {
                         display = finalTemp + " " + temperatureScaleText;
                     }
 
-                    temperatureTextView.setText(" " + display);
+                    temperatureTextView2.setText(" " + display);
                     measurementProgressBar.setProgress(progress);
                     saveButton.setText(progress + "%");
                 });
@@ -258,7 +260,7 @@ public class ScanMeasurementActivity extends AppCompatActivity {
     }
 
     private void saveMeasurement() {
-        String measurementValue = temperatureTextView.getText().toString().trim();
+        String measurementValue = temperatureTextView2.getText().toString().trim();
 
         String measurementTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date());
 
