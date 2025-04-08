@@ -45,7 +45,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
-        android:text="Choose from your frequently used medication:"
+        android:text="Choose medication:"
         android:textColor="#980314"
         android:textSize="18sp"
         android:fontFamily="sans-serif-medium"
