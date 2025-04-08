@@ -10,6 +10,19 @@ import android.content.pm.PackageManager;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import android.os.Environment;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.annotation.SuppressLint;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
+import java.util.Locale;
+import java.text.SimpleDateFormat;
+import android.content.Context;
+import android.app.DatePickerDialog;
+
+
+
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -24,6 +37,12 @@ public class ExportDataActivity extends AppCompatActivity {
     EditText etFirstName, etLastName, etBirthDate, etHealthCardNumber, etAddress, etDoctorName;
     SharedPreferences sharedPreferences;
     String currentProfile;
+    EditText etStartDate, etEndDate;
+
+
+    private final Context context = this;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +63,9 @@ public class ExportDataActivity extends AppCompatActivity {
         etDoctorName = findViewById(R.id.etDoctorName);
         btnSaveUserInfo = findViewById(R.id.btnSaveUserInfo);
         btnExportAll = findViewById(R.id.btnExportAll);
+        etStartDate = findViewById(R.id.etStartDate);
+        etEndDate = findViewById(R.id.etEndDate);
+
 
 
         etFirstName.setText(sharedPreferences.getString("first_name", ""));
@@ -52,6 +74,8 @@ public class ExportDataActivity extends AppCompatActivity {
         etHealthCardNumber.setText(sharedPreferences.getString("health_card", ""));
         etAddress.setText(sharedPreferences.getString("address", ""));
         etDoctorName.setText(sharedPreferences.getString("doctor", ""));
+        etStartDate.setOnClickListener(v -> showDatePickerDialog(etStartDate));
+        etEndDate.setOnClickListener(v -> showDatePickerDialog(etEndDate));
 
         //save infos
         btnSaveUserInfo.setOnClickListener(v -> {
@@ -71,26 +95,46 @@ public class ExportDataActivity extends AppCompatActivity {
                     new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
                     1);
         }
+        btnExportAll.setOnClickListener(v -> exportAllDataWithDateRange());
+
         // Export all
      //   btnExportAll.setOnClickListener(v -> exportAllTemperatureData());
 
     }
-    /*
-    private void exportAllTemperatureData() {
+    public List<String> getTemperatureHistoryList(String profile, String startDate, String endDate) {
         DBHelper dbHelper = new DBHelper(this);
-        List<String> temps = dbHelper.getAllTemperatures(currentProfile);
-        List<String> meds = dbHelper.getAllMedications(currentProfile);
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
 
-        if (temps.isEmpty() && meds.isEmpty()) {
-            Toast.makeText(this, "No data to export", Toast.LENGTH_SHORT).show();
-            return;
+        List<String> temps = new ArrayList<>();
+        Cursor cursor = null;
+
+        try {
+            if (endDate == null) {
+                endDate = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault()).format(Calendar.getInstance().getTime());
+            }
+
+            cursor = db.rawQuery("SELECT measurement_time, temperature_value FROM temperature WHERE profile_name = ? AND measurement_time BETWEEN ? AND ? ORDER BY measurement_time ASC",
+                    new String[]{profile, startDate, endDate});
+
+            if (cursor.moveToFirst()) {
+                do {
+                    @SuppressLint("Range") String time = cursor.getString(cursor.getColumnIndex("measurement_time"));
+                    @SuppressLint("Range") String temp = cursor.getString(cursor.getColumnIndex("temperature_value"));
+                    temps.add(time + "," + temp);
+                } while (cursor.moveToNext());
+            }
+
+            cursor.close();
+        } catch (Exception e) {
+            Toast.makeText(context, "Temp error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
         }
-        writeExportToFile(currentProfile + "_export.csv", temps, meds, currentProfile);
+
+        return temps;
     }
 
-     */
 
-    private void writeExportToFile(String filename, List<String> temps, List<String> meds, String profileLabel) {
+    private void writeExportToFile(String filename, List<String> temps, List<String> meds, List<String> symptoms, String profileLabel)
+    {
 
         String firstName = sharedPreferences.getString("first_name", "");
         String lastName = sharedPreferences.getString("last_name", "");
@@ -118,6 +162,12 @@ public class ExportDataActivity extends AppCompatActivity {
         for (String med : meds) {
             data.append(med).append("\n");
         }
+        data.append("\n---- Symptom Records ----\n");
+        data.append("Date & Time, Symptoms\n");
+        for (String symptom : symptoms) {
+            data.append(symptom).append("\n");
+        }
+
 
         try {
             File dir = android.os.Environment.getExternalStoragePublicDirectory(android.os.Environment.DIRECTORY_DOWNLOADS);
@@ -133,5 +183,54 @@ public class ExportDataActivity extends AppCompatActivity {
             Toast.makeText(this, "Export failed: " + e.getMessage(), Toast.LENGTH_LONG).show();
         }
     }
+
+    private void exportAllDataWithDateRange() {
+        String startDate = etStartDate.getText().toString().trim();
+        String endDate = etEndDate.getText().toString().trim();
+
+        if (startDate.isEmpty()) {
+            Toast.makeText(this, "Please select a start date", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (endDate.isEmpty()) {
+            endDate = null;
+        } else {
+            endDate += " 23:59";
+        }
+
+        DBHelper dbHelper = new DBHelper(this);
+        List<String> temps = dbHelper.getTemperatureHistoryList(currentProfile, startDate, endDate);
+        List<String> meds = dbHelper.getMedicationHistoryList(currentProfile, startDate, endDate);
+        List<String> symptoms = dbHelper.getSymptomHistory(currentProfile, startDate, endDate);
+
+
+        if (temps.isEmpty() && meds.isEmpty()) {
+            Toast.makeText(this, "No data in that range", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        String filename = currentProfile + "_export_" + startDate + ".csv";
+        writeExportToFile(filename, temps, meds, symptoms, currentProfile);
+    }
+
+    private void showDatePickerDialog(EditText target) {
+        Calendar calendar = Calendar.getInstance();
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH);
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+
+        DatePickerDialog datePickerDialog = new DatePickerDialog(
+                this,
+                (view, selectedYear, selectedMonth, selectedDay) -> {
+                    String dateFormatted = String.format(Locale.getDefault(), "%04d-%02d-%02d", selectedYear, selectedMonth + 1, selectedDay);
+                    target.setText(dateFormatted);
+                },
+                year, month, day
+        );
+
+        datePickerDialog.show();
+    }
+
 
 }

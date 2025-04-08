@@ -107,7 +107,6 @@ public class DBHelper extends SQLiteOpenHelper {
         return cursor.getCount() > 0;
     }
 
-    //*********************functions for inserting and retrieving profiles*********************
     public boolean insertProfile(Profile profile){
         SQLiteDatabase myDB = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -450,7 +449,7 @@ public class DBHelper extends SQLiteOpenHelper {
         return symptomsList;
     }
 
-    //*********************functions for inserting and retrieving user-added symptoms*********************
+
     public boolean insertNewSymptom(String symptom, int userID){
         SQLiteDatabase myDB = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -490,6 +489,39 @@ public class DBHelper extends SQLiteOpenHelper {
         else if (cursor2.getCount() > 0) return true;
         else return false;
     }
+    public List<String> getTemperatureHistoryList(String profile, String startDate, String endDate) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        List<String> temps = new ArrayList<>();
+        Cursor cursor = null;
+
+        try {
+            if (endDate == null) {
+                endDate = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault())
+                        .format(Calendar.getInstance().getTime());
+            }
+
+            cursor = db.rawQuery(
+                    "SELECT measurement_time, temperature_value FROM temperature " +
+                            "WHERE profile_name = ? AND measurement_time BETWEEN ? AND ? ORDER BY measurement_time ASC",
+                    new String[]{profile, startDate, endDate});
+
+            if (cursor != null && cursor.moveToFirst()) {
+                do {
+                    @SuppressLint("Range") String time = cursor.getString(cursor.getColumnIndex("measurement_time"));
+                    @SuppressLint("Range") String temp = cursor.getString(cursor.getColumnIndex("temperature_value"));
+                    temps.add(time + "," + temp);
+                } while (cursor.moveToNext());
+
+                cursor.close();
+            }
+
+        } catch (Exception e) {
+            Toast.makeText(context, "Temperature fetch error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+
+        return temps;
+    }
+
 
 
 }

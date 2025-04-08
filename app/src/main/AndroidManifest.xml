@@ -39,11 +39,11 @@
             android:label="false" />
         <activity
             android:name=".BaseActivity"
-            android:label="Home"
+            android:label="Home Page"
             android:exported="false" />
         <activity
             android:name=".PhoneNumberActivity"
-            android:label="Ressources"
+            android:label="Resources"
             android:exported="false" />
         <activity
             android:name=".MedicationActivity"

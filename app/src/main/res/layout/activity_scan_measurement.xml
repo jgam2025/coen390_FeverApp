@@ -17,7 +17,7 @@
         android:gravity="center"
         android:includeFontPadding="false"
         android:textColor="#980314"
-        android:textSize="100sp"
+        android:textSize="80sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
         app:layout_constraintEnd_toEndOf="parent"
@@ -37,31 +37,15 @@
         app:layout_constraintStart_toStartOf="parent"
         app:titleTextColor="@color/white" />
 
-    <ImageView
-        android:id="@+id/imageViewArrowScanPage"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_marginStart="12dp"
-        android:layout_marginTop="12dp"
-        android:layout_marginEnd="355dp"
-        android:layout_marginBottom="675dp"
-        android:backgroundTint="#980314"
-        android:tint="#980314"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/baseline_arrow_back_ios_new_24" />
-
     <Spinner
         android:id="@+id/scaleSpinner"
-        android:layout_width="wrap_content"
-        android:layout_height="55dp"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
-        android:background="@color/BUTTON_COLOR"
+        android:background="@color/white"
         android:backgroundTint="@color/white"
-        android:popupBackground="@color/BUTTON_COLOR"
+        android:popupBackground="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -112,7 +96,7 @@
         android:id="@+id/linearLayout2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="64dp"
+        android:layout_marginBottom="100dp"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -122,7 +106,6 @@
             android:id="@+id/buttonStart"
             android:layout_width="110dp"
             android:layout_height="110dp"
-            android:layout_marginBottom="40dp"
             android:backgroundTint="#980314"
             android:gravity="center"
             android:includeFontPadding="false"
