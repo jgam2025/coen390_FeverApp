@@ -3,80 +3,111 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="24dp"
-    android:background="@color/fever_app_background">
+    android:background="#FFFFFF">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:gravity="center_horizontal">
 
         <EditText
             android:id="@+id/etFirstName"
-            android:layout_width="373dp"
-            android:layout_height="66dp"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_marginBottom="12dp"
             android:hint="First Name"
-            android:background="#FFFFFF" />
-
-
+            android:background="#F8D9DC"
+            android:textColor="#980314"
+            android:textColorHint="#980314"
+            android:padding="16dp"
+            android:textSize="16sp" />
 
         <EditText
             android:id="@+id/etLastName"
-            android:layout_width="374dp"
-            android:layout_height="69dp"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_marginBottom="12dp"
             android:hint="Last Name"
-            android:background="#FFFFFF"/>
+            android:background="#F8D9DC"
+            android:textColor="#980314"
+            android:textColorHint="#980314"
+            android:padding="16dp"
+            android:textSize="16sp" />
 
         <EditText
             android:id="@+id/etBirthDate"
             android:layout_width="match_parent"
-            android:layout_height="63dp"
+            android:layout_height="56dp"
+            android:layout_marginBottom="12dp"
             android:hint="Date of Birth (YYYY-MM-DD)"
-            android:background="#FFFFFF"/>
+            android:background="#F8D9DC"
+            android:textColor="#980314"
+            android:textColorHint="#980314"
+            android:padding="16dp"
+            android:textSize="16sp" />
 
         <EditText
             android:id="@+id/etHealthCardNumber"
-            android:layout_width="375dp"
-            android:layout_height="62dp"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_marginBottom="12dp"
             android:hint="Health Insurance Number"
-            android:background="#FFFFFF"/>
+            android:background="#F8D9DC"
+            android:textColor="#980314"
+            android:textColorHint="#980314"
+            android:padding="16dp"
+            android:textSize="16sp" />
 
         <EditText
             android:id="@+id/etAddress"
-            android:layout_width="379dp"
-            android:layout_height="61dp"
-            android:background="#FFFFFF"
-            android:hint="Address" />
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_marginBottom="12dp"
+            android:hint="Address"
+            android:background="#F8D9DC"
+            android:textColor="#980314"
+            android:textColorHint="#980314"
+            android:padding="16dp"
+            android:textSize="16sp" />
 
         <EditText
             android:id="@+id/etDoctorName"
-            android:layout_width="376dp"
-            android:layout_height="55dp"
-            android:background="#FFFFFF"
-            android:hint="Family Doctor Name" />
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_marginBottom="24dp"
+            android:hint="Family Doctor Name"
+            android:background="#F8D9DC"
+            android:textColor="#980314"
+            android:textColorHint="#980314"
+            android:padding="16dp"
+            android:textSize="16sp" />
 
         <Button
             android:id="@+id/btnSaveUserInfo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
             android:text="Save Info"
-            android:layout_marginTop="16dp"
-            android:backgroundTint="#D2665A"
-            android:textColor="#FFFFFF" />
+            android:textColor="#980314"
+            android:backgroundTint="#FFFFFF"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="16dp" />
 
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_marginVertical="20dp"
-            android:background="#BBBBBB" />
+            android:layout_marginBottom="16dp"
+            android:background="#DDDDDD" />
 
         <Button
             android:id="@+id/btnExportAll"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Export Datas"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:text="Export Data"
             android:textColor="#FFFFFF"
-            android:backgroundTint="#ED7F7F" />
-
-
+            android:backgroundTint="#980314"
+            android:textSize="16sp"
+            android:textStyle="bold" />
     </LinearLayout>
 </ScrollView>
