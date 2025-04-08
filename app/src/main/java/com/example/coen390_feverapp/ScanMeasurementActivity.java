@@ -44,7 +44,7 @@ import android.widget.AdapterView;
 
 public class ScanMeasurementActivity extends AppCompatActivity {
 
-    private static final boolean TEST_MODE = true;
+    private static final boolean TEST_MODE = false;
 
     private static final String DEVICE_NAME = "ESP32";
     private static final UUID SERIAL_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
@@ -262,6 +262,9 @@ public class ScanMeasurementActivity extends AppCompatActivity {
                     temperatureTextView.setText(" " + display);
                     measurementProgressBar.setProgress(progress);
                     saveButton.setText(progress + "%");
+                    if (progress >= 100) {
+                        displayFeverAlert(display);
+                    }
                 });
 
                 try {
@@ -354,6 +357,7 @@ public class ScanMeasurementActivity extends AppCompatActivity {
             dialog.setOnShowListener(dialog1 -> {
                 dialog.getWindow().setBackgroundDrawableResource(colorRes);
             });
+            dialog.show();
         }
 
     }
