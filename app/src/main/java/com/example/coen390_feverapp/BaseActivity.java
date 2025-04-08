@@ -1,7 +1,10 @@
 package com.example.coen390_feverapp;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -42,6 +45,44 @@ public class BaseActivity extends AppCompatActivity {
             return insets;
         });
         setupUI();
+
+        // Check if BaseActivity was launched with a measurement extra.
+        if (getIntent().hasExtra("measurement")) {
+            double measurement = getIntent().getDoubleExtra("measurement", 0.0);
+            displayFeverAlert(measurement);
+        }
+    }
+
+    // New method to display the fever alert dialog based on the measurement value (in Celsius).
+   private void displayFeverAlert(double celsius) {
+        String category;
+        int backgroundColor;
+        // Define threshold values and corresponding colors.
+        if (celsius < 37.5) {
+            category = "No Fever";
+            backgroundColor = Color.GRAY;
+        } else if (celsius < 38.0) {
+            category = "Mild Fever";
+            backgroundColor = Color.YELLOW;
+        } else if (celsius < 39.0) {
+            category = "Fever";
+            backgroundColor = Color.parseColor("#FFA500"); // Orange
+        } else {
+            category = "High Fever";
+            backgroundColor = Color.RED;
+        }
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Fever Alert");
+        builder.setMessage("Your temperature indicates: " + category);
+        builder.setPositiveButton("OK", null);
+        AlertDialog dialog = builder.create();
+
+        // Change the dialog background color when shown.
+        dialog.setOnShowListener(d -> {
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(backgroundColor));
+        });
+        dialog.show();
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

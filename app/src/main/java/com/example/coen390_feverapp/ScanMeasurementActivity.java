@@ -253,7 +253,7 @@ public class ScanMeasurementActivity extends AppCompatActivity {
                         double c = Double.parseDouble(finalTemp);
 
                         // Apply the calibration offset here
-                        c = c + calibrationOffset;
+                        c = c - calibrationOffset;
 
                         if (temperatureScaleText.equals("°F")) {
                             display = String.format(Locale.getDefault(), " %.2f °F ", (c * 9/5) + 32);
@@ -267,7 +267,6 @@ public class ScanMeasurementActivity extends AppCompatActivity {
                     temperatureTextView.setText(" " + display);
                     measurementProgressBar.setProgress(progress);
                     saveButton.setText(progress + "%");
-                    //displayFeverAlert(display);
                 });
 
                 try {
@@ -295,7 +294,7 @@ public class ScanMeasurementActivity extends AppCompatActivity {
     }
 
     private void saveMeasurement() {
-        String measurementValue = temperatureTextView.getText().toString().trim();
+        String measurementValueStr = temperatureTextView.getText().toString().trim();
 
         String measurementTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date());
 
@@ -307,7 +306,7 @@ public class ScanMeasurementActivity extends AppCompatActivity {
         if(selectedProfile != "Select profile") {
             // Save the measurement to the temperature table using the profile name
             DBHelper dbHelper = new DBHelper(this);
-            boolean inserted = dbHelper.insertTemperature(currentProfile, measurementTime, measurementValue);
+            boolean inserted = dbHelper.insertTemperature(currentProfile, measurementTime, measurementValueStr);
 
             if (inserted) {
                 Toast.makeText(ScanMeasurementActivity.this, "Temperature has been saved", Toast.LENGTH_SHORT).show();
@@ -317,56 +316,29 @@ public class ScanMeasurementActivity extends AppCompatActivity {
         } else if (selectedProfile == "Select profile"){
             Toast.makeText(ScanMeasurementActivity.this,"Please select a profile", Toast.LENGTH_LONG).show();
         }
+
+        // Parse the numeric part of the temperature reading.
+        // Expected format: " XX.XX °C" or " XX.XX °F"
+        double measurementValue = 0.0;
+        try {
+            String[] parts = measurementValueStr.split(" ");
+            measurementValue = Double.parseDouble(parts[0]);
+            // If displayed unit is Fahrenheit, convert to Celsius for alert calculation.
+            if (measurementValueStr.contains("°F")) {
+                measurementValue = (measurementValue - 32) * 5.0/9.0;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
             // Close Bluetooth connection and redirect to TemperatureMeasurementPage
             closeBluetoothConnection();
             Intent intent = new Intent(ScanMeasurementActivity.this, BaseActivity.class);
+            intent.putExtra("measurement", measurementValue);
             startActivity(intent);
             finish();
     }
 
-    @SuppressLint("ResourceAsColor")
-    private void displayFeverAlert(String temp){
-        // Parse value + unit
-        String[] parts = temp.split(" ");
-        double value = Double.parseDouble(parts[0]);
-        boolean isF = temp.contains("°F");
 
-        // Convert to °C if needed
-        double celsius = isF ? (value - 32) * 5/9 : value;
-
-        // Determine category + colour
-        String category = null;
-        int colorRes;
-        if (celsius < 37.5) {
-            category = " No Fever ";
-            colorRes = android.R.color.transparent;
-        } else if (celsius < 38.0) {
-            category = " Mild Fever ";
-            colorRes = R.color.mild_fever_bg;
-        } else if (celsius < 39.0) {
-            category = " Fever ";
-            colorRes = R.color.fever_bg;
-        } else if (celsius >= 39){
-            category = " High Fever ";
-            colorRes = R.color.high_fever_bg;
-        } else {
-            colorRes = R.color.white;
-        }
-        if(category != null && colorRes != R.color.white) {
-            //alert dialog
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle("Fever Alert!");
-            builder.setMessage("You have: " + category);
-            builder.setPositiveButton("OK", null);
-
-            AlertDialog dialog = builder.create();
-            dialog.setOnShowListener(dialog1 -> {
-                dialog.getWindow().setBackgroundDrawableResource(colorRes);
-            });
-            dialog.show();
-        }
-
-    }
 
     private String readTemperature() {
         if (TEST_MODE) {
