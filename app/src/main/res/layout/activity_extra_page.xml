@@ -1,52 +1,186 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/checkBoxLayout"
+    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ExtraPageActivity">
+    android:padding="24dp"
+    android:background="#FFFFFF"
+    tools:context=".PhoneNumberActivity">
+
+    <TextView
+        android:id="@+id/selectTextView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Useful Phone Numbers"
+        android:textSize="26sp"
+        android:textColor="#980314"
+        android:textStyle="bold"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="24dp" />
+
+    <TextView
+        android:id="@+id/textView9"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="*Click on a number to dial it"
+        android:textSize="14sp"
+        app:layout_constraintTop_toBottomOf="@+id/selectTextView4"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="8dp" />
+
+
+    <TextView
+        android:id="@+id/textView8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Emergency:"
+        android:textSize="18sp"
+        android:textColor="#000000"
+        app:layout_constraintTop_toBottomOf="@id/textView9"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="24dp" />
+
+    <TextView
+        android:id="@+id/emergencyNumber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="911"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:textColor="#980314"
+        app:layout_constraintStart_toEndOf="@id/textView8"
+        app:layout_constraintTop_toTopOf="@id/textView8"
+        android:layout_marginStart="8dp" />
+
+
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Info-Santé:"
+        android:textSize="18sp"
+        app:layout_constraintTop_toBottomOf="@id/textView8"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="16dp" />
+
+    <TextView
+        android:id="@+id/infoSanteNumber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="811"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:textColor="#980314"
+        app:layout_constraintTop_toTopOf="@id/textView6"
+        app:layout_constraintStart_toEndOf="@id/textView6"
+        android:layout_marginStart="8dp" />
+
+
+    <TextView
+        android:id="@+id/textView12"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="QMAS:"
+        android:textSize="18sp"
+        app:layout_constraintTop_toBottomOf="@id/textView6"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="16dp" />
+
+    <TextView
+        android:id="@+id/QMASNumber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="1-877-644-4545"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:textColor="#980314"
+        app:layout_constraintTop_toTopOf="@id/textView12"
+        app:layout_constraintStart_toEndOf="@id/textView12"
+        android:layout_marginStart="8dp" />
+
+    <!-- Resources -->
+    <TextView
+        android:id="@+id/selectTextView5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Useful Resources"
+        android:textSize="26sp"
+        android:textColor="#980314"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@id/textView12"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="32dp" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="*Click on a link to be redirected to the website"
+        android:textSize="14sp"
+        app:layout_constraintTop_toBottomOf="@id/selectTextView5"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="8dp" />
+
+    <TextView
+        android:id="@+id/textView10"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="WebMD tips:"
+        android:textSize="18sp"
+        app:layout_constraintTop_toBottomOf="@id/textView3"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="16dp" />
+
+    <TextView
+        android:id="@+id/webMdLink"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="webmd.com"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:textColor="#980314"
+        app:layout_constraintTop_toTopOf="@id/textView10"
+        app:layout_constraintStart_toEndOf="@id/textView10"
+        android:layout_marginStart="8dp" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Cleveland Clinic tips:"
+        android:textSize="18sp"
+        app:layout_constraintTop_toBottomOf="@id/textView10"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="16dp" />
+
+    <TextView
+        android:id="@+id/clevelandClinicLink"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="clevelandclinic.org"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:textColor="#980314"
+        app:layout_constraintTop_toTopOf="@id/textView4"
+        app:layout_constraintStart_toEndOf="@id/textView4"
+        android:layout_marginStart="8dp" />
+
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
-        android:layout_width="409dp"
-        android:layout_height="80dp"
-        android:background="?attr/colorPrimary"
-        android:backgroundTint="#980314"
-        android:minHeight="?attr/actionBarSize"
-        android:theme="?attr/actionBarTheme"
-        android:title="Settings"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <ListView
-        android:id="@+id/additionalPageListView"
-        android:layout_width="407dp"
-        android:layout_height="534dp"
-        android:layout_marginStart="25dp"
-        android:paddingLeft="15dp"
-        app:layout_constraintBottom_toTopOf="@+id/toolbar"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView11"
-        app:layout_constraintVertical_bias="0.136" />
-
-    <TextView
-        android:id="@+id/textView11"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="283dp"
-        android:paddingLeft="15dp"
-        android:text="Extra Page"
-        android:textColor="#980314"
-        android:textSize="40dp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        android:background="#980314"
+        android:minHeight="?attr/actionBarSize"
+        android:title="Phone Numbers"
+        android:titleTextColor="#FFFFFF"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
+        app:layout_constraintEnd_toEndOf="parent"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 </androidx.constraintlayout.widget.ConstraintLayout>
