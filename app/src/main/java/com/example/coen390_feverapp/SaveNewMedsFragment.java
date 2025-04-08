@@ -46,10 +46,10 @@ public class SaveNewMedsFragment extends DialogFragment {
                 DBHelper dbHelper = new DBHelper(getActivity().getBaseContext());
                 int userID = dbHelper.getUserID(currentUser);
                 String medicationName = medicationActivity.getMedicationNameText();
-                /*if(medicationActivity != null){
-                    if(!dbHelper.medicationInDB(medicationName,userID)) {
+                if(medicationActivity != null){
+                    if(!dbHelper.checkMedication(medicationName,userID)) {
                         Log.d("med_db_check", "medication: " + medicationName);
-                        boolean inserted = dbHelper.insertNewMedication(medicationName, userID);
+                        boolean inserted = dbHelper.insertNewMedicationToList(medicationName, userID);
                         if (inserted) {
                             Toast.makeText(getContext(), "New medication saved!", Toast.LENGTH_LONG).show();
                         } else {
@@ -57,7 +57,7 @@ public class SaveNewMedsFragment extends DialogFragment {
                         }
                         medicationActivity.showMedicationsOnSpinner();
                     }
-                }*/
+                }
                 //save into db
                 dismiss();
             }

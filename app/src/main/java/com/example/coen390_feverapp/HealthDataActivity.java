@@ -55,7 +55,7 @@ public class HealthDataActivity extends AppCompatActivity {
     private void setupUI(){
         dbHelper = new DBHelper(this);
 
-        insertTestData();
+        //insertTestData();
 
         weekOfSpinner = findViewById(R.id.weekOfSpinner);
         showDatesOnSpinner();

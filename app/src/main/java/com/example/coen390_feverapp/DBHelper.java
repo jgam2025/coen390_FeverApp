@@ -218,9 +218,9 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     //check if medication already in db
-    public boolean checkMedication(String medication){
+    public boolean checkMedication(String medication, int userID){
         SQLiteDatabase myDB = this.getReadableDatabase();
-        Cursor cursor = myDB.rawQuery("SELECT * FROM user_added_medications WHERE medication_name = ? COLLATE NOCASE", new String[]{medication});
+        Cursor cursor = myDB.rawQuery("SELECT * FROM user_added_medications WHERE medication_name = ? AND user_id = ? COLLATE NOCASE", new String[]{medication, String.valueOf(userID)});
         return cursor.getCount() > 0;
     }
 
