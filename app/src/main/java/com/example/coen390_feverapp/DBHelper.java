@@ -107,7 +107,6 @@ public class DBHelper extends SQLiteOpenHelper {
         return cursor.getCount() > 0;
     }
 
-    //*********************functions for inserting and retrieving profiles*********************
     public boolean insertProfile(Profile profile){
         SQLiteDatabase myDB = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();

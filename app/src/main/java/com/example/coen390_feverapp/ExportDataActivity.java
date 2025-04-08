@@ -133,7 +133,8 @@ public class ExportDataActivity extends AppCompatActivity {
     }
 
 
-    private void writeExportToFile(String filename, List<String> temps, List<String> meds, String profileLabel) {
+    private void writeExportToFile(String filename, List<String> temps, List<String> meds, List<String> symptoms, String profileLabel)
+    {
 
         String firstName = sharedPreferences.getString("first_name", "");
         String lastName = sharedPreferences.getString("last_name", "");
@@ -161,6 +162,12 @@ public class ExportDataActivity extends AppCompatActivity {
         for (String med : meds) {
             data.append(med).append("\n");
         }
+        data.append("\n---- Symptom Records ----\n");
+        data.append("Date & Time, Symptoms\n");
+        for (String symptom : symptoms) {
+            data.append(symptom).append("\n");
+        }
+
 
         try {
             File dir = android.os.Environment.getExternalStoragePublicDirectory(android.os.Environment.DIRECTORY_DOWNLOADS);
@@ -195,6 +202,8 @@ public class ExportDataActivity extends AppCompatActivity {
         DBHelper dbHelper = new DBHelper(this);
         List<String> temps = dbHelper.getTemperatureHistoryList(currentProfile, startDate, endDate);
         List<String> meds = dbHelper.getMedicationHistoryList(currentProfile, startDate, endDate);
+        List<String> symptoms = dbHelper.getSymptomHistory(currentProfile, startDate, endDate);
+
 
         if (temps.isEmpty() && meds.isEmpty()) {
             Toast.makeText(this, "No data in that range", Toast.LENGTH_SHORT).show();
@@ -202,7 +211,7 @@ public class ExportDataActivity extends AppCompatActivity {
         }
 
         String filename = currentProfile + "_export_" + startDate + ".csv";
-        writeExportToFile(filename, temps, meds, currentProfile);
+        writeExportToFile(filename, temps, meds, symptoms, currentProfile);
     }
 
     private void showDatePickerDialog(EditText target) {
