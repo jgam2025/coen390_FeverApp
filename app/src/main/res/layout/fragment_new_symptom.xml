@@ -9,12 +9,16 @@
 
     <EditText
         android:id="@+id/newSymptomEditText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="44dp"
+        android:layout_width="300dp"
+        android:layout_height="56dp"
+        android:layout_marginTop="110dp"
+        android:background="#F8D9DC"
+        android:backgroundTint="#F8D9DC"
         android:ems="10"
-        android:hint="Enter new symptom..."
+        android:hint=" Enter New Symptom"
         android:inputType="text"
+        android:textColor="#980314"
+        android:textColorHint="#980314"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
@@ -22,25 +26,28 @@
 
     <Button
         android:id="@+id/saveSymptomButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:backgroundTint= "#980314"
-        android:text="SAVE TO LIST"
+        android:layout_width="184dp"
+        android:layout_height="59dp"
+        android:layout_marginTop="20dp"
+        android:backgroundTint="#980314"
+        android:text="Save To List"
+        android:textSize="20sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/newSymptomEditText" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/closeNewFAB"
-        android:layout_width="wrap_content"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
+        android:layout_margin="16dp"
         android:clickable="true"
         android:src="@android:drawable/ic_menu_close_clear_cancel"
-        app:backgroundTint="#980314"
-        app:fabCustomSize="40dp"
+        android:tint="#980314"
+        app:backgroundTint="#F8D9DC"
         app:fabSize="mini"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:useCompatPadding="true" />
 </androidx.constraintlayout.widget.ConstraintLayout>
