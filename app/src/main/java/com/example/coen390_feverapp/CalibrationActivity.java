@@ -40,12 +40,9 @@ public class CalibrationActivity extends AppCompatActivity {
     private BluetoothAdapter bluetoothAdapter;
     private BluetoothSocket socket;
     private InputStream inputStream;
-
-    private TextView instructionTextView;
     private Button measureButton;
     private TextView measuredTempTextView;
     private TextView offsetTextView;
-    //protected ImageView imageViewArrowScanPage2;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -59,13 +56,10 @@ public class CalibrationActivity extends AppCompatActivity {
             return insets;
         });
         setUpToolbar();
-        // Initialize UI elements
 
         measureButton = findViewById(R.id.button_measure);
         measuredTempTextView = findViewById(R.id.textView_measuredTemp);
         offsetTextView = findViewById(R.id.textView_offset);
-        //imageViewArrowScanPage2 = findViewById(R.id.imageViewArrowScanPage2);
-
 
         bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         if (bluetoothAdapter == null) {
@@ -73,12 +67,9 @@ public class CalibrationActivity extends AppCompatActivity {
             finish();
         }
 
-        // Attempt connection to the ESP32 sensor
         if (!connectToESP32()) {
             Toast.makeText(this, "Unable to connect to sensor.", Toast.LENGTH_LONG).show();
         }
-
-        // Set up button to initiate calibration
         measureButton.setOnClickListener(v -> calibrateSensor());
 
     }
@@ -94,9 +85,7 @@ public class CalibrationActivity extends AppCompatActivity {
 
     private boolean connectToESP32() {
         BluetoothDevice device = null;
-        // Check for the BLUETOOTH_CONNECT permission
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED) {
-            // Request permission from the UI thread
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
                 runOnUiThread(() -> ActivityCompat.requestPermissions(
                         CalibrationActivity.this,
@@ -105,7 +94,6 @@ public class CalibrationActivity extends AppCompatActivity {
             }
             return false;
         }
-        // Find the bonded device named "ESP32"
         for (BluetoothDevice bondedDevice : bluetoothAdapter.getBondedDevices()) {
             if (bondedDevice.getName().equals(DEVICE_NAME)) {
                 device = bondedDevice;
@@ -127,22 +115,17 @@ public class CalibrationActivity extends AppCompatActivity {
             return false;
         }
     }
-
-    // Handle the permission request result:
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == 1) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                // Permission granted – try connecting again on a new thread
                 new Thread(() -> connectToESP32()).start();
             } else {
                 Toast.makeText(this, "Bluetooth permission is required.", Toast.LENGTH_SHORT).show();
             }
         }
     }
-
-    // Calibrate sensor using the boiling water test
     private void calibrateSensor() {
         String sensorReading = readTemperature();
         if (sensorReading == null) {
@@ -157,15 +140,12 @@ public class CalibrationActivity extends AppCompatActivity {
             return;
         }
 
-        // Display the measured temperature
         measuredTempTextView.setText(String.format(Locale.getDefault(), "Measured Temp: %.2f °C", measuredTemp));
 
-        // Calculate calibration offset (expected 100°C minus measured temperature)
         double offset = 10.0;
         double adjustedTemp = measuredTemp - offset;
         offsetTextView.setText(String.format(Locale.getDefault(), "Calibration Offset: %.2f °C", offset));
 
-        // Save the offset to SharedPreferences for later use (e.g., in ScanMeasurementActivity)
         SharedPreferences prefs = getSharedPreferences("user_prefs", MODE_PRIVATE);
         prefs.edit().putFloat("calibrationOffset", (float) offset).apply();
 
@@ -192,7 +172,6 @@ public class CalibrationActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        // Close Bluetooth connection if it exists
         if (socket != null) {
             try {
                 socket.close();
@@ -203,9 +182,7 @@ public class CalibrationActivity extends AppCompatActivity {
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu from the menu.xml file in the menu directory
         getMenuInflater().inflate(R.menu.toolbar, menu);
-
         return true;
     }
 

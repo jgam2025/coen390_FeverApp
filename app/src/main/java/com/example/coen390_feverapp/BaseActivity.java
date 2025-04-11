@@ -46,18 +46,15 @@ public class BaseActivity extends AppCompatActivity {
         });
         setupUI();
 
-        // Check if BaseActivity was launched with a measurement extra.
         if (getIntent().hasExtra("measurement")) {
             double measurement = getIntent().getDoubleExtra("measurement", 0.0);
             displayFeverAlert(measurement);
         }
     }
 
-    // New method to display the fever alert dialog based on the measurement value (in Celsius).
    private void displayFeverAlert(double celsius) {
         String category;
         int backgroundColor;
-        // Define threshold values and corresponding colors.
         if (celsius < 37.5) {
             category = "No Fever";
             backgroundColor = Color.GRAY;
@@ -78,7 +75,6 @@ public class BaseActivity extends AppCompatActivity {
         builder.setPositiveButton("OK", null);
         AlertDialog dialog = builder.create();
 
-        // Change the dialog background color when shown.
         dialog.setOnShowListener(d -> {
             dialog.getWindow().setBackgroundDrawable(new ColorDrawable(backgroundColor));
         });
@@ -86,9 +82,7 @@ public class BaseActivity extends AppCompatActivity {
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu from the menu.xml file in the menu directory
         getMenuInflater().inflate(R.menu.toolbar, menu);
-
         return true;
     }
     @Override
@@ -98,17 +92,12 @@ public class BaseActivity extends AppCompatActivity {
         if (id == R.id.miperson) {
             goToHealth();
             return true;
-
         }
-
         else if (id == R.id.miMore) {
             GoToExtra();
             return true;
-
-
         } else{
             return super.onOptionsItemSelected(item);
-
         }
     }
 
@@ -116,8 +105,6 @@ public class BaseActivity extends AppCompatActivity {
         Intent intent = new Intent(this, ExtraPageActivity.class);
         startActivity(intent);
     }
-
-
 
     private void goToHealth(){
         Intent intent = new Intent(this, HealthDataActivity.class);
@@ -129,10 +116,6 @@ public class BaseActivity extends AppCompatActivity {
         String currentUser = sharedPrefs.getString("current_user",null);
         homeTextView = findViewById(R.id.homeTextView);
         homeTextView.setText("Welcome, " + currentUser + "!");
-
-
-
-
         tempButton = findViewById(R.id.tempButton);
         tempButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -140,8 +123,6 @@ public class BaseActivity extends AppCompatActivity {
                 goToScanMeasurement();
             }
         });
-
-
 
         medButton = findViewById(R.id.medButton);
         medButton.setOnClickListener(new View.OnClickListener() {

@@ -46,7 +46,7 @@ import android.widget.AdapterView;
 
 public class ScanMeasurementActivity extends AppCompatActivity {
 
-     //private static final boolean TEST_MODE = false;
+    private static final boolean TEST_MODE = false;
 
     private static final String DEVICE_NAME = "ESP32";
     private static final UUID SERIAL_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
@@ -64,7 +64,6 @@ public class ScanMeasurementActivity extends AppCompatActivity {
     private String selectedProfile;
 
     protected volatile boolean measurementCanceled = false;
-    // Calibration offset loaded from SharedPreferences (default = 0.0)
     private double calibrationOffset = 0.0;
     private Spinner scaleSpinner, selectProfileSpinner;
     private String temperatureScaleText;
@@ -84,8 +83,6 @@ public class ScanMeasurementActivity extends AppCompatActivity {
         setupUI();
 
         temperatureScaleText = getSharedPreferences("user_prefs", MODE_PRIVATE).getString("temperatureScaleText", "°C");
-
-        // Load the calibration offset from SharedPreferences (saved by your calibration page)
         calibrationOffset = getSharedPreferences("user_prefs", MODE_PRIVATE)
                 .getFloat("calibrationOffset", 0.0f);
 
@@ -95,7 +92,6 @@ public class ScanMeasurementActivity extends AppCompatActivity {
             finish();
         }
 
-        // Attempt connection on a background thread
         new Thread(() -> connectToESP32()).start();
         instructionDialogLayout.setVisibility(android.view.View.VISIBLE);
     }
@@ -133,7 +129,6 @@ public class ScanMeasurementActivity extends AppCompatActivity {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         scaleSpinner.setAdapter(adapter);
 
-// Load saved preference (default = °C)
         temperatureScaleText = getSharedPreferences("user_prefs", MODE_PRIVATE)
                 .getString("temperatureScaleText", "°C");
         scaleSpinner.setSelection(temperatureScaleText.equals("°F") ? 1 : 0);
@@ -158,19 +153,16 @@ public class ScanMeasurementActivity extends AppCompatActivity {
 
     }
 
-    // Attempt to connect to the ESP32 on a background thread
     private boolean connectToESP32() {
-        /*
+
         if (TEST_MODE) {
             runOnUiThread(() -> Toast.makeText(this, "In Test Mode, connection simulated", Toast.LENGTH_SHORT).show());
             return true;
         }
 
-         */
+
         BluetoothDevice device = null;
-        // Check for the BLUETOOTH_CONNECT permission
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED) {
-            // Request permission from the UI thread
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
                 runOnUiThread(() -> ActivityCompat.requestPermissions(
                         ScanMeasurementActivity.this,
@@ -179,7 +171,6 @@ public class ScanMeasurementActivity extends AppCompatActivity {
             }
             return false;
         }
-        // Find the bonded device named "ESP32"
         for (BluetoothDevice bondedDevice : bluetoothAdapter.getBondedDevices()) {
             if (bondedDevice.getName().equals(DEVICE_NAME)) {
                 device = bondedDevice;
@@ -202,13 +193,11 @@ public class ScanMeasurementActivity extends AppCompatActivity {
         }
     }
 
-    // Handle the permission request result:
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == 1) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                // Permission granted – try connecting again on a new thread
                 new Thread(() -> connectToESP32()).start();
             } else {
                 Toast.makeText(this, "Bluetooth permission is required.", Toast.LENGTH_SHORT).show();
@@ -216,7 +205,6 @@ public class ScanMeasurementActivity extends AppCompatActivity {
         }
     }
 
-    // Starts the measurement on a background thread
     private void startMeasurement() {
         measurementCanceled = false;
         runOnUiThread(() -> {
@@ -251,12 +239,9 @@ public class ScanMeasurementActivity extends AppCompatActivity {
                 String finalTemp = temp;              // <-- defined here
 
                 runOnUiThread(() -> {
-                    // ← Replace only this block’s contents (the old setText line) with conversion logic
                     String display;
                     try {
                         double c = Double.parseDouble(finalTemp);
-
-                        // Apply the calibration offset here
                         c = c - calibrationOffset;
 
                         if (temperatureScaleText.equals("°F")) {
@@ -301,14 +286,10 @@ public class ScanMeasurementActivity extends AppCompatActivity {
         String measurementValueStr = temperatureTextView.getText().toString().trim();
 
         String measurementTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date());
-
-        // Retrieve current profile name from SharedPreferences.
-        // (Ensure that you save the profile name there when the user selects it in TemperatureMeasurementPage.)
         SharedPreferences sharedPrefs = getSharedPreferences("user_prefs", MODE_PRIVATE);
         String currentProfile = sharedPrefs.getString("current_profile", "default");
 
         if(selectedProfile != "Select profile") {
-            // Save the measurement to the temperature table using the profile name
             DBHelper dbHelper = new DBHelper(this);
             boolean inserted = dbHelper.insertTemperature(currentProfile, measurementTime, measurementValueStr);
 
@@ -320,21 +301,16 @@ public class ScanMeasurementActivity extends AppCompatActivity {
         } else if (selectedProfile == "Select profile"){
             Toast.makeText(ScanMeasurementActivity.this,"Please select a profile", Toast.LENGTH_LONG).show();
         }
-
-        // Parse the numeric part of the temperature reading.
-        // Expected format: " XX.XX °C" or " XX.XX °F"
         double measurementValue = 0.0;
         try {
             String[] parts = measurementValueStr.split(" ");
             measurementValue = Double.parseDouble(parts[0]);
-            // If displayed unit is Fahrenheit, convert to Celsius for alert calculation.
             if (measurementValueStr.contains("°F")) {
                 measurementValue = (measurementValue - 32) * 5.0/9.0;
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-            // Close Bluetooth connection and redirect to TemperatureMeasurementPage
             closeBluetoothConnection();
             Intent intent = new Intent(ScanMeasurementActivity.this, BaseActivity.class);
             intent.putExtra("measurement", measurementValue);
@@ -342,17 +318,13 @@ public class ScanMeasurementActivity extends AppCompatActivity {
             finish();
     }
 
-
-
     private String readTemperature() {
-        /*
+
         if (TEST_MODE) {
 
             double test = 36.0 + Math.random() * 3.5;
             return String.format(Locale.getDefault(), "%.2f", test);
         }
-
-         */
         if (socket == null || !socket.isConnected()) {
             return null;
         }

@@ -43,7 +43,6 @@ public class PhoneNumberActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu from the menu.xml file in the menu directory
         getMenuInflater().inflate(R.menu.toolbar, menu);
         return true;
     }
@@ -78,36 +77,6 @@ public class PhoneNumberActivity extends AppCompatActivity {
 
     private void goToExtraPage(){
         Intent intent = new Intent(this, ExtraPageActivity.class);
-        startActivity(intent);
-    }
-
-
-
-    private void goToLogin(){
-        Intent intent = new Intent(this, LoginActivity.class);
-        startActivity(intent);
-    }
-
-    private void goToTemperatureMeasurementPage(){
-        Intent intent = new Intent(this, TemperatureMeasurementPage.class);
-        startActivity(intent);
-    }
-    private void addProfile(){
-        NewProfileFragment newProfile = new NewProfileFragment();
-        newProfile.show(getFragmentManager(), "InsertProfile");
-    }
-
-    private void goToMedicationPage(){
-        Intent intent = new Intent(this, MedicationActivity.class);
-        startActivity(intent);
-    }
-    private void Graph(){
-        GraphFragment graphDialog = new GraphFragment();
-        graphDialog.show(getSupportFragmentManager(), "GraphDialog");
-    }
-
-    private void goToSymptomLogActivity(){
-        Intent intent = new Intent(this,SymptomLogActivity.class);
         startActivity(intent);
     }
 

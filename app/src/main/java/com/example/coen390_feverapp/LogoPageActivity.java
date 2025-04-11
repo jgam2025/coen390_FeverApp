@@ -24,10 +24,9 @@ public class LogoPageActivity extends AppCompatActivity {
         });
 
         new Handler().postDelayed(() -> {
-            // Replace MainActivity.class with your first page activity
             Intent intent = new Intent(LogoPageActivity.this, LoginActivity.class);
             startActivity(intent);
-            finish(); // Close splash activity so the user can't go back to it
+            finish();
         }, 1500);
     }
 }

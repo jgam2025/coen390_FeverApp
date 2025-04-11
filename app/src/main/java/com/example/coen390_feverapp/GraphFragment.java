@@ -39,7 +39,7 @@ public class GraphFragment extends DialogFragment {
 
     private LineChart chart;
     private DBHelper dbHelper;
-    private String currentProfile; // Profile name for filtering
+    private String currentProfile;
 
 
 
@@ -64,7 +64,6 @@ public class GraphFragment extends DialogFragment {
         List<Entry> entries = new ArrayList<>();
         final List<String> dateTimeLabels = new ArrayList<>();
 
-        // Get the current profile
         currentProfile = requireActivity().getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
                 .getString("current_profile", "default");
         Log.d("GRAPH_DEBUG", "Current Profile: " + currentProfile);
@@ -74,7 +73,6 @@ public class GraphFragment extends DialogFragment {
         String endDate = requireActivity().getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
                 .getString("end_date", "default");
 
-        // Retrieve all temperature data - ordered by range
         Cursor cursor = dbHelper.getAllMeasurementsByProfile(currentProfile, startDate, endDate);
 
         if (cursor == null) {
@@ -98,7 +96,6 @@ public class GraphFragment extends DialogFragment {
                 dateTimeLabels.add(measurementTime);
                 index++;
             } while (cursor.moveToNext());
-           // cursor.close();
         }
 
 
@@ -109,12 +106,10 @@ public class GraphFragment extends DialogFragment {
 
                 Log.d("GRAPH_DEBUG", "Reading: " + measurementTime + " - " + temperature);
 
-                // Store temperature values and corresponding date-time labels
                 entries.add(new Entry(index, temperature));
-                dateTimeLabels.add(measurementTime); // Full date-time for X-axis labels
+                dateTimeLabels.add(measurementTime);
                 index++;
             } while (cursor.moveToNext());
-           // cursor.close();
         }
 
         cursor.close();
@@ -125,14 +120,12 @@ public class GraphFragment extends DialogFragment {
     }
 
     private float autoConvertIfFahrenheit(float value) {
-        // Assume anything over 60 is in Fahrenheit
         if (value > 60f) {
             return (value - 32f) * 5f / 9f;
         } else {
-            return value; // Assume Celsius
+            return value;
         }
     }
-
 
     private void plotGraph(List<Entry> entries, final List<String> dateTimeLabels) {
         LineDataSet dataSet = new LineDataSet(entries, "Temperature Readings");
@@ -141,57 +134,43 @@ public class GraphFragment extends DialogFragment {
         dataSet.setValueTextSize(12f);
         dataSet.setDrawValues(false);
 
-        // Configure X Axis to display date & time
         XAxis xAxis = chart.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setGranularity(1f);
         xAxis.setTextSize(0.2f);
-        //xAxis.setDrawLabels(false);
         xAxis.setDrawAxisLine(true);
         chart.setExtraBottomOffset(5f);
         xAxis.setAxisMinimum(0f);
         xAxis.setAxisMaximum(entries.size() - 1);
-        xAxis.setLabelRotationAngle(0f); // Keep labels upright
-
-
-
-
+        xAxis.setLabelRotationAngle(0f);
 
         xAxis.setValueFormatter(new ValueFormatter() {
             @Override
             public String getFormattedValue(float value) {
                 int index = Math.round(value);
                 if (index >= 0 && index < dateTimeLabels.size()) {
-                    String fullLabel = dateTimeLabels.get(index); // "2025-03-20 14:30"
+                    String fullLabel = dateTimeLabels.get(index);
 
                     try {
-                        // Parse the original timestamp
                         SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
                         Date date = inputFormat.parse(fullLabel);
-
-                        // Format to "MMM dd\nHH:mm" → e.g., "Mar 20\n14:30"
                         SimpleDateFormat outputFormat = new SimpleDateFormat("MMM dd\nHH:mm", Locale.getDefault());
                         return outputFormat.format(date);
 
                     } catch (ParseException e) {
                         e.printStackTrace();
-                        return fullLabel; // fallback
+                        return fullLabel;
                     }
                 }
                 return "";
             }
         });
 
-
-
-
-        // Configure Y Axis (Temperature)
         YAxis leftAxis = chart.getAxisLeft();
         leftAxis.setGranularity(0.5f);
         chart.getAxisRight().setEnabled(false);
         chart.setExtraLeftOffset(13f);
         chart.setExtraRightOffset(60f);
-        //chart.setExtraBottomOffset(30f);
 
 
         leftAxis.setValueFormatter(new ValueFormatter() {
@@ -201,10 +180,8 @@ public class GraphFragment extends DialogFragment {
             }
         });
 
-        // Set data and refresh chart
         chart.setData(new LineData(dataSet));
         chart.invalidate();
-
         chart.getDescription().setEnabled(false);
     }
 

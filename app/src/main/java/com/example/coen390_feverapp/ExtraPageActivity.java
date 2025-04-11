@@ -42,7 +42,6 @@ String[] pageNames = {"Health Resources & Phone Numbers", "Add New Profile", "Ex
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu from the menu.xml file in the menu directory
         getMenuInflater().inflate(R.menu.toolbar, menu);
 
         return true;
@@ -73,40 +72,14 @@ String[] pageNames = {"Health Resources & Phone Numbers", "Add New Profile", "Ex
         startActivity(intent);
     }
 
-
-
     private void goToHealth(){
         Intent intent = new Intent(this, HealthDataActivity.class);
-        startActivity(intent);
-    }
-
-    private void goToTemperatureMeasurementPage(){
-        Intent intent = new Intent(this, TemperatureMeasurementPage.class);
-        startActivity(intent);
-    }
-    private void addProfile(){
-        NewProfileFragment newProfile = new NewProfileFragment();
-        newProfile.show(getFragmentManager(), "InsertProfile");
-    }
-
-    private void goToMedicationPage(){
-        Intent intent = new Intent(this, MedicationActivity.class);
-        startActivity(intent);
-    }
-    private void Graph(){
-        GraphFragment graphDialog = new GraphFragment();
-        graphDialog.show(getSupportFragmentManager(), "GraphDialog");
-    }
-    private void goSymptomPage(){
-        Intent intent = new Intent(this, SymptomLogActivity.class);
         startActivity(intent);
     }
 
     private void setupUI() {
 
         additionalPageListView = findViewById(R.id.additionalPageListView);
-
-        // set adapter (will write the items on the listView)
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, pageNames);
         additionalPageListView.setAdapter(adapter);
 
@@ -127,6 +100,4 @@ String[] pageNames = {"Health Resources & Phone Numbers", "Add New Profile", "Ex
             }
         });
     }
-
-
 }

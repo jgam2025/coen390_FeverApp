@@ -41,20 +41,14 @@ public class ExportDataActivity extends AppCompatActivity {
     SharedPreferences sharedPreferences;
     String currentProfile;
     EditText etStartDate, etEndDate;
-
-
     private final Context context = this;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_export_data);
 
-
         setUpToolbar();
-        // User info SharedPreferences
         SharedPreferences prefs = getSharedPreferences("user_prefs", MODE_PRIVATE);
         currentProfile = prefs.getString("current_profile", "default");
         sharedPreferences = getSharedPreferences("user_info_" + currentProfile, MODE_PRIVATE);
@@ -69,9 +63,6 @@ public class ExportDataActivity extends AppCompatActivity {
         btnExportAll = findViewById(R.id.btnExportAll);
         etStartDate = findViewById(R.id.etStartDate);
         etEndDate = findViewById(R.id.etEndDate);
-
-
-
 
         etFirstName.setText(sharedPreferences.getString("first_name", ""));
         etLastName.setText(sharedPreferences.getString("last_name", ""));
@@ -101,9 +92,6 @@ public class ExportDataActivity extends AppCompatActivity {
                     1);
         }
         btnExportAll.setOnClickListener(v -> exportAllDataWithDateRange());
-
-        // Export all
-     //   btnExportAll.setOnClickListener(v -> exportAllTemperatureData());
 
     }
 
@@ -147,11 +135,8 @@ public class ExportDataActivity extends AppCompatActivity {
 
         return temps;
     }
-
-
     private void writeExportToFile(String filename, List<String> temps, List<String> meds, List<String> symptoms, String profileLabel)
     {
-       //user datas must stay after logout or change pages as preferences
         String firstName = sharedPreferences.getString("first_name", "");
         String lastName = sharedPreferences.getString("last_name", "");
         String birthDate = sharedPreferences.getString("birth_date", "");
@@ -160,8 +145,6 @@ public class ExportDataActivity extends AppCompatActivity {
         String doctor = sharedPreferences.getString("doctor", "");
 
         StringBuilder data = new StringBuilder();
-
-        //if not enter keep empty and downloads
         data.append("---- Health Information ----\n");
         data.append("Name: ").append(firstName).append(" ").append(lastName).append("\n");
         data.append("Date of Birth: ").append(birthDate).append("\n");
@@ -188,7 +171,6 @@ public class ExportDataActivity extends AppCompatActivity {
 
 
         try {
-            //directly on phone device downloads
             File dir = android.os.Environment.getExternalStoragePublicDirectory(android.os.Environment.DIRECTORY_DOWNLOADS);
 
             File file = new File(dir, filename);
@@ -213,7 +195,7 @@ public class ExportDataActivity extends AppCompatActivity {
         }
 
         if (endDate.isEmpty()) {
-            endDate = null;//assume "today" date if end date is not selected
+            endDate = null;
         } else {
             endDate += " 23:59";
         }

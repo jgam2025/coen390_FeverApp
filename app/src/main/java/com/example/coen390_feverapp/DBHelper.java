@@ -171,7 +171,7 @@ public class DBHelper extends SQLiteOpenHelper {
                     new String[]{profile}
             );
         } else {
-            if (endDate == null){
+           if (endDate == null){
                 Calendar calendar = Calendar.getInstance();
                 SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
                 String now = simpleDateFormat.format(calendar.getTime());
@@ -185,29 +185,6 @@ public class DBHelper extends SQLiteOpenHelper {
         }
         return null;
     }
-
-    /*
-    public Cursor getTemperatureMeasurementEntries(String profile, String startDate, String endDate){
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = null;
-        List<String>
-        if(startDate == null){ // null startdate - all time
-            try{
-                cursor = db.rawQuery("SELECT * FROM temperature WHERE profile_name = ? ORDER BY measurement_time ASC",
-                        new String[]{profile});
-                if(cursor != null){
-                    if(cursor.moveToFirst()){
-                        do {
-
-                        }
-                    }
-                }
-            }
-        }
-
-    }
-     */
-
     //dose in mg
     public boolean insertMedication(String profile, String name, String dose, String timestamp) {
         SQLiteDatabase myDB = this.getWritableDatabase();
@@ -352,15 +329,6 @@ public class DBHelper extends SQLiteOpenHelper {
         return medicationList;
     }
 
-
-    // Deletes a medication record by its _id.
-    public boolean deleteMedication(long id) {
-        SQLiteDatabase myDB = this.getWritableDatabase();
-        int result = myDB.delete("medication", "_id=?", new String[]{String.valueOf(id)});
-        return result > 0;
-    }
-
-
     public boolean insertSymptoms(String profile, String symptoms, String timestamp){
         SQLiteDatabase myDB = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -381,7 +349,6 @@ public class DBHelper extends SQLiteOpenHelper {
                 cursor = myDB.rawQuery("SELECT symptom_type, timestamp FROM symptoms WHERE profile_name = ? ORDER BY timestamp DESC", new String[]{profile});
                 if (cursor != null) {
                     if (cursor.moveToFirst()) {
-                        //Log.d("check","cursor moved to first a");
                         do {
                             @SuppressLint("Range") String symptomsString = cursor.getString(cursor.getColumnIndex("symptom_type"));
                             @SuppressLint("Range") String time = cursor.getString(cursor.getColumnIndex("timestamp"));
@@ -429,7 +396,6 @@ public class DBHelper extends SQLiteOpenHelper {
 
                     if (cursor != null) {
                         if (cursor.moveToFirst()) {
-                            //Log.d("check","cursor moved to first b");
                             do {
                                 @SuppressLint("Range") String symptomsString = cursor.getString(cursor.getColumnIndex("symptom_type"));
                                 @SuppressLint("Range") String time = cursor.getString(cursor.getColumnIndex("timestamp"));
@@ -446,7 +412,6 @@ public class DBHelper extends SQLiteOpenHelper {
         }
         return symptomsList;
     }
-
 
     public boolean insertNewSymptom(String symptom, int userID){
         SQLiteDatabase myDB = this.getWritableDatabase();
@@ -519,8 +484,6 @@ public class DBHelper extends SQLiteOpenHelper {
 
         return temps;
     }
-
-
 
 }
 

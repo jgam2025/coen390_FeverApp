@@ -21,8 +21,6 @@ public class RegisterActivity extends AppCompatActivity {
     DBHelper dbHelper;
     CheckBox cbShowPassword;
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 

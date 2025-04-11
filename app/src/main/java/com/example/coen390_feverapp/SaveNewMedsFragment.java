@@ -27,7 +27,6 @@ public class SaveNewMedsFragment extends DialogFragment {
     }
 
     public SaveNewMedsFragment() {
-        // Required empty public constructor
     }
 
     @Override

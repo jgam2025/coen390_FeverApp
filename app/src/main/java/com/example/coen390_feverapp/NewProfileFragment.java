@@ -23,20 +23,15 @@ public class NewProfileFragment extends DialogFragment {
     protected EditText nameEditText;
     protected Button saveButton;
     protected FloatingActionButton closeButton;
-    private TemperatureMeasurementPage temp_activity;
     private SymptomLogActivity symptom_activity;
 
 
     public NewProfileFragment() {
-        // Required empty public constructor
     }
 
     @Override
     public void onAttach(Context context){
         super.onAttach(context);
-        if(context instanceof TemperatureMeasurementPage){
-            temp_activity = (TemperatureMeasurementPage) context;
-        }
         if(context instanceof SymptomLogActivity){
             symptom_activity = (SymptomLogActivity) context;
         }
@@ -45,7 +40,6 @@ public class NewProfileFragment extends DialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_new_profile, container, false);
 
         createTextView = view.findViewById(R.id.createTextView);
@@ -76,9 +70,6 @@ public class NewProfileFragment extends DialogFragment {
 
                     Toast.makeText(getContext(), "Profile Saved", Toast.LENGTH_SHORT).show();
 
-                    if(temp_activity != null){
-                        temp_activity.showProfilesOnSpinner();
-                    }
                     if(symptom_activity != null){
                         symptom_activity.showProfilesOnSpinner();
                     }
