@@ -46,7 +46,7 @@ import android.widget.AdapterView;
 
 public class ScanMeasurementActivity extends AppCompatActivity {
 
-    private static final boolean TEST_MODE = true;
+     //private static final boolean TEST_MODE = false;
 
     private static final String DEVICE_NAME = "ESP32";
     private static final UUID SERIAL_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
@@ -160,10 +160,13 @@ public class ScanMeasurementActivity extends AppCompatActivity {
 
     // Attempt to connect to the ESP32 on a background thread
     private boolean connectToESP32() {
+        /*
         if (TEST_MODE) {
             runOnUiThread(() -> Toast.makeText(this, "In Test Mode, connection simulated", Toast.LENGTH_SHORT).show());
             return true;
         }
+
+         */
         BluetoothDevice device = null;
         // Check for the BLUETOOTH_CONNECT permission
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED) {
@@ -342,11 +345,14 @@ public class ScanMeasurementActivity extends AppCompatActivity {
 
 
     private String readTemperature() {
+        /*
         if (TEST_MODE) {
 
             double test = 36.0 + Math.random() * 3.5;
             return String.format(Locale.getDefault(), "%.2f", test);
         }
+
+         */
         if (socket == null || !socket.isConnected()) {
             return null;
         }

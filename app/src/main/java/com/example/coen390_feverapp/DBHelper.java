@@ -163,28 +163,28 @@ public class DBHelper extends SQLiteOpenHelper {
         );
     }
 
-//    public Cursor getAllMeasurementsByProfile(String profile, String startDate, String endDate) {
-//        SQLiteDatabase db = this.getReadableDatabase();
-//        if(startDate == null) {
-//            return db.rawQuery(
-//                    "SELECT * FROM temperature WHERE profile_name = ? ORDER BY measurement_time ASC",
-//                    new String[]{profile}
-//            );
-//        } else {
-//            if (endDate == null){
-//                Calendar calendar = Calendar.getInstance();
-//                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
-//                String now = simpleDateFormat.format(calendar.getTime());
-//                return db.rawQuery("SELECT * FROM temperature WHERE profile_name = ? " +
-//                        "AND measurement_time BETWEEN ? AND ? ORDER BY measurement_time DESC", new String[]{profile, startDate, now});
-//            } else if (endDate != null) {
-//                return db.rawQuery("SELECT * FROM temperature WHERE profile_name = ? AND measurement_time BETWEEN ? AND ? ORDER BY measurement_time DESC",
-//                        new String[]{profile,startDate,endDate}
-//                );
-//            }
-//        }
-//        return null;
-//    }
+    public Cursor getAllMeasurementsByProfile(String profile, String startDate, String endDate) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        if(startDate == null) {
+            return db.rawQuery(
+                    "SELECT * FROM temperature WHERE profile_name = ? ORDER BY measurement_time ASC",
+                    new String[]{profile}
+            );
+        } else {
+            if (endDate == null){
+                Calendar calendar = Calendar.getInstance();
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
+                String now = simpleDateFormat.format(calendar.getTime());
+                return db.rawQuery("SELECT * FROM temperature WHERE profile_name = ? " +
+                        "AND measurement_time BETWEEN ? AND ? ORDER BY measurement_time DESC", new String[]{profile, startDate, now});
+            } else if (endDate != null) {
+                return db.rawQuery("SELECT * FROM temperature WHERE profile_name = ? AND measurement_time BETWEEN ? AND ? ORDER BY measurement_time DESC",
+                        new String[]{profile,startDate,endDate}
+                );
+            }
+        }
+        return null;
+    }
 
     /*
     public Cursor getTemperatureMeasurementEntries(String profile, String startDate, String endDate){
