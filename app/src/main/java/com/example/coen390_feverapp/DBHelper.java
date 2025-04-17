@@ -26,6 +26,7 @@ public class DBHelper extends SQLiteOpenHelper {
         this.context = context;
     }
 
+    //database tables to store data
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase){
         sqLiteDatabase.execSQL("create table users(username TEXT primary key, password TEXT )"); //users table
@@ -71,8 +72,6 @@ public class DBHelper extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS user_added_symptoms");
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS user_added_medications");
     }
-
-
     public boolean insertData(String username, String password){
         SQLiteDatabase myDB = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -81,9 +80,9 @@ public class DBHelper extends SQLiteOpenHelper {
         long result = myDB.insert("users",null, contentValues);
         if (result==-1)return false;
         else return true;
-
     }
 
+    //function to get user ID
     public int getUserID(String username) {
         SQLiteDatabase myDB = this.getReadableDatabase();
         Cursor cursor = myDB.rawQuery("SELECT username FROM users WHERE username = ?", new String[]{username});
@@ -140,7 +139,6 @@ public class DBHelper extends SQLiteOpenHelper {
         return profileList;
     }
 
-
     public boolean insertTemperature(String profileName, String measurementTime, String temperatureValue) {
         SQLiteDatabase myDB = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -163,6 +161,7 @@ public class DBHelper extends SQLiteOpenHelper {
         );
     }
 
+    //function to get all measurements according to a specific profile
     public Cursor getAllMeasurementsByProfile(String profile, String startDate, String endDate) {
         SQLiteDatabase db = this.getReadableDatabase();
         if(startDate == null) {
@@ -325,7 +324,6 @@ public class DBHelper extends SQLiteOpenHelper {
                 }
             }
         }
-
         return medicationList;
     }
 
@@ -484,6 +482,5 @@ public class DBHelper extends SQLiteOpenHelper {
 
         return temps;
     }
-
 }
 

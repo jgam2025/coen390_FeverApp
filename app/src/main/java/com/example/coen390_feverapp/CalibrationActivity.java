@@ -33,10 +33,10 @@ import java.util.Locale;
 import java.util.UUID;
 
 public class CalibrationActivity extends AppCompatActivity {
-
+    //name of device = ESP32
     private static final String DEVICE_NAME = "ESP32";
+    //serial uuid of esp32
     private static final UUID SERIAL_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
-
     private BluetoothAdapter bluetoothAdapter;
     private BluetoothSocket socket;
     private InputStream inputStream;
@@ -62,17 +62,20 @@ public class CalibrationActivity extends AppCompatActivity {
         offsetTextView = findViewById(R.id.textView_offset);
 
         bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        //sends message to user if their device does not support bluetooth
         if (bluetoothAdapter == null) {
             Toast.makeText(this, "Bluetooth not supported on this device.", Toast.LENGTH_SHORT).show();
             finish();
         }
 
+        //sends message to user if unable to connect to sensor
         if (!connectToESP32()) {
             Toast.makeText(this, "Unable to connect to sensor.", Toast.LENGTH_LONG).show();
         }
         measureButton.setOnClickListener(v -> calibrateSensor());
 
     }
+    //function to set up toolbar
     private void setUpToolbar() {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -83,6 +86,7 @@ public class CalibrationActivity extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(v -> finish());
     }
 
+    //function to connect to ESP32 with bluetooth permissions
     private boolean connectToESP32() {
         BluetoothDevice device = null;
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED) {
@@ -100,6 +104,7 @@ public class CalibrationActivity extends AppCompatActivity {
                 break;
             }
         }
+        //sends a message to user is esp32 is not paired
         if (device == null) {
             runOnUiThread(() -> Toast.makeText(CalibrationActivity.this, "ESP32 not paired", Toast.LENGTH_SHORT).show());
             return false;
@@ -108,13 +113,17 @@ public class CalibrationActivity extends AppCompatActivity {
             socket = device.createRfcommSocketToServiceRecord(SERIAL_UUID);
             socket.connect();
             inputStream = socket.getInputStream();
+            //sends a message to user when device is properly connected
             runOnUiThread(() -> Toast.makeText(CalibrationActivity.this, "Connected Successfully", Toast.LENGTH_SHORT).show());
             return true;
         } catch (IOException e) {
+            //otherwise, lets user know that device has failed to connect
             runOnUiThread(() -> Toast.makeText(CalibrationActivity.this, "Failed to connect", Toast.LENGTH_SHORT).show());
             return false;
         }
     }
+
+    //function to request bluetooth permission
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -126,6 +135,8 @@ public class CalibrationActivity extends AppCompatActivity {
             }
         }
     }
+
+    //function to calibrate sensor
     private void calibrateSensor() {
         String sensorReading = readTemperature();
         if (sensorReading == null) {
@@ -139,9 +150,8 @@ public class CalibrationActivity extends AppCompatActivity {
             Toast.makeText(CalibrationActivity.this, "Invalid sensor reading.", Toast.LENGTH_SHORT).show();
             return;
         }
-
         measuredTempTextView.setText(String.format(Locale.getDefault(), "Measured Temp: %.2f °C", measuredTemp));
-
+        //calculates an offset that will then be added/subtracted to temperature readings for accurate results
         double offset = 10.0;
         double adjustedTemp = measuredTemp - offset;
         offsetTextView.setText(String.format(Locale.getDefault(), "Calibration Offset: %.2f °C", offset));
@@ -180,12 +190,15 @@ public class CalibrationActivity extends AppCompatActivity {
             }
         }
     }
+
+    //function for toolbar
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.toolbar, menu);
         return true;
     }
 
+    //makes toolbar icons function
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
@@ -203,23 +216,24 @@ public class CalibrationActivity extends AppCompatActivity {
 
         } else {
             return super.onOptionsItemSelected(item);
-
         }
     }
 
+    //go to health history page
     private void goToHealth() {
         Intent intent = new Intent(this, HealthDataActivity.class);
         startActivity(intent);
     }
 
+    //go to home page
     private void goToHome() {
         Intent intent = new Intent(this, BaseActivity.class);
         startActivity(intent);
     }
 
+    //go to extra page
     private void goToExtra() {
         Intent intent = new Intent(this, ExtraPageActivity.class);
         startActivity(intent);
     }
-
 }

@@ -37,7 +37,7 @@ public class BaseActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayShowTitleEnabled(true); // Hide the title
+            getSupportActionBar().setDisplayShowTitleEnabled(true);
         }
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
@@ -52,6 +52,7 @@ public class BaseActivity extends AppCompatActivity {
         }
     }
 
+    //function to display fever alerts to users
    private void displayFeverAlert(double celsius) {
         String category;
         int backgroundColor;
@@ -69,6 +70,7 @@ public class BaseActivity extends AppCompatActivity {
             backgroundColor = Color.RED;
         }
 
+        //sends alert
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Fever Alert");
         builder.setMessage("Your temperature indicates: " + category);
@@ -80,15 +82,18 @@ public class BaseActivity extends AppCompatActivity {
         });
         dialog.show();
     }
+
+    //toolbar
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.toolbar, menu);
         return true;
     }
+
+    //giving functionality to toolbar icons
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-
         if (id == R.id.miperson) {
             goToHealth();
             return true;
@@ -101,11 +106,13 @@ public class BaseActivity extends AppCompatActivity {
         }
     }
 
+    //go to extra page
     private void GoToExtra(){
         Intent intent = new Intent(this, ExtraPageActivity.class);
         startActivity(intent);
     }
 
+    //go to health history page
     private void goToHealth(){
         Intent intent = new Intent(this, HealthDataActivity.class);
         startActivity(intent);
@@ -117,6 +124,7 @@ public class BaseActivity extends AppCompatActivity {
         homeTextView = findViewById(R.id.homeTextView);
         homeTextView.setText("Welcome, " + currentUser + "!");
         tempButton = findViewById(R.id.tempButton);
+        //temp button redirects users to scan measurement page
         tempButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -125,6 +133,7 @@ public class BaseActivity extends AppCompatActivity {
         });
 
         medButton = findViewById(R.id.medButton);
+        //med button redirects user to medication page
         medButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -133,6 +142,7 @@ public class BaseActivity extends AppCompatActivity {
         });
 
         symptomButton = findViewById(R.id.symptomButton);
+        //symptom button redirects user to symptom page
         symptomButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -141,18 +151,19 @@ public class BaseActivity extends AppCompatActivity {
         });
     }
 
+    //go to medication page
     void goToMedicationLog(){
         Intent intent = new Intent(this, MedicationActivity.class);
         startActivity(intent);
     }
 
+    //go to scan measurement page
     void goToScanMeasurement(){
         Intent intent = new Intent(this, ScanMeasurementActivity.class);
         startActivity(intent);
     }
 
-
-
+    //go to symptom page
     void goToSymptomLog(){
         Intent intent = new Intent(this, SymptomLogActivity.class);
         startActivity(intent);

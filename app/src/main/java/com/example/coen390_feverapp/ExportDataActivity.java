@@ -34,7 +34,6 @@ import java.io.FileOutputStream;
 import java.util.List;
 
 public class ExportDataActivity extends AppCompatActivity {
-
     Button btnExportAll, btnSaveUserInfo;
 
     EditText etFirstName, etLastName, etBirthDate, etHealthCardNumber, etAddress, etDoctorName;
@@ -235,6 +234,7 @@ public class ExportDataActivity extends AppCompatActivity {
         datePickerDialog.show();
     }
 
+    //toolbar
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu from the menu.xml file in the menu directory
         getMenuInflater().inflate(R.menu.toolbar, menu);
@@ -242,41 +242,39 @@ public class ExportDataActivity extends AppCompatActivity {
         return true;
     }
 
+    //make toolbar functional
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-
         if (id == R.id.miperson) {
             goToHealth();
             return true;
-
         } else if (id == R.id.miMore) {
             goToExtra();
             return true;
         } else if (id == R.id.mihome) {
             goToHome();
             return true;
-
         } else {
             return super.onOptionsItemSelected(item);
-
         }
     }
 
+    //go to health history page
     private void goToHealth() {
         Intent intent = new Intent(this, HealthDataActivity.class);
         startActivity(intent);
     }
 
+    //go to home page
     private void goToHome() {
         Intent intent = new Intent(this, BaseActivity.class);
         startActivity(intent);
     }
 
+    //go to extra page
     private void goToExtra() {
         Intent intent = new Intent(this, ExtraPageActivity.class);
         startActivity(intent);
     }
-
-
 }
