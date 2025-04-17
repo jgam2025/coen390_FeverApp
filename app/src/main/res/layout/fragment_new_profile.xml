@@ -46,6 +46,7 @@
         android:backgroundTint="#F8D9DC"
         android:hint="Enter Profile Name"
         android:inputType="text"
+        android:maxLength="20"
         android:padding="16dp"
         android:textColor="#980314"
         android:textColorHint="#980314"
