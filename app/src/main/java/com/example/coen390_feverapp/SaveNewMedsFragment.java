@@ -56,6 +56,7 @@ public class SaveNewMedsFragment extends DialogFragment {
                         }
                         medicationActivity.showMedicationsOnSpinner();
                     }
+                    else Toast.makeText(getContext(), "Medication already in list!", Toast.LENGTH_SHORT).show();
                 }
                 //save into db
                 dismiss();

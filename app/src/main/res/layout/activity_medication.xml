@@ -117,6 +117,7 @@
         android:layout_marginTop="8dp"
         android:hint="Dosage (mg)"
         android:inputType="number"
+        android:maxLength="3"
         android:background="#F8D9DC"
         android:backgroundTint="#F8D9DC"
         android:textColor="#980314"

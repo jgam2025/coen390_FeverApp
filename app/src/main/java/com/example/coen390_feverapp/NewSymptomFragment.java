@@ -56,9 +56,10 @@ public class NewSymptomFragment extends DialogFragment {
                 DBHelper dbHelper;
                 dbHelper = new DBHelper(getContext());
                 String symptom = newSymptomEditText.getText().toString();
+                boolean isDefaultSymptom = checkIfDefaultSymptom(symptom);
                 if(symptom.isEmpty()){
                     Toast.makeText(getContext(), "Please enter a symptom", Toast.LENGTH_LONG).show();
-                } else if (dbHelper.checkSymptom(symptom)){
+                } else if (dbHelper.checkSymptom(symptom) || isDefaultSymptom){
                     Toast.makeText(getContext(), "Symptom already in list", Toast.LENGTH_SHORT).show();
                 } else {
                     //create checkbox
@@ -98,5 +99,16 @@ public class NewSymptomFragment extends DialogFragment {
         });
 
         return view;
+    }
+
+    private boolean checkIfDefaultSymptom(String symptom) {
+        String[] defaultSymptoms = {"Chills", "Sore Throat", "Headache", "Muscle Aches",
+                "Nausea", "Runny Nose", "Cough", "Fatigue"};
+        for(int i=0;i<defaultSymptoms.length;i++){
+            if(symptom == defaultSymptoms[i]){
+                return true;
+            }
+        }
+        return false;
     }
 }
