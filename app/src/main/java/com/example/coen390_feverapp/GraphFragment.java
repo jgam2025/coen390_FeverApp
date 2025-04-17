@@ -36,12 +36,9 @@ import java.util.List;
 import java.util.Locale;
 
 public class GraphFragment extends DialogFragment {
-
     private LineChart chart;
     private DBHelper dbHelper;
     private String currentProfile;
-
-
 
     @Nullable
     @Override
@@ -49,16 +46,14 @@ public class GraphFragment extends DialogFragment {
         View view = inflater.inflate(R.layout.fragment_graph, container, false);
         chart = view.findViewById(R.id.chart);
         dbHelper = new DBHelper(requireActivity());
-
-
         SharedPreferences prefs = requireActivity().getSharedPreferences("user_prefs", android.content.Context.MODE_PRIVATE);
         currentProfile = prefs.getString("current_profile", "default");
         Log.d("GRAPH_DEBUG", "Current profile in graph: " + currentProfile);
-
         fetchTemperatureData(view);
         return view;
     }
 
+    //gets temperature data stored, displayed by profile name
     private void fetchTemperatureData(View view) {
         Log.d("GRAPH_DEBUG", "fetchTemperatureData() was called");
         List<Entry> entries = new ArrayList<>();
@@ -98,7 +93,6 @@ public class GraphFragment extends DialogFragment {
             } while (cursor.moveToNext());
         }
 
-
         if (cursor != null && cursor.moveToFirst()) {
             do {
                 @SuppressLint("Range") float temperature = cursor.getFloat(cursor.getColumnIndex("temperature_value"));
@@ -111,14 +105,13 @@ public class GraphFragment extends DialogFragment {
                 index++;
             } while (cursor.moveToNext());
         }
-
         cursor.close();
-        
         if (!entries.isEmpty()) {
             plotGraph(entries, dateTimeLabels);
         }
     }
 
+    //convert to celcius if in fahrenheit
     private float autoConvertIfFahrenheit(float value) {
         if (value > 60f) {
             return (value - 32f) * 5f / 9f;
@@ -127,6 +120,7 @@ public class GraphFragment extends DialogFragment {
         }
     }
 
+    //plot values on graph
     private void plotGraph(List<Entry> entries, final List<String> dateTimeLabels) {
         LineDataSet dataSet = new LineDataSet(entries, "Temperature Readings");
         dataSet.setColor(Color.BLUE);
@@ -190,12 +184,10 @@ public class GraphFragment extends DialogFragment {
             textView.setText("Average: -- °C");
             return;
         }
-
         float sum = 0f;
         for (Entry entry : entries) {
             sum += entry.getY();
         }
-
         float average = sum / entries.size();
         textView.setText(String.format(Locale.getDefault(), "Average: %.1f°C", average));
     }

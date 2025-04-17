@@ -21,7 +21,6 @@ import java.util.List;
 import java.util.Locale;
 
 public class MedicationActivity extends AppCompatActivity {
-
     private EditText medsEditText, doseEditText;
     private Button submitMedButton;
     private Spinner medsSpinner, profilesSpinner;
@@ -178,11 +177,9 @@ public class MedicationActivity extends AppCompatActivity {
             }
         });
     }
-
     public String getMedicationNameText() {
         return medicationNameText;
     }
-
 
     //menu
     @Override
@@ -214,22 +211,23 @@ public class MedicationActivity extends AppCompatActivity {
         }
     }
 
+    //go to health history page
     private void goToHealth() {
         Intent intent = new Intent(this, HealthDataActivity.class);
         startActivity(intent);
     }
 
+    //go to home page
     private void goToHome() {
         Intent intent = new Intent(this, BaseActivity.class);
         startActivity(intent);
     }
 
+    //go to extra page
     private void goToExtra() {
         Intent intent = new Intent(this, ExtraPageActivity.class);
         startActivity(intent);
     }
-
-
 }
 
 

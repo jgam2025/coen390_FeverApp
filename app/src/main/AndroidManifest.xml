@@ -68,9 +68,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".TemperatureMeasurementPage"
-            android:exported="false" />
-        <activity
             android:name=".ScanMeasurementActivity"
             android:exported="false" />
         <activity

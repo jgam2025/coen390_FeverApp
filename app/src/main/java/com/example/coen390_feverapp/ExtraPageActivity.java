@@ -15,9 +15,8 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 public class ExtraPageActivity extends AppCompatActivity {
-
-String[] pageNames = {"Health Resources & Phone Numbers", "Add New Profile", "Export Health Data", "Sensor Calibration", "Log Out"};
-
+    //list names for extra page features
+    String[] pageNames = {"Health Resources & Phone Numbers", "Add New Profile", "Export Health Data", "Sensor Calibration", "Log Out"};
     protected ListView additionalPageListView;
 
     @Override
@@ -36,49 +35,45 @@ String[] pageNames = {"Health Resources & Phone Numbers", "Add New Profile", "Ex
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-
         setupUI();
     }
 
+    //toolbar
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.toolbar, menu);
-
         return true;
     }
+
+    //make toolbar functional
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-
         if (id == R.id.miperson) {
             goToHealth();
             return true;
-
         }
-
         else if (id == R.id.mihome) {
             GoToHome();
             return true;
-
-
         } else{
-                return super.onOptionsItemSelected(item);
-
+            return super.onOptionsItemSelected(item);
         }
     }
 
+    //go to home page
     private void GoToHome(){
         Intent intent = new Intent(this, BaseActivity.class);
         startActivity(intent);
     }
 
+    //go to health history page
     private void goToHealth(){
         Intent intent = new Intent(this, HealthDataActivity.class);
         startActivity(intent);
     }
 
     private void setupUI() {
-
         additionalPageListView = findViewById(R.id.additionalPageListView);
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, pageNames);
         additionalPageListView.setAdapter(adapter);

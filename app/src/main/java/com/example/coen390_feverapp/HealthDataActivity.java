@@ -257,16 +257,15 @@ public class HealthDataActivity extends AppCompatActivity {
         dbHelper.insertTemperature(currentProfile, "2025-03-20 12:00:00","37");
     }
 
-
     //menu functions
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu from the menu.xml file in the menu directory
         getMenuInflater().inflate(R.menu.toolbar, menu);
-
         return true;
     }
 
+    //make toolbar functional
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
@@ -277,20 +276,17 @@ public class HealthDataActivity extends AppCompatActivity {
         } else if (id == R.id.mihome) {
             goToHome();
             return true;
-
-
         } else {
             return super.onOptionsItemSelected(item);
         }
     }
-
-
-
+    //go to extra page
     private void goToExtraPage(){
         Intent intent = new Intent(this, ExtraPageActivity.class);
         startActivity(intent);
     }
 
+    //go to home page
     private void goToHome(){
         Intent intent = new Intent(this,BaseActivity.class);
         startActivity(intent);

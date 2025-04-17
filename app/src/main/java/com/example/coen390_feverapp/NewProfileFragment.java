@@ -18,13 +18,11 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 
 public class NewProfileFragment extends DialogFragment {
-
     protected TextView createTextView;
     protected EditText nameEditText;
     protected Button saveButton;
     protected FloatingActionButton closeButton;
     private SymptomLogActivity symptom_activity;
-
 
     public NewProfileFragment() {
     }

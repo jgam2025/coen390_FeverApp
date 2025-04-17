@@ -24,7 +24,6 @@ import java.util.List;
 
 
 public class NewSymptomFragment extends DialogFragment {
-
     protected EditText newSymptomEditText;
     protected Button saveSymptomButton;
     protected FloatingActionButton closeNewFAB;

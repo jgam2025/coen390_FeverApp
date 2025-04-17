@@ -56,6 +56,7 @@ public class RegisterActivity extends AppCompatActivity {
             etRepwd.setSelection(etRepwd.length());
         });
 
+        //allows user to create an account
         btnRegister.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
@@ -69,6 +70,7 @@ public class RegisterActivity extends AppCompatActivity {
                 else{
                     if(pwd.equals(rePwd)){
                         if(dbHelper.checkUsername(user)){
+                            //will nofity user is account already exists
                             Toast.makeText(RegisterActivity.this, "User Already Exists",Toast.LENGTH_LONG).show();
                             return;
                         }

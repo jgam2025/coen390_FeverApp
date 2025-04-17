@@ -21,7 +21,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PhoneNumberActivity extends AppCompatActivity {
-
     List<TextView> phoneNumberTextViewList;
 
     @Override
@@ -34,37 +33,34 @@ public class PhoneNumberActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-
-
-
         setupUI();
         setUpToolbar();
     }
 
+    //toolbar
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.toolbar, menu);
         return true;
     }
+
+    //functionalities of toolbar
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-
         if (id == R.id.miperson) {
-
             return true;
         }
-
         else if (id == R.id.miMore) {
             goToExtraPage();
             return true;
         }
         else{
             return super.onOptionsItemSelected(item);
-
         }
     }
 
+    //set up toolbar
     private void setUpToolbar() {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -75,6 +71,7 @@ public class PhoneNumberActivity extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(v -> finish());
     }
 
+    //go to extra page
     private void goToExtraPage(){
         Intent intent = new Intent(this, ExtraPageActivity.class);
         startActivity(intent);
@@ -98,6 +95,7 @@ public class PhoneNumberActivity extends AppCompatActivity {
         TextView webMdLink = findViewById(R.id.webMdLink);
         TextView clevelandClinicLink = findViewById(R.id.clevelandClinicLink);
 
+        //link redirects user to webpage
         webMdLink.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -106,6 +104,7 @@ public class PhoneNumberActivity extends AppCompatActivity {
             }
         });
 
+        //link redirects user to webpage
         clevelandClinicLink.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

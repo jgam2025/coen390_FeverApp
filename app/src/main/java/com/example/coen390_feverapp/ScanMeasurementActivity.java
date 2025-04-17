@@ -45,15 +45,14 @@ import android.widget.AdapterView;
 
 
 public class ScanMeasurementActivity extends AppCompatActivity {
-
     private static final boolean TEST_MODE = false;
-
+    //name of device = ESP32
     private static final String DEVICE_NAME = "ESP32";
+    //serial uuid of esp32
     private static final UUID SERIAL_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
     private BluetoothAdapter bluetoothAdapter;
     private BluetoothSocket socket;
     private InputStream inputStream;
-
     protected TextView temperatureTextView;
     protected ProgressBar measurementProgressBar;
     protected LinearLayout cancelAndSaveButtonLayout;
@@ -62,7 +61,6 @@ public class ScanMeasurementActivity extends AppCompatActivity {
     protected FloatingActionButton closeInstructionDialogButton, closeAlertDialogButton;
     protected ImageView imageViewArrowScanPage;
     private String selectedProfile;
-
     protected volatile boolean measurementCanceled = false;
     private double calibrationOffset = 0.0;
     private Spinner scaleSpinner, selectProfileSpinner;
@@ -87,11 +85,11 @@ public class ScanMeasurementActivity extends AppCompatActivity {
                 .getFloat("calibrationOffset", 0.0f);
 
         bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        //sends message to user if their device does not support bluetooth
         if (bluetoothAdapter == null) {
             Toast.makeText(this, "Bluetooth not supported", Toast.LENGTH_SHORT).show();
             finish();
         }
-
         new Thread(() -> connectToESP32()).start();
         instructionDialogLayout.setVisibility(android.view.View.VISIBLE);
     }
@@ -109,7 +107,7 @@ public class ScanMeasurementActivity extends AppCompatActivity {
         closeAlertDialogButton = findViewById(R.id.closeFeverAlertDialogButton);
         imageViewArrowScanPage = findViewById(R.id.imageViewArrowScanPage);
 
-
+        //progress bar
         measurementProgressBar.setProgress(0);
         cancelAndSaveButtonLayout.setVisibility(android.view.View.GONE);
         startButton.setVisibility(android.view.View.VISIBLE);
@@ -123,6 +121,7 @@ public class ScanMeasurementActivity extends AppCompatActivity {
         selectProfileSpinner = findViewById(R.id.selectProfileSpinner);
         showProfilesOnSpinner();
 
+        //allows user to choose unit of measurement
         scaleSpinner = findViewById(R.id.scaleSpinner);
         String[] scales = {"°C", "°F"};
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, scales);
@@ -142,7 +141,6 @@ public class ScanMeasurementActivity extends AppCompatActivity {
             @Override public void onNothingSelected(AdapterView<?> parent) { }
         });
 
-
         imageViewArrowScanPage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -153,13 +151,14 @@ public class ScanMeasurementActivity extends AppCompatActivity {
 
     }
 
+    //function to connect to ESP32 with bluetooth permissions
     private boolean connectToESP32() {
 
+        //test mode for team members that wanted to test their code but did not have the physical sensor with them
         if (TEST_MODE) {
             runOnUiThread(() -> Toast.makeText(this, "In Test Mode, connection simulated", Toast.LENGTH_SHORT).show());
             return true;
         }
-
 
         BluetoothDevice device = null;
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED) {
@@ -177,6 +176,7 @@ public class ScanMeasurementActivity extends AppCompatActivity {
                 break;
             }
         }
+        //sends a message to user is esp32 is not paired
         if (device == null) {
             runOnUiThread(() -> Toast.makeText(ScanMeasurementActivity.this, "ESP32 not paired", Toast.LENGTH_SHORT).show());
             return false;
@@ -185,14 +185,17 @@ public class ScanMeasurementActivity extends AppCompatActivity {
             socket = device.createRfcommSocketToServiceRecord(SERIAL_UUID);
             socket.connect();
             inputStream = socket.getInputStream();
+            //sends a message to user when device is properly connected
             runOnUiThread(() -> Toast.makeText(ScanMeasurementActivity.this, "Connected Successfully", Toast.LENGTH_SHORT).show());
             return true;
         } catch (IOException e) {
+            //otherwise, lets user know that device has failed to connect
             runOnUiThread(() -> Toast.makeText(ScanMeasurementActivity.this, "Failed to connect", Toast.LENGTH_SHORT).show());
             return false;
         }
     }
 
+    //function to request bluetooth permission
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -205,6 +208,7 @@ public class ScanMeasurementActivity extends AppCompatActivity {
         }
     }
 
+    //function to begin taking measurements
     private void startMeasurement() {
         measurementCanceled = false;
         runOnUiThread(() -> {
@@ -227,6 +231,7 @@ public class ScanMeasurementActivity extends AppCompatActivity {
                 }
             }
 
+            //takes measurements over a 3 second interval, last measurement value is displayed to user
             long startTime = System.currentTimeMillis();
             int duration = 3000;
 
@@ -236,8 +241,9 @@ public class ScanMeasurementActivity extends AppCompatActivity {
 
                 long elapsed = System.currentTimeMillis() - startTime;
                 int progress = (int) ((elapsed / (float) duration) * 100);
-                String finalTemp = temp;              // <-- defined here
+                String finalTemp = temp;
 
+                //implements calibration offset if there is one
                 runOnUiThread(() -> {
                     String display;
                     try {
@@ -272,6 +278,7 @@ public class ScanMeasurementActivity extends AppCompatActivity {
         }).start();
     }
 
+    //allows user to cancel measurement taken and retake
     private void cancelMeasurement() {
         measurementCanceled = true;
         closeBluetoothConnection();
@@ -282,6 +289,7 @@ public class ScanMeasurementActivity extends AppCompatActivity {
         });
     }
 
+    //allows user to save measurement to database based on a specific user profile
     private void saveMeasurement() {
         String measurementValueStr = temperatureTextView.getText().toString().trim();
 
@@ -341,6 +349,7 @@ public class ScanMeasurementActivity extends AppCompatActivity {
         }
     }
 
+    //close connection
     private void closeBluetoothConnection() {
         try {
             if (inputStream != null) {
@@ -377,7 +386,5 @@ public class ScanMeasurementActivity extends AppCompatActivity {
             @Override
             public void onNothingSelected(AdapterView<?> parent) { }
         });
-
     }
-
 }

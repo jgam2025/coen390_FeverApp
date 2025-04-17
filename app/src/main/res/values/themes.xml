@@ -1,7 +1,5 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme with custom status bar color -->
     <style name="Base.Theme.Coen390_FeverApp" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Set the status bar color to your desired background color -->
         <item name="android:statusBarColor">@color/fever_app_background</item>
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
     </style>
@@ -10,10 +8,7 @@
         <item name="android:statusBarColor">@color/white</item>
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
     </style>
-  <!-- Base application theme. -->
     <style name="Base.Base.Theme.Coen390_FeverApp" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
     </style>
 
 

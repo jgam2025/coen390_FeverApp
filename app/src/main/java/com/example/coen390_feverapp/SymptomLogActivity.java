@@ -33,6 +33,7 @@ import java.util.Locale;
 public class SymptomLogActivity extends AppCompatActivity  {
 
     protected TextView selectTextView;
+    //default checkbox values
     protected CheckBox chillsCheckBox, soreThroatCheckBox, headacheCheckBox, achesCheckBox,
             nauseaCheckBox, runnyNoseCheckBox, coughCheckBox, fatigueCheckBox;
     protected Button submitButton, newSymptomButton, goToLogButton;
@@ -57,6 +58,7 @@ public class SymptomLogActivity extends AppCompatActivity  {
 
     }
 
+    //set up toolbar
     private void setUpToolbar() {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -67,17 +69,12 @@ public class SymptomLogActivity extends AppCompatActivity  {
         toolbar.setNavigationOnClickListener(v -> finish());
     }
 
-
     private void setupUI(){
-
         selectTextView = findViewById(R.id.selectTextView);
-
         profileOptionSpinner = findViewById(R.id.profileOptionSpinner);
         showProfilesOnSpinner();
-
         submitButton = findViewById(R.id.submitButton);
         newSymptomButton = findViewById(R.id.newSymptomButton);
-
 
         List<CheckBox> checkBoxes = initializeCheckBoxes();
 
@@ -234,9 +231,6 @@ public class SymptomLogActivity extends AppCompatActivity  {
 
     }
 
-
-
-
     //menu functions
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -246,40 +240,29 @@ public class SymptomLogActivity extends AppCompatActivity  {
         return true;
     }
 
+    //gives toolbar functionality
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-
         if (id == R.id.miMore) {
             goToExtraPage();
             return true;
         } else if (id == R.id.miperson) {
             goToHealth();
             return true;
-
-
         } else {
             return super.onOptionsItemSelected(item);
         }
     }
-
-
-
+    //go to extra page
     private void goToExtraPage(){
         Intent intent = new Intent(this, ExtraPageActivity.class);
         startActivity(intent);
     }
 
+    //go to health history page
     private void goToHealth(){
         Intent intent = new Intent(this,HealthDataActivity.class);
         startActivity(intent);
     }
-
-    private void goToMedication(){
-        Intent intent = new Intent(this, MedicationActivity.class);
-        startActivity(intent);
-    }
-
-
-
 }

@@ -31,7 +31,7 @@ public class LoginActivity extends AppCompatActivity {
         btnSignup = findViewById(R.id.btnSignup);
         cbShowPassword = findViewById(R.id.cbShowPassword);
 
-
+        //allows user to login if they have created an account
         btnlogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -46,10 +46,13 @@ public class LoginActivity extends AppCompatActivity {
                     startActivity(intent);
                 }
                 else{
+                    //failed login if user has not created account
                     Toast.makeText(LoginActivity.this, "Login Failed ",Toast.LENGTH_LONG).show();
                 }
             }
         });
+
+        //gives users the option to show or hide their password when entering
         cbShowPassword.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked) {
                 etPwd.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
@@ -64,6 +67,7 @@ public class LoginActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
+        //redirects users to register page where they can create an account
         btnSignup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -72,5 +76,4 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
     }
-
 }
