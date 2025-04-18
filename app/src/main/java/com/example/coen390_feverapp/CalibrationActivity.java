@@ -152,8 +152,7 @@ public class CalibrationActivity extends AppCompatActivity {
         }
         measuredTempTextView.setText(String.format(Locale.getDefault(), "Measured Temp: %.2f °C", measuredTemp));
         //calculates an offset that will then be added/subtracted to temperature readings for accurate results
-        double offset = 10.0;
-        double adjustedTemp = measuredTemp - offset;
+        double offset = measuredTemp - 100.0;
         offsetTextView.setText(String.format(Locale.getDefault(), "Calibration Offset: %.2f °C", offset));
 
         SharedPreferences prefs = getSharedPreferences("user_prefs", MODE_PRIVATE);
